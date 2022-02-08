@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from main import app
@@ -12,3 +13,6 @@ def test_read_main():
     assert response.json() == {
         "message": f"{test_string}this has been updated"
     }
+
+if __name__ == "__main__":
+    pytest()
