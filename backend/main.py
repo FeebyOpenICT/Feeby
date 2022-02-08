@@ -6,7 +6,6 @@ app = FastAPI()
 
 @app.get("/{update_id}")
 async def root(update_id: str):
-    print("updateId:", update_id)
     update_id += "this has been updated"
     return {"message": update_id}
 
