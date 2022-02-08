@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: feeby-backend
+    build:
+      context: ./backend
+      target: testing
+    command: ['pytest']

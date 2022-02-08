@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  traefik:
+    image: traefik:v2.4
+    container_name: portfolio-traefik-dev
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+  backend:
+    container_name: feeby-backend
+    build:
+      context: ./backend
+      target: production
+    labels:
+      traefik.enable: true
+      traefik.http.routers.backend.rule: Host(`localhost`) && PathPrefix(`/api/v1`)
+      traefik.http.services.backend.loadbalancer.server.port: 80
+      traefik.http.middlewares.backendpathstrip.stripprefix.prefixes: /api/v1
+      traefik.http.routers.backend.middlewares: backendpathstrip@docker
