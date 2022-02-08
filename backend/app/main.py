@@ -1,8 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 
-app = FastAPI()
-
+app = FastAPI(
+    title="Feeby",
+    version=1,
+    root_path="/api/v1"
+)
 
 @app.get("/{update_id}")
 async def root(update_id: str):
