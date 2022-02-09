@@ -1,5 +1,16 @@
 # Feeby
 Feeby is a tool that allows students to receive feedback in an organised and fast manner from teachers and experts in their field.
+
+## Git workflow
+### Main branch
+No direct pushes, only MR’s are allowed
+Production ready, no bugs allowed
+### Dev branch
+No direct pushes, only MR’s are allowed
+Semi-production ready, bugs are allowed but must be fixed before they get pushed to the main prod branch.
+### Creating a feature or bugfix branch
+Go to the user story in Jira and open it. Click on create branch and copy the git command. Run this command in your terminal and start working. Finally, create a pull request in to dev and let it get reviewed by a team member.
+
 ## Running the tool locally
 ### Docker
 run `make start` or the equivalent `make` to launch the development environment.
