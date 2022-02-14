@@ -3,6 +3,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
 EXPOSE 3000
 CMD [ "npm" ,"run", "dev" ]
 
@@ -11,6 +15,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
 RUN npm run build
 
 FROM nginx:stable-alpine as production-server
