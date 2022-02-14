@@ -35,5 +35,6 @@ services:
       target: production-server
     labels:
       traefik.enable: true
-      traefik.http.routers.backend.rule: Host(`localhost`)
-      traefik.http.services.backend.loadbalancer.server.port: 80
+      traefik.http.routers.frontend.entrypoints: web
+      traefik.http.routers.frontend.rule: Host(`localhost`)
+      traefik.http.services.frontend.loadbalancer.server.port: 80
