@@ -27,3 +27,13 @@ services:
       traefik.http.services.backend.loadbalancer.server.port: 80
       traefik.http.middlewares.backendpathstrip.stripprefix.prefixes: /api/v1
       traefik.http.routers.backend.middlewares: backendpathstrip@docker
+  
+  frontend:
+    container_name: feeby-frontend
+    build:
+      context: ./frontend
+      target: production-server
+    labels:
+      traefik.enable: true
+      traefik.http.routers.backend.rule: Host(`localhost`)
+      traefik.http.services.backend.loadbalancer.server.port: 80
