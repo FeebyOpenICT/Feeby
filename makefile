@@ -15,3 +15,9 @@ prod-start:
 
 prod-down:
 	docker-compose -f docker-compose.prod.yml down
+
+prod-logs:
+	docker-compose -f docker-compose.prod.yml logs -f
+
+logs:
+	docker-compose logs -f
