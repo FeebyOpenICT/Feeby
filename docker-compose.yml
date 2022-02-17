@@ -25,10 +25,11 @@ services:
       - ./backend:/development
     labels:
       traefik.enable: true
-      traefik.http.routers.backend.rule: Host(`localhost`) && PathPrefix(`/api/v1`)
+      traefik.http.routers.backend.rule: Host(`127.0.0.1`) || Host(`localhost`) && PathPrefix(`/api/v1`)
       traefik.http.services.backend.loadbalancer.server.port: 80
       traefik.http.middlewares.backendpathstrip.stripprefix.prefixes: /api/v1
       traefik.http.routers.backend.middlewares: backendpathstrip@docker
+
 
   frontend:
     container_name: feeby-frontend
@@ -39,6 +40,6 @@ services:
       - ./frontend:/app
     labels:
       traefik.enable: true
-      traefik.http.routers.frontend.rule: Host(`localhost`)
+      traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
