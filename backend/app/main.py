@@ -9,7 +9,7 @@ app = FastAPI(
 
 @app.post("/launch")
 async def launch(request: Request):
-    return "launched"   
+    return "launched"
 
 @app.get("/{update_id}")
 async def root(update_id: str):
