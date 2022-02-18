@@ -1,37 +1,26 @@
-FROM python:3.9 as development
+FROM python:3.9-alpine as base
 
-WORKDIR /development
+WORKDIR /app
 
-COPY ./requirements.txt /development/requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /development/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-COPY ./app /development/app
+COPY ./app /app
 
-CMD ["uvicorn", "app.main:app", "--proxy-headers", "--reload", "--host", "0.0.0.0", "--port", "80"]
+FROM base as development
 
-FROM python:3.9-slim as testing
+RUN pip install ptvsd
 
-WORKDIR /testing
+WORKDIR /app
+CMD python -m ptvsd --host 0.0.0.0 --port 5678 --wait --multiprocess -m uvicorn main:app --proxy-headers --host 0.0.0.0 --port 80
 
-COPY ./requirements.txt /testing/requirements.txt
+FROM base as production
 
-RUN pip install --no-cache-dir --upgrade -r /testing/requirements.txt
-
-COPY ./app /testing/app
+WORKDIR /app
 
 RUN ["pytest"]
 
-FROM python:3.9-alpine as production
-
-WORKDIR /code
-
-COPY ./requirements.txt /code/requirements.txt
-
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-COPY --from=testing /testing/app /code/app
-
 EXPOSE 80
 
-CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
