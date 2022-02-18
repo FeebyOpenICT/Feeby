@@ -17,7 +17,7 @@ services:
 
 
   backend:
-    container_name: feeby-backend
+    container_name: feeby-backend-dev
     build:
       context: ./backend
       target: development
@@ -34,7 +34,7 @@ services:
 
 
   frontend:
-    container_name: feeby-frontend
+    container_name: feeby-frontend-dev
     build:
       context: ./frontend
       target: development
