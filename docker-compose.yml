@@ -23,6 +23,8 @@ services:
       target: development
     volumes:
       - ./backend:/development
+    ports:
+      - 5678:5678
     labels:
       traefik.enable: true
       traefik.http.routers.backend.rule: Host(`127.0.0.1`) || Host(`localhost`) && PathPrefix(`/api/v1`)
