@@ -3,7 +3,7 @@ version: "3.8"
 services:
   traefik:
     image: traefik:v2.4
-    container_name: portfolio-traefik-dev
+    container_name: feeby-traefik-dev
     command:
       - --api.insecure=true
       - --providers.docker
