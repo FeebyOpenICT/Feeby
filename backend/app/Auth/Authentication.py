@@ -35,3 +35,8 @@ async def callback(code: str = None, error: str = None, error_description: str =
         return json
     else:
         raise OAuth2AuthenticationException()
+
+
+#TODO refresh token call
+
+#TODO decorator/ global middleware to check access token on each api call
