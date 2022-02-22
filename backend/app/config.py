@@ -6,6 +6,6 @@ DELEVOPER_KEY_ID = "34"
 BASE_URL = "https://canvas.lucabergman.nl"
 
 # Hosted LTI instance
-BASE_APP_URL = "http://localhost"
+BASE_APP_URL = "http://localhost:8000"
 BASE_APP_API_URL = f'{BASE_APP_URL}' # make /api/v1 dynamic so it can be set to something else
 
