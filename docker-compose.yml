@@ -25,12 +25,6 @@ services:
       - ./backend/app:/app
     ports:
       - 5678:5678
-    environment:
-      - LTI_CONSUMER_KEY=ONE
-      - LTI_SHARED_SECRET=TWO
-      # Do not include the / at the end of the url!
-      - BASE_URL=https://canvas.lucabergman.nl
-      - BASE_APP_URL=http://localhost
     labels:
       traefik.enable: true
       traefik.http.routers.backend.rule: Host(`127.0.0.1`) || Host(`localhost`) && PathPrefix(`/api/v1`)
