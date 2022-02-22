@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Form
 import requests
 
-from .redir_to_auth import redir_to_oauth
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
-from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL
+from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 
 
 router = APIRouter(
@@ -13,6 +12,9 @@ router = APIRouter(
 
 @router.get("/callback")
 async def callback(code: str = None, error: str = None, error_description: str = None):
+    """
+    Callback for oauth2 flow https://canvas.instructure.com/doc/api/file.oauth.html
+    """
     if error:
         # Something went wrong or the user denied access
         if error_description:
@@ -24,7 +26,7 @@ async def callback(code: str = None, error: str = None, error_description: str =
             'grant_type': 'authorization_code',
             'client_id': DELEVOPER_KEY_ID,
             'client_secret': DEVELOPER_KEY,
-            'redirect_uri': f'{BASE_APP_API_URL}/callback',
+            'redirect_uri': BASE_APP_API_CALLBACK_URL,
             'code': code
         })
         # got the access_token, now check for errors:
