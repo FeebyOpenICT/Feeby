@@ -10,8 +10,6 @@ app = FastAPI(
     # root_path="/api/v1" # Docker
 )
 
-
-
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
 app.include_router(Authentication.router)

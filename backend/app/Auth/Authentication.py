@@ -2,8 +2,8 @@ from fastapi import APIRouter, Form
 import requests
 
 from .redir_to_auth import redir_to_oauth
-from ..Exceptions.AuthenticationException import OAuth2AuthenticationException
-from ..config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL
+from Exceptions.AuthenticationException import OAuth2AuthenticationException
+from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL
 
 
 router = APIRouter(
