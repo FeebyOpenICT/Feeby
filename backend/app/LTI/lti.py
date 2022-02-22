@@ -9,6 +9,11 @@ router = APIRouter(
 
 @router.post('/launch')
 async def launch(user_id: str = Form(...)):
+  """
+  Launch call for canvas
+  
+  Takes the user_id and checks if the user already exists in DB. If they do then skip authorization flow, if not send them to auth flow
+  """
   # check if user is in db and skip auth if they are. 
   # if user_id in users:
   #     # if True get refresh token from db and get token that way to avoid having to re log in
