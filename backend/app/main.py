@@ -3,6 +3,7 @@ from fastapi import FastAPI, Form, Request
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Auth import Authentication
+from LTI import lti
 
 app = FastAPI(
     title="Feeby",
@@ -12,6 +13,7 @@ app = FastAPI(
 
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
+app.include_router(lti.router)
 app.include_router(Authentication.router)
 
 @app.get("/{update_id}")

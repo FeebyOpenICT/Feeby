@@ -8,26 +8,11 @@ from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL
 
 router = APIRouter(
   prefix="/auth",
-  tags="Authentication",
+  tags=["Authentication"],
 )
 
-# temp fake db
-users = {}
-
-@router.post("/launch")
-async def launch(user_id: str = Form(...)):
-    # Ceck if user already exists in db
-    if user_id in users:
-        # if True get refresh token from db and get token that way to avoid having to re log in
-        return redir_to_oauth() #temp redir for dev testing
-    else:
-        # if False send user to auth flow 
-        # create user in db and set auth
-        return redir_to_oauth()
-
-
 @router.get("/callback")
-async def launch(code: str = None, error: str = None, error_description: str = None):
+async def callback(code: str = None, error: str = None, error_description: str = None):
     if error:
         # Something went wrong or the user denied access
         if error_description:
