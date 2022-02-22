@@ -6,7 +6,7 @@ from authentication import redir_to_oauth
 app = FastAPI(
     title="Feeby",
     version=1,
-    root_path="/api/v1"
+    # root_path="/api/v1" # Docker
 )
 
 # temp db
@@ -31,4 +31,4 @@ async def root(update_id: str):
 
 
 if __name__ == "__main__":
-    uvicorn.run("__main__:app", host="0.0.0.0", port=80, reload=True, workers=1)
+    uvicorn.run("__main__:app", host="0.0.0.0", port=8000, reload=True, workers=1)
