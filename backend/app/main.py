@@ -1,7 +1,10 @@
 import uvicorn
 from fastapi import FastAPI, Form, Request
+import requests
 
 from authentication import redir_to_oauth
+from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL
+from error_handling import return_error
 
 app = FastAPI(
     title="Feeby",
@@ -9,20 +12,39 @@ app = FastAPI(
     # root_path="/api/v1" # Docker
 )
 
-# temp db
-users = {}
-
 @app.post("/launch")
 async def launch(user_id: str = Form(...)):
     # Ceck if user already exists in db
-    print(user_id, "does hot reload even work anymore ")
     if user_id in users:
         # if True get refresh token from db and get token that way to avoid having to re log in
         return 'already logged in'
     else:
         # if False send user to auth flow 
+        # create user in db and set auth
         return redir_to_oauth()
 
+@app.get("/callback")
+async def launch(code: str = None, error: str = None, error_description: str = None):
+    if error:
+        # Something went wrong or the user denied access
+        if error_description:
+            return return_error(f'{error}: {error_description}')
+        return return_error(f'{error}')
+    elif code:
+        # Got the code, still need to check if the state has been tempered with.
+        r = requests.post(f'{BASE_URL}/login/oauth2/token', data={
+            'grant_type': 'authorization_code',
+            'client_id': DELEVOPER_KEY_ID,
+            'client_secret': DEVELOPER_KEY,
+            'redirect_uri': f'{BASE_APP_API_URL}/callback',
+            'code': code
+        })
+        # got the access_token, now check for errors:
+        if r.status_code == 500:
+            # Canceled oauth or server error
+            return return_error("Something went wrong, please refresh teh page and try again. Contact support if the issue persists.")
+
+        return r.json()
 
 @app.get("/{update_id}")
 async def root(update_id: str):
