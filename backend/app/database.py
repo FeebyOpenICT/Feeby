@@ -18,6 +18,6 @@ def get_db_connection():
   """
   db = SessionLocal()
   try:
-      yield db
+    yield db
   finally:
-      db.close()
+    db.close()

@@ -1,6 +1,10 @@
-from fastapi import APIRouter, Form
+from fastapi import APIRouter, Form, Depends
+from sqlalchemy.orm import Session
 
 from Auth.redir_to_auth import redir_to_oauth
+from Models.User import User
+from Models.Role import Role
+from database import get_db_connection
 
 router = APIRouter(
   prefix="/lti",
@@ -8,18 +12,23 @@ router = APIRouter(
 )
 
 @router.post('/launch')
-async def launch(user_id: str = Form(...)):
+async def launch(
+  # user_id: str = Form(...),
+  # ext_roles: str = Form(...),
+  # roles: str = Form(...),
+  # db: Session = Depends(get_db_connection)
+):
   """
   Launch call for canvas
   
-  Takes the user_id and checks if the user already exists in DB. If they do then skip authorization flow, if not send them to auth flow
+  Always redir to oauth of canvas, skips me having to implement lti validation or having the possibility of having any security leaks
   """
-  # check if user is in db and skip auth if they are. 
-  # if user_id in users:
-  #     # if True get refresh token from db and get token that way to avoid having to re log in
-  #     return redir_to_oauth() #temp redir for dev testing
-  # else:
-  #     # if False send user to auth flow 
-  #     # create user in db and set auth
-  #     return redir_to_oauth()
   return redir_to_oauth()
+  # # check if user is already in our db, if they are we already have the refresh and or auth tokens
+  # user = db.query(User).filter(User.canvas_id == user_id).first()
+  # if user and user.refresh_token: 
+  #   # user has logged in before
+  #   return user
+  # else:
+  #   # TODO get role
+  #   user = User(canvas_id=user_id, role=Role.get_admin_role(db))
