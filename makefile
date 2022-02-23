@@ -21,3 +21,6 @@ prod-logs:
 
 logs:
 	docker-compose logs -f
+
+database-start:
+	docker-compose up -d db adminer traefik

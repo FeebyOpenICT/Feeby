@@ -45,3 +45,25 @@ services:
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
+
+  db:
+    container_name: feeby-database-dev
+    image: postgres
+    build:
+      context: ./database
+      target: development
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=hallo123
+      - POSTGRES_USER=feeby
+      
+  adminer:
+    container_name: feeby-adminer-dev
+    image: adminer
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.http.routers.frontend.rule: Host(`adminer.localhost`)
+      traefik.http.routers.frontend.entrypoints: web
+      traefik.http.services.frontend.loadbalancer.server.port: 8080
