@@ -21,17 +21,6 @@ app = FastAPI(
     # root_path="/api/v1" # Docker
 )
 
-def get_db_connection():
-  """
-  Dependency to create database connection for calls that require the connection
-  """
-  db = SessionLocal()
-  try:
-      yield db
-  finally:
-      db.close()
-
-
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
 app.include_router(lti.router)
