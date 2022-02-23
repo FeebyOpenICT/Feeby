@@ -1,40 +1,90 @@
 from datetime import date
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Session
 
-from .Role import Base
+from .Role import Base, Role
 
 class User(Base):
   __tablename__ = 'user'
 
   id = Column(Integer, primary_key=True, nullable=False)
-  fullname = Column(String(length=255), nullable=False)
-  canvas_email = Column(String(length=255), nullable=False, unique=True)
+  fullname = Column(String(length=255), nullable=True)
+  canvas_email = Column(String(length=255), nullable=True, unique=True)
   canvas_id = Column(Integer, nullable=False, unique=True, index=True)
-  access_token = Column(String, nullable=True)
-  refresh_token = Column(String, nullable=True)
-  expires_at = Column(Date, nullable=True)
 
-  role_id = Column(Integer, ForeignKey('role.id'))
+  role_id = Column(Integer, ForeignKey('role.id'), nullable=False)
   role = relationship('Role')
 
   def __init__(
     self, 
-    fullname: str, 
-    canvas_email: str, 
-    canvas_id: int, 
-    access_token: str = None, 
-    refresh_token: str = None,
-    expires_at: date = None,
+    fullname: str = None, 
+    canvas_email: str = None, 
+    canvas_id: int = None, 
     **kwargs
   ) -> None:
     self.fullname = fullname
     self.canvas_email = canvas_email
     self.canvas_id = canvas_id
-    self.access_token = access_token
-    self.refresh_token = refresh_token
-    self.expires_at = expires_at
     super().__init__(**kwargs)
 
   def __repr__(self) -> str:
     return f"<User id={self.id} canvas_email={self.canvas_email} role={self.role} fullname={self.fullname} canvas_id={self.canvas_id}>"
+
+  def get_user_by_canvas_id(id: int, db: Session):
+    """
+    Gets the user by their canvas id
+
+    id = integer equal to the the canvas id
+
+    Returns a python user mapped class from the database
+    """
+    user = db.query(User).filter(User.canvas_id == id).first()
+    # TODO error handling for if user is not found
+    return user
+  
+  def save_self(self, db: Session):
+    """
+    Saves own instance in the database
+
+    Returns a python user mapped class from the database
+    """
+    db.add(self)
+    db.commit()
+    db.refresh(self)
+    return self
+
+
+class Student(User):
+  """
+  User class with student role auto assigned
+  """
+  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
+    self.role = Role.get_student_role(db)
+    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
+
+
+class Instructor(User):
+  """
+  User class with instructor role auto assigned
+  """
+  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
+    self.role = Role.get_instructor_role(db)
+    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
+
+
+class ExternelExpert(User):
+  """
+  User class with external expert role auto assigned
+  """
+  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
+    self.role = Role.get_external_expert_role(db)
+    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
+
+
+class Admin(User):
+  """
+  User class with admin role auto assigned
+  """
+  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
+    self.role = Role.get_admin_role(db)
+    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
