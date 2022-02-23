@@ -60,16 +60,16 @@ class Role(Base):
       db.commit()
     return admin_role
   
-  def get_teacher_role(db: Session):
+  def get_instructor_role(db: Session):
     """
-    Gets the teacher role object mapping
+    Gets the instructor role object mapping
 
     db = db connection session
     """
-    teacher_role = db.query(Role).filter(Role.title == 'teacher').first()
-    if not teacher_role:
+    instructor_role = db.query(Role).filter(Role.title == 'instructor').first()
+    if not instructor_role:
       # no student role in db, create one
-      teacher_role = Role(title="teacher", description="I am a teacher")
-      db.add(teacher_role)
+      instructor_role = Role(title="instructor", description="I am a instructor")
+      db.add(instructor_role)
       db.commit()
-    return teacher_role
+    return instructor_role
