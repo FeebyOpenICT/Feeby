@@ -30,6 +30,7 @@ class Role(Base):
       student_role = Role(title="student", description="I am a student")
       db.add(student_role)
       db.commit()
+      db.refresh(student_role)
     return student_role
 
   def get_external_expert_role(db: Session):
@@ -44,6 +45,7 @@ class Role(Base):
       external_expert_role = Role(title="external_expert", description="I am an external_expert")
       db.add(external_expert_role)
       db.commit()
+      db.refresh(external_expert_role)
     return external_expert_role
 
   def get_admin_role(db: Session):
@@ -58,6 +60,7 @@ class Role(Base):
       admin_role = Role(title="admin", description="I am an admin")
       db.add(admin_role)
       db.commit()
+      db.refresh(admin_role)
     return admin_role
   
   def get_instructor_role(db: Session):
@@ -72,4 +75,5 @@ class Role(Base):
       instructor_role = Role(title="instructor", description="I am a instructor")
       db.add(instructor_role)
       db.commit()
+      db.refresh(instructor_role)
     return instructor_role
