@@ -1,17 +1,17 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
 
-from database import engine, get_db_connection
+from database import engine, SessionLocal
 
 # Chain: Role > User
-#import base from latest in chain so base gets initialized in all models before getting called
+# Import base from latest in chain so base gets initialized in all models before getting called
 from Models.User import Base
 
-# create all tables in database
+# Create all tables in database
 Base.metadata.create_all(bind=engine)
 
 # Init fastapi
@@ -20,6 +20,17 @@ app = FastAPI(
     version=1,
     # root_path="/api/v1" # Docker
 )
+
+def get_db_connection():
+  """
+  Dependency to create database connection for calls that require the connection
+  """
+  db = SessionLocal()
+  try:
+      yield db
+  finally:
+      db.close()
+
 
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
