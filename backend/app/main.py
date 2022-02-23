@@ -1,10 +1,20 @@
 import uvicorn
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
 
+from database import engine, get_db_connection
+
+# Chain: Role > User
+#import base from latest in chain so base gets initialized in all models before getting called
+from Models.User import Base
+
+# create all tables in database
+Base.metadata.create_all(bind=engine)
+
+# Init fastapi
 app = FastAPI(
     title="Feeby",
     version=1,
