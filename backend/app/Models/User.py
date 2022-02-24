@@ -5,6 +5,11 @@ from sqlalchemy.orm import relationship, Session
 from .Role import Base, Role
 
 class User(Base):
+  """
+  Mapped User class
+
+  Represents a user in the database
+  """
   __tablename__ = 'user'
 
   id = Column(Integer, primary_key=True, nullable=False)
@@ -39,7 +44,6 @@ class User(Base):
     Returns a python user mapped class from the database
     """
     user = db.query(User).filter(User.canvas_id == id).first()
-    # TODO error handling for if user is not found
     return user
   
   def save_self(self, db: Session):

@@ -3,6 +3,11 @@ from sqlalchemy.orm import Session
 from database import Base
 
 class Role(Base):
+  """
+  Mapped Role class
+  
+  Represents a role in the database
+  """
   __tablename__ = 'role'
 
   id = Column(Integer, primary_key=True, nullable=False)
