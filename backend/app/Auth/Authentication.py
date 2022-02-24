@@ -33,9 +33,12 @@ async def callback(code: str = None, error: str = None, error_description: str =
             'code': code
         })
         # got the access_token, now check for errors:
-        if r.status_code == 500:
-            # Canceled oauth or server error
-            raise OAuth2AuthenticationException(status_code=500, message="An error occured on the canvas authentication servers. Please refresh the page and try again. Contact support if the issue persists.")
+        if r.status_code >= 400:
+            if r.status_code == 500:
+                # Canceled oauth or server error
+                raise OAuth2AuthenticationException(status_code=500, message="An error occured on the canvas authentication servers. Please refresh the page and try again. Contact support if the issue persists.")
+            else:
+                raise OAuth2AuthenticationException(status_code=r.status_code)
 
         json = r.json()
 
@@ -44,7 +47,7 @@ async def callback(code: str = None, error: str = None, error_description: str =
             "access_token": str,
             "token_type": "Bearer",
             "user": {
-                "id": 1, 
+                "id": int, 
                 "name": str
             },
             "refresh_token": str,
