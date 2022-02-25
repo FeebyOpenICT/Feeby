@@ -69,8 +69,8 @@ async def callback(response: Response, code: str = None, error: str = None, erro
 
         response = RedirectResponse('/auth/testcookies')
 
-        response.set_cookie(key='access_token', value=json["access_token"], max_age=json["expires_in"])
-        response.set_cookie(key='refresh_token', value=json["refresh_token"])
+        response.set_cookie(key='access_token', value=json["access_token"], max_age=json["expires_in"], httponly=True, samesite="None", secure=True)
+        response.set_cookie(key='refresh_token', value=json["refresh_token"], httponly=True, samesite="None", secure=True)
 
         return response
     else:
