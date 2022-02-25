@@ -5,7 +5,7 @@ from Exceptions.AuthenticationException import OAuth2AuthenticationException, oa
 from Auth import Authentication
 from LTI import lti
 
-from database import engine, SessionLocal
+from database import engine
 
 # Chain: Role > User
 # Import base from latest in chain so base gets initialized in all models before getting called

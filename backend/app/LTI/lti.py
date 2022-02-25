@@ -23,6 +23,7 @@ async def launch(
   
   Always redir to oauth of canvas, skips me having to implement lti validation or having the possibility of having any security leaks
   """
+  # TODO check if user has access and or refresh tokens, if they do check them and if not send them to oauth
   return redir_to_oauth()
   # # check if user is already in our db, if they are we already have the refresh and or auth tokens
   # user = db.query(User).filter(User.canvas_id == user_id).first()
