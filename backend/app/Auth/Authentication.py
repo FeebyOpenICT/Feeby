@@ -64,11 +64,15 @@ async def callback(response: Response, code: str = None, error: str = None, erro
             # no user found > create new one and save in db
             self = requests.get(f'{BASE_URL}/api/v1/users/self', headers={ 'Authorization': f'Bearer {json["access_token"]}' })
             self_json = self.json()
-            new_user = Student(db=db, fullname=self_json["name"], canvas_id=json["user"]["id"])
-            new_user.save_self(db)
+            user = Student(db=db, fullname=self_json["name"], canvas_id=json["user"]["id"])
+            user.save_self(db)
 
-        return user
+        response = RedirectResponse('/auth/testcookies')
 
+        response.set_cookie(key='access_token', value=json["access_token"], max_age=json["expires_in"])
+        response.set_cookie(key='refresh_token', value=json["refresh_token"])
+
+        return response
     else:
         raise OAuth2AuthenticationException()
 
