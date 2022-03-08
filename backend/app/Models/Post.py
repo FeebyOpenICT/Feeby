@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import Session, relationship
-from ..database import Base
+from User import Base
 
 
-class StudentPost(Base):
+class Post(Base):
 
     __tablename__ = 'post'
 
@@ -19,5 +19,15 @@ class StudentPost(Base):
         self.description = description
         super().__init__()
 
+    def save_self(self, db: Session):
+        """
+        Saves own instance in the database
+
+        Returns a python user mapped class from the database
+        """
+        db.add(self)
+        db.commit()
+        db.refresh(self)
+        return self
 
 
