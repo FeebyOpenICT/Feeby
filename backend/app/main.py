@@ -19,7 +19,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Feeby",
     version=1,
-    # root_path="/api/v1" # Docker
+    root_path="/api/v1" # Docker
 )
 
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
