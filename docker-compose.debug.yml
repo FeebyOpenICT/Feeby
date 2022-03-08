@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  traefik:
+    image: traefik:v2.4
+    container_name: feeby-traefik-dev
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+  backend:
+    container_name: feeby-backend-dev
+    build:
+      context: ./backend
+      target: debug
+    volumes:
+      - ./backend/app:/app
+    ports:
+      - 5678:5678
+    labels:
+      traefik.enable: true
+      traefik.http.routers.backend.rule: Host(`127.0.0.1`) || Host(`localhost`) && PathPrefix(`/api/v1`)
+      traefik.http.services.backend.loadbalancer.server.port: 80
+      traefik.http.middlewares.backendpathstrip.stripprefix.prefixes: /api/v1
+      traefik.http.routers.backend.middlewares: backendpathstrip@docker
+
+
+  frontend:
+    container_name: feeby-frontend-dev
+    build:
+      context: ./frontend
+      target: development
+    volumes:
+      - ./frontend:/app
+    labels:
+      traefik.enable: true
+      traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
+      traefik.http.routers.frontend.entrypoints: web
+      traefik.http.services.frontend.loadbalancer.server.port: 3000
+
+  db:
+    container_name: feeby-database-dev
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=hallo123
+      - POSTGRES_USER=feeby
+      
+  adminer:
+    container_name: feeby-adminer-dev
+    image: adminer
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.http.routers.adminer.rule: Host(`adminer.localhost`)
+      traefik.http.routers.adminer.entrypoints: web
+      traefik.http.services.adminer.loadbalancer.server.port: 8080

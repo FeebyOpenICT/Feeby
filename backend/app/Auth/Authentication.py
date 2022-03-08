@@ -8,7 +8,7 @@ from Exceptions.AuthenticationException import OAuth2AuthenticationException
 from Auth import redir_to_auth
 
 from database import get_db_connection
-from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
+from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL, BASE_APP_API_CALLBACK_URL
 from Models.User import User, Student
 
 router = APIRouter(
@@ -68,7 +68,7 @@ async def callback(response: Response, code: str = None, error: str = None, erro
             user = Student(db=db, fullname=self_json["name"], canvas_id=json["user"]["id"])
             user.save_self(db)
 
-        response = RedirectResponse('/auth/testcookies')
+        response = RedirectResponse(f'{BASE_APP_API_URL}/auth/testcookies')
 
         response.set_cookie(key='access_token', value=json["access_token"], max_age=json["expires_in"], httponly=True, samesite="None", secure=True)
         response.set_cookie(key='refresh_token', value=json["refresh_token"], httponly=True, samesite="None", secure=True)
