@@ -1,14 +1,14 @@
 start:
 	docker-compose up -d
 
+debug:
+	docker-compose -f docker-compose.debug.yml up -d
+
 build:
 	docker-compose build
 
 down:
 	docker-compose down
-
-test:
-	docker-compose -f docker-compose.test.yml up --build
 
 prod-start:
 	docker-compose -f docker-compose.prod.yml up -d --build

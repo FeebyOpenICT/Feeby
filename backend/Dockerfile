@@ -1,30 +1,30 @@
 FROM python:3.9-slim as base
 
 RUN apt-get update \
-    && apt-get -y install libpq-dev gcc \
-    && pip install psycopg2
-
+    && apt-get -y install libpq-dev gcc
 WORKDIR /app
-
 COPY ./requirements.txt /app/requirements.txt
-
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
-
 COPY ./app /app
 
-FROM base as development
+
+FROM base as development 
+
+WORKDIR /app
+CMD ["uvicorn", "main:app", "--proxy-headers", "--reload", "--host", "0.0.0.0", "--port", "80"]
+
+
+FROM base as debug
 
 RUN pip install ptvsd
 
 WORKDIR /app
 CMD python -m ptvsd --host 0.0.0.0 --port 5678 --wait --multiprocess -m uvicorn main:app --proxy-headers --host 0.0.0.0 --port 80
 
+
 FROM base as production
 
 WORKDIR /app
-
 RUN ["pytest"]
-
 EXPOSE 80
-
 CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
