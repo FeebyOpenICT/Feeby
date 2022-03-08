@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 import requests
 
 from . import redir_to_auth
-from ..config import BASE_APP_API_URL, BASE_URL
+from config import BASE_APP_API_URL, BASE_URL
 
 class CheckValidUser(BaseHTTPMiddleware):
   async def dispatch(self, request: Request, call_next):
