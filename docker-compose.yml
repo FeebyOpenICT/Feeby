@@ -49,9 +49,6 @@ services:
   db:
     container_name: feeby-database-dev
     image: postgres
-    build:
-      context: ./database
-      target: development
     ports:
       - 5432:5432
     environment:

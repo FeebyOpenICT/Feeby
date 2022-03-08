@@ -1,4 +1,8 @@
-FROM python:3.9-alpine as base
+FROM python:3.9-slim as base
+
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2
 
 WORKDIR /app
 
