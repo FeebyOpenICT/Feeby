@@ -1,5 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter, Cookie, Depends, Response
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 import requests
 
@@ -103,5 +104,9 @@ async def refresh_token(refresh_token: Optional[str] = Cookie(None)):
     # TODO maybe check user in db?
 
     return r.json()
+
+@router.get('/testcookies')
+async def testcookies(refresh_token: Optional[str] = Cookie(None), access_token: Optional[str] = Cookie(None)):
+    return { access_token, refresh_token }
 
 #TODO decorator/ global middleware to check access token on each api call 

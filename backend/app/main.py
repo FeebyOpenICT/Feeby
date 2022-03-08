@@ -1,8 +1,9 @@
 import uvicorn
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Auth import Authentication
+# from Auth.valid_user import CheckValidUser
 from LTI import lti
 
 from database import engine
@@ -23,7 +24,12 @@ app = FastAPI(
 
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
+# app.add_middleware(CheckValidUser)
+
+
 app.include_router(lti.router)
+
+
 app.include_router(Authentication.router)
 
 if __name__ == "__main__":
