@@ -64,6 +64,6 @@ services:
     restart: always
     labels:
       traefik.enable: true
-      traefik.http.routers.frontend.rule: Host(`adminer.localhost`)
-      traefik.http.routers.frontend.entrypoints: web
-      traefik.http.services.frontend.loadbalancer.server.port: 8080
+      traefik.http.routers.adminer.rule: Host(`adminer.localhost`)
+      traefik.http.routers.adminer.entrypoints: web
+      traefik.http.services.adminer.loadbalancer.server.port: 8080
