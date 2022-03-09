@@ -6,9 +6,10 @@ import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
 from Auth import redir_to_auth
+from .JWTToken import Token
 
 from database import get_db_connection
-from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_URL, BASE_APP_API_CALLBACK_URL
+from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 from Models.User import User, Student
 
 router = APIRouter(
@@ -65,14 +66,19 @@ async def callback(response: Response, code: str = None, error: str = None, erro
             # no user found > create new one and save in db
             self = requests.get(f'{BASE_URL}/api/v1/users/self', headers={ 'Authorization': f'Bearer {json["access_token"]}' })
             self_json = self.json()
+            # TODO get permissions from canvas
             user = Student(db=db, fullname=self_json["name"], canvas_id=json["user"]["id"])
             user.save_self(db)
 
-        response = RedirectResponse(f'{BASE_APP_API_URL}/auth/testcookies')
+        token = Token(
+            canvas_id=user.canvas_id,
+            access_token=json['access_token'],
+            refresh_token=json['refresh_token'],
+            scopes= ["me"]
+        )
 
-        response.set_cookie(key='access_token', value=json["access_token"], max_age=json["expires_in"], httponly=True, samesite="None", secure=True)
-        response.set_cookie(key='refresh_token', value=json["refresh_token"], httponly=True, samesite="None", secure=True)
-
+        response = RedirectResponse('/')
+        response.set_cookie("jwt", token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
         return response
     else:
         raise OAuth2AuthenticationException()
@@ -82,7 +88,11 @@ async def callback(response: Response, code: str = None, error: str = None, erro
 async def refresh_token(refresh_token: Optional[str] = Cookie(None)):
     """
     Refresh call for getting a new access token from canvas
+
+    Returns a jwt token that should be places in the Authorization header as a Bearer token
     """
+
+    # TODO refactor to return jwt token
     if not refresh_token:
         return redir_to_auth()
 
