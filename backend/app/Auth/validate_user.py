@@ -19,7 +19,9 @@ token_auth_scheme = HTTPBearer()
 
 async def get_current_user(jwt_token: HTTPAuthorizationCredentials = Depends(token_auth_scheme), db: Session = Depends(get_db_connection)):
   """
-  Gets the current user from the database by decoding the jwt bearer token, 
+  Gets the current user from the database by decoding the jwt bearer token
+
+  Returns the User mapped class
   """
   token = Token.decode_token(jwt_token.credentials)
 
