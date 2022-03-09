@@ -1,50 +1,37 @@
 <template>
-  <v-card>
-    <v-app-bar
-      color="#0079CF"
-      elevation="4"
-    >
-      <v-app-bar-nav-icon @click="drawer = true" />
-
+  <div class="menu">
+    <v-app-bar color="#0079CF">
+      <v-app-bar-nav-icon class="navIcon" @click="modal = true" />
       <v-toolbar-title>FEEBY</v-toolbar-title>
     </v-app-bar>
     <v-navigation-drawer
-      v-model="drawer"
+      v-model="modal"
       absolute
       temporary
     >
-      <v-list
-        nav
-        dense
-      >
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-blue--text text--accent-4"
-        >
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Account</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+      <ModalCom />
     </v-navigation-drawer>
-  </v-card>
+  </div>
 </template>
 <script>
+import ModalCom from './ModalCom.vue'
 export default {
   name: 'HeaderCom',
+  components: { ModalCom },
   data: () => ({
-    drawer: false,
-    group: null
+    modal: false
   })
 }
 </script>
+<style scoped>
+.navIcon{
+  position: absolute;
+  right: 2%;
+}
+.menu {
+    overflow: hidden;
+    top: 0;
+    position: sticky;
+    z-index: 2;
+  }
+</style>
