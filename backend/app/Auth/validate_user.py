@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from fastapi import Cookie, Depends, Request, Security, HTTPException
+from fastapi import Depends, HTTPException
 from fastapi.security import (
     HTTPBearer,
     HTTPAuthorizationCredentials
@@ -8,8 +8,7 @@ from fastapi.security import (
 from .redir_to_auth import redir_to_oauth
 
 
-from .JWTToken import Token
-from config import BASE_APP_API_URL, BASE_URL, JWT_SECRET, JWT_ALGORITHM
+from .JWTToken import AccessToken
 from Models.User import User
 from database import get_db_connection
 
@@ -23,7 +22,7 @@ async def get_current_user(jwt_token: HTTPAuthorizationCredentials = Depends(tok
 
   Returns the User mapped class
   """
-  token = Token.decode_token(jwt_token.credentials)
+  token = AccessToken.decode_token(jwt_token.credentials)
 
   # validate access token against 
   canvas_user = token.validate_self()

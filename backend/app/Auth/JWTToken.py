@@ -6,7 +6,44 @@ import requests
 from config import JWT_ALGORITHM, JWT_SECRET, BASE_URL
 
 
-class Token:
+class RolesToken:
+  """
+  JWT Token class for encoding and decoing the roles passed to the tool at lti launch
+  """
+  def __init__(self, roles) -> None:
+    # TODO decode canvas roles to simpler understood roles
+    """
+    All roles ive found so far:
+
+    urn:lti:instrole:ims/lis/Administrator,
+    urn:lti:instrole:ims/lis/Instructor,
+    urn:lti:role:ims/lis/Instructor,
+    urn:lti:sysrole:ims/lis/SysAdmin,
+    urn:lti:sysrole:ims/lis/User
+    urn:lti:instrole:ims/lis/Student,
+    urn:lti:role:ims/lis/Learner,
+    urn:lti:sysrole:ims/lis/User
+    """
+    self.roles = roles
+
+  @property
+  def encoded_token(self):
+    """
+    encoded jwt token
+    """
+    return jwt.encode({
+      "roles": self.roles
+    }, JWT_SECRET, algorithm=JWT_ALGORITHM)
+  
+  # def get_roles_from_token(self, token):
+  #   """
+  #   Gets the roles from an encoded token
+
+  #   returns a list of strings including all roles
+  #   """
+  #   jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+
+class AccessToken:
   """
   JWT Token class for encoding, decoding and validating
 
@@ -62,7 +99,7 @@ class Token:
     """
     credentials_exception = HTTPException(
       status_code=status.HTTP_401_UNAUTHORIZED,
-      detail="Could not validate user",
+      detail="Could not validate jwt token",
       headers={"WWW-Authenticate": "Bearer"},
     )
 
@@ -80,7 +117,7 @@ class Token:
     except (jwt.JWTError):
       raise credentials_exception
     
-    return Token(
+    return AccessToken(
       scopes=token_scopes, 
       canvas_id=canvas_id,
       access_token=access_token,

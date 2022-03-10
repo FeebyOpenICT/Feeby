@@ -5,8 +5,7 @@ from sqlalchemy.orm import Session
 import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
-from Auth import redir_to_auth
-from .JWTToken import Token
+from .JWTToken import AccessToken
 
 from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
@@ -70,7 +69,7 @@ async def callback(response: Response, code: str = None, error: str = None, erro
             user = Student(db=db, fullname=self_json["name"], canvas_id=json["user"]["id"])
             user.save_self(db)
 
-        token = Token(
+        token = AccessToken(
             canvas_id=user.canvas_id,
             access_token=json['access_token'],
             refresh_token=json['refresh_token'],
@@ -93,30 +92,26 @@ async def refresh_token(refresh_token: Optional[str] = Cookie(None)):
     """
 
     # TODO refactor to return jwt token
-    if not refresh_token:
-        return redir_to_auth()
+    # if not refresh_token:
+    #     return redir_to_auth()
 
-    r = requests.post(f'{BASE_URL}/login/oauth2/token', data={
-            'grant_type': 'refresh_token',
-            'client_id': DELEVOPER_KEY_ID,
-            'client_secret': DEVELOPER_KEY,
-            'refresh_token': refresh_token
-        })
+    # r = requests.post(f'{BASE_URL}/login/oauth2/token', data={
+    #         'grant_type': 'refresh_token',
+    #         'client_id': DELEVOPER_KEY_ID,
+    #         'client_secret': DEVELOPER_KEY,
+    #         'refresh_token': refresh_token
+    #     })
 
-    # got the access_token, now check for errors:
-    if r.status_code >= 400:
-        if r.status_code == 500:
-            # Canceled oauth or server error
-            raise OAuth2AuthenticationException(status_code=500, message="An error occured on the canvas authentication servers. Please refresh the page and try again. Contact support if the issue persists.")
-        else:
-            raise OAuth2AuthenticationException(status_code=r.status_code)
+    # # got the access_token, now check for errors:
+    # if r.status_code >= 400:
+    #     if r.status_code == 500:
+    #         # Canceled oauth or server error
+    #         raise OAuth2AuthenticationException(status_code=500, message="An error occured on the canvas authentication servers. Please refresh the page and try again. Contact support if the issue persists.")
+    #     else:
+    #         raise OAuth2AuthenticationException(status_code=r.status_code)
 
-    # TODO maybe check user in db?
+    # # TODO maybe check user in db?
 
-    return r.json()
-
-@router.get('/testcookies')
-async def testcookies(refresh_token: Optional[str] = Cookie(None), access_token: Optional[str] = Cookie(None)):
-    return { access_token, refresh_token }
-
-#TODO decorator/ global middleware to check access token on each api call 
+    # return r.json()
+    return "This call has not been implemented yet"
+ 
