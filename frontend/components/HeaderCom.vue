@@ -4,6 +4,7 @@
       <v-app-bar-nav-icon class="navIcon" @click="modal = true" />
       <v-toolbar-title>FEEBY</v-toolbar-title>
     </v-app-bar>
+
     <v-navigation-drawer
       v-model="modal"
       absolute
@@ -45,6 +46,7 @@
     </v-navigation-drawer>
   </v-card>
 </template>
+
 <script>
 export default {
   name: 'HeaderCom',
@@ -57,6 +59,7 @@ export default {
   })
 }
 </script>
+
 <style scoped>
 .navIcon{
   position: absolute;
