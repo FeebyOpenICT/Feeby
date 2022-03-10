@@ -1,5 +1,5 @@
 from datetime import date
-from sqlalchemy import Column, Integer, String, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, Boolean
 from sqlalchemy.orm import relationship, Session
 
 from .Role import Base, Role
@@ -16,6 +16,7 @@ class User(Base):
   fullname = Column(String(length=255), nullable=True)
   canvas_email = Column(String(length=255), nullable=True, unique=True)
   canvas_id = Column(Integer, nullable=False, unique=True, index=True)
+  disabled = Column(Boolean, nullable=False, default=False)
 
   role_id = Column(Integer, ForeignKey('role.id'), nullable=False)
   role = relationship('Role')
@@ -25,15 +26,17 @@ class User(Base):
     fullname: str = None, 
     canvas_email: str = None, 
     canvas_id: int = None, 
+    disabled: bool = False,
     **kwargs
   ) -> None:
     self.fullname = fullname
     self.canvas_email = canvas_email
     self.canvas_id = canvas_id
+    self.disabled = disabled
     super().__init__(**kwargs)
 
   def __repr__(self) -> str:
-    return f"<User id={self.id} canvas_email={self.canvas_email} role={self.role} fullname={self.fullname} canvas_id={self.canvas_id}>"
+    return f"<User id={self.id} canvas_email={self.canvas_email} role={self.role} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"
 
   def get_user_by_canvas_id(id: int, db: Session):
     """
