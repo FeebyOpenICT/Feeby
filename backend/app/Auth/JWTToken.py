@@ -83,9 +83,8 @@ class AccessToken:
     r = requests.get(f'{BASE_URL}/api/v1/users/self', headers=headers)
     
     if r.status_code >= 400: 
-      # user not authenticated on canvas, send error code
-      # TODO get detail from response and return to client instead of "Something went wrong"
-      raise HTTPException(status_code=r.status_code, detail="Something went wrong")
+      # Something went wrong on canvas's side, forward error to frontend
+      raise HTTPException(status_code=r.status_code, detail=r.json())
 
     json = r.json()
     return json
