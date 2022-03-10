@@ -13,10 +13,8 @@ class LTILaunchException(Exception):
   def __init__(
     self, 
     message: str = "An unknown error happened, please refresh the page and try again. Contact support if the issue persists.",
-    title: str = None, 
   ):
     self.message = message
-    self.title = title
 
 
 async def lti_launch_authentication_exception_handler(request: Request, exc: LTILaunchException):
@@ -27,8 +25,8 @@ async def lti_launch_authentication_exception_handler(request: Request, exc: LTI
     status_code=exc.status_code,
     content=f"""
       <body>
-        <h1>LTI Launch Error: {exc.title}</h1>
-        <div>{exc.message}</div>
+        <h1>LTI Launch Error</h1>
+        <p>{exc.message}</p>
         <p>This request has been deemed invalid. The request will not proceed for your safety. Please contact support if the issue persists.</p>
       </body>
     """
