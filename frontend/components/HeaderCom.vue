@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <v-card class="menu">
     <v-app-bar color="#0079CF">
       <v-app-bar-nav-icon class="navIcon" @click="modal = true" />
       <v-toolbar-title>FEEBY</v-toolbar-title>
@@ -8,6 +8,8 @@
       v-model="modal"
       absolute
       temporary
+      width="40vw"
+      height="100vh"
     >
       <v-list-item>
         <v-list-item-content>
@@ -41,7 +43,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  </div>
+  </v-card>
 </template>
 <script>
 export default {
@@ -61,9 +63,10 @@ export default {
   right: 2%;
 }
 .menu {
-    overflow: hidden;
+    overflow: visible;
     top: 0;
     position: sticky;
     z-index: 2;
+    border-radius: 0;
   }
 </style>
