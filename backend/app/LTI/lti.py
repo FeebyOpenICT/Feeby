@@ -6,13 +6,12 @@ from datetime import datetime, timedelta
 from Auth.redir_to_auth import redir_to_oauth
 from Exceptions.LTILaunchException import LTILaunchException
 from config import CLIENT_ID
+from redis_client import redis_client
 
 router = APIRouter(
   prefix="/lti",
   tags=["L.T.I."]
 )
-
-oauth_nonce_timestamps = {}
 
 @router.post('/launch')
 async def launch(
@@ -56,7 +55,16 @@ async def launch(
   except:
     raise LTILaunchException("Could not compare oauth_timestamp time")
 
-  # TODO Setup redis and check if oauth_nonce has been used in the last five minutes based upon the oauth_timestamp
+  # Get cached oauth_nonce and compare it to 
+  cached_oauth_nonce = redis_client.get(oauth_timestamp)
+  if cached_oauth_nonce:
+    if oauth_nonce == cached_oauth_nonce:
+      raise LTILaunchException("oauth_nonce signature has already been made in the last five minutes")
+
+  redis_client.setex(name=oauth_timestamp, time=five_minutes, value=oauth_nonce)
+  
+  
+  
   # key = timestamp; value = oauth_nonce
 
   # TODO check oauth url 

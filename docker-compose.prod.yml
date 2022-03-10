@@ -27,7 +27,13 @@ services:
       traefik.http.services.backend.loadbalancer.server.port: 80
       traefik.http.middlewares.backendpathstrip.stripprefix.prefixes: /api/v1
       traefik.http.routers.backend.middlewares: backendpathstrip@docker
-  
+
+
+  redis:
+    container_name: feeby-redis-debug
+    image: redis
+
+
   frontend:
     container_name: feeby-frontend
     build:

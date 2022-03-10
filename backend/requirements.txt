@@ -1,10 +1,10 @@
-
 anyio==3.5.0
 asgiref==3.5.0
 attrs==21.4.0
 certifi==2021.10.8
 charset-normalizer==2.0.11
 click==8.0.3
+Deprecated==1.2.13
 ecdsa==0.17.0
 fastapi==0.75.0
 h11==0.13.0
@@ -21,6 +21,7 @@ pytest==7.0.0
 python-dotenv==0.19.2
 python-jose==3.3.0
 python-multipart==0.0.5
+redis==4.1.4
 requests==2.27.1
 rsa==4.8
 six==1.16.0
@@ -31,3 +32,4 @@ tomli==2.0.0
 typing_extensions==4.0.1
 urllib3==1.26.8
 uvicorn==0.17.4
+wrapt==1.14.0

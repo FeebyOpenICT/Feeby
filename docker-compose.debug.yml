@@ -55,7 +55,13 @@ services:
     environment:
       - POSTGRES_PASSWORD=hallo123
       - POSTGRES_USER=feeby
-      
+
+  
+  redis:
+    container_name: feeby-redis-debug
+    image: redis
+
+
   adminer:
     container_name: feeby-adminer-debug
     image: adminer
