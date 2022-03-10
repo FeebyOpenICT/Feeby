@@ -30,7 +30,7 @@ services:
 
 
   redis:
-    container_name: feeby-redis-debug
+    container_name: feeby-redis
     image: redis
 
 
