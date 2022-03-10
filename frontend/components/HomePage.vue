@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
 .testpage{
-  height: 2000px;
+  height: 100vw;
   z-index: 1;
 }
 </style>
