@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
+from Posts import Posts
 from Auth.validate_user import get_current_active_user
 
 from database import engine
@@ -28,7 +29,10 @@ app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_e
 app.include_router(lti.router)
 
 app.include_router(Authentication.router)
- 
+
+app.include_router(Posts.router)
+
+
 @app.get("/users/self")
 async def read_users_me(current_user = Depends(get_current_active_user)):
     return current_user

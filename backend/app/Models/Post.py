@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import Session, relationship
-from User import Base
+from .User import Base
 
 
 class Post(Base):
@@ -29,6 +29,9 @@ class Post(Base):
         db.commit()
         db.refresh(self)
         return self
+
+
+
 
 
 
