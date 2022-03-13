@@ -1,6 +1,6 @@
 from multiprocessing.sharedctypes import Value
 from typing import Optional
-from fastapi import APIRouter, Cookie, Form, Depends, Request
+from fastapi import APIRouter, Cookie, Form, Depends, Request, Response
 from fastapi.responses import RedirectResponse
 from datetime import datetime, timedelta
 import urllib.parse
@@ -10,6 +10,7 @@ import base64
 
 from Auth.redir_to_auth import redir_to_oauth
 from Exceptions.LTILaunchException import LTILaunchException
+from Auth.JWTToken import AccessToken
 from config import CLIENT_SECRET, DEVELOPER_KEY, CLIENT_ID
 from redis_client import redis_client
 
@@ -18,7 +19,7 @@ router = APIRouter(
   tags=["L.T.I."]
 )
 
-@router.post('/launch')
+@router.post('/launch', response_class=RedirectResponse)
 async def launch(
   request: Request,
   user_id: str = Form(...),
@@ -43,6 +44,12 @@ async def launch(
 
   No jwt cookie means that the user has never authorized before and has to do it first.
   """
+  # Verify oauth1 call
+  # See these resources for a good step by step guide or general idea for how its done
+  # https://developer.twitter.com/en/docs/authentication/oauth-1-0a/creating-a-signature
+  # https://community.canvaslms.com/t5/Canvas-Developers-Group/LTI-OAUTH-1-0-Signature-Mismatch/td-p/167363
+  # http://www.imsglobal.org/specs/ltiv1p0/implementation-guide#:~:text=4.2%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0-,Basic%20LTI%20Message%20Signing,-Move%20to%20top
+
   if oauth_callback != "about:blank":
     raise LTILaunchException("oauth_callback does not match 'about:blank'")
   
@@ -71,10 +78,6 @@ async def launch(
 
   redis_client.setex(name=oauth_timestamp, time=five_minutes, value=oauth_nonce)
 
-  # See these for a good step by step guide or general idea for how its done
-  # https://developer.twitter.com/en/docs/authentication/oauth-1-0a/creating-a-signature
-  # https://community.canvaslms.com/t5/Canvas-Developers-Group/LTI-OAUTH-1-0-Signature-Mismatch/td-p/167363
-  # http://www.imsglobal.org/specs/ltiv1p0/implementation-guide#:~:text=4.2%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0-,Basic%20LTI%20Message%20Signing,-Move%20to%20top
 
   http_method = "POST"
   base_url = request.url._url
@@ -101,12 +104,20 @@ async def launch(
   if oauth_signature != signature:
     raise LTILaunchException(f"oauth_signature: {oauth_signature} does not match calculated signature: {signature}")
 
-  # TODO check against user_id from launch req. in jwt
-  # possibly use user_id in db instead of canvas_id from /api/v1/users/self ?
-  
-  if jwt is not None:
+  # Check jwt token
+  redir_to_auth_response = redir_to_oauth()
+  if jwt == None:
+    jwt_token = AccessToken(access_token=None, refresh_token=None, canvas_id=user_id, roles=ext_roles.split(','))
+    redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
+    return redir_to_auth_response
+  else:
     # user has already got the access and refresh tokens once before so no need to reauth
     # check if user making launch request is user that is logging in
-    return RedirectResponse('/')
+    jwt_token = AccessToken.decode_token(jwt)
 
-  return redir_to_oauth()
+    redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
+
+    if jwt_token.canvas_id != user_id or jwt_token.refresh_token == None:
+      return redir_to_auth_response
+
+    return RedirectResponse('/')
