@@ -11,10 +11,12 @@ class AccessToken:
 
   Not in database but can decode, encode and validate itself against canvas
   """
-  def __init__(self, access_token: str, refresh_token: str, canvas_id: int, roles: List[str]) -> None:
+  def __init__(self, canvas_id: int, fullname: str, email: str, roles: List[str], access_token: str = None, refresh_token: str = None) -> None:
     self.access_token = access_token
     self.refresh_token = refresh_token
     self.canvas_id = canvas_id
+    self.fullname = fullname
+    self.email = email
     """
     All roles ive found so far:
 
@@ -43,6 +45,8 @@ class AccessToken:
       "access_token": self.access_token,
       "refresh_token": self.refresh_token,
       "canvas_id": self.canvas_id,
+      "email": self.email,
+      "fullname": self.fullname,
       "roles": self.roles
     }, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
@@ -72,29 +76,27 @@ class AccessToken:
 
     Returns a Token class
     """
-    credentials_exception = HTTPException(
-      status_code=status.HTTP_401_UNAUTHORIZED,
-      detail="Could not validate jwt token",
-      headers={"WWW-Authenticate": "Bearer"},
-    )
-
     try:
       payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
 
       canvas_id: int = payload.get("canvas_id")
       access_token: str = payload.get("access_token")
       refresh_token: str = payload.get("refresh_token")
+      fullname: str = payload.get("fullname")
+      email: str = payload.get("email")
 
-      if canvas_id is None or access_token is None:
-        raise credentials_exception
+      if canvas_id is None:
+        raise HTTPException(403, "Invalid user_id, please reauthenticate", {"WWW-Authenticate": "Bearer"})
 
       roles = payload.get("roles", [])
     except (jwt.JWTError):
-      raise credentials_exception
+      raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Could not validate JWT token", {"WWW-Authenticate": "Bearer"})
     
     return AccessToken(
-      scopes=roles, 
+      roles=roles, 
       canvas_id=canvas_id,
+      fullname=fullname,
       access_token=access_token,
-      refresh_token=refresh_token
+      refresh_token=refresh_token,
+      email=email,
     )

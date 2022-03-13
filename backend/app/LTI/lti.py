@@ -22,10 +22,11 @@ router = APIRouter(
 @router.post('/launch', response_class=RedirectResponse)
 async def launch(
   request: Request,
-  user_id: str = Form(...),
+  custom_canvas_user_id: str = Form(...),
+  custom_canvas_user_login_id: str = Form(...),
+  lis_person_name_full: str = Form(...),
   ext_roles: str = Form(...),
   jwt: Optional[str] = Cookie(None),
-  roles: str = Form(...),
   oauth_callback: str = Form(...),
   oauth_consumer_key: str = Form(...),
   oauth_nonce: str = Form(...),
@@ -33,7 +34,6 @@ async def launch(
   oauth_signature_method: str = Form(...),
   oauth_timestamp: str = Form(...),
   oauth_version: str = Form(...),
-  # db: Session = Depends(get_db_connection)
 ):
   """
   Launch call for canvas
@@ -44,6 +44,11 @@ async def launch(
 
   No jwt cookie means that the user has never authorized before and has to do it first.
   """
+
+  # check if tool has been set to public
+  if lis_person_name_full == None or custom_canvas_user_id == None or custom_canvas_user_login_id == None:
+    raise LTILaunchException("The Feeby lti tool privacy setting must be set to public")
+
   # Verify oauth1 call
   # See these resources for a good step by step guide or general idea for how its done
   # https://developer.twitter.com/en/docs/authentication/oauth-1-0a/creating-a-signature
@@ -86,11 +91,9 @@ async def launch(
   for key, value in request._form.items():
     # encode all but the oauth_signature
     if key != 'oauth_signature':
-      paramaters.append(f"{key}={value}")
-  
-  paramaters.sort()
+      paramaters.append(f"{urllib.parse.quote(key, safe='')}={urllib.parse.quote(value, safe='')}")
 
-  paramaters = list(map(lambda param: urllib.parse.quote(param, safe='='), paramaters))
+  paramaters.sort()
   
   paramaters = '&'.join(paramaters)
 
@@ -106,8 +109,19 @@ async def launch(
 
   # Check jwt token
   redir_to_auth_response = redir_to_oauth()
+  
+  try:
+    custom_canvas_user_id_int = int(custom_canvas_user_id)
+  except:
+    raise LTILaunchException(f"Could not convert custom_canvas_user_id: {custom_canvas_user_id}, type: {type(custom_canvas_user_id).__name__} to type: int")
+  
   if jwt == None:
-    jwt_token = AccessToken(access_token=None, refresh_token=None, canvas_id=user_id, roles=ext_roles.split(','))
+    jwt_token = AccessToken(
+      fullname=lis_person_name_full,
+      canvas_id=custom_canvas_user_id_int, 
+      email=custom_canvas_user_login_id, 
+      roles=ext_roles.split(',')
+    )
     redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
     return redir_to_auth_response
   else:
@@ -115,9 +129,9 @@ async def launch(
     # check if user making launch request is user that is logging in
     jwt_token = AccessToken.decode_token(jwt)
 
-    redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
-
-    if jwt_token.canvas_id != user_id or jwt_token.refresh_token == None:
+    if jwt_token.canvas_id != custom_canvas_user_id_int or jwt_token.refresh_token == None:
+      # different user is trying to log in or the user has not completed the auth flow before and does not have a refresh token yet
+      redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
       return redir_to_auth_response
 
     return RedirectResponse('/')

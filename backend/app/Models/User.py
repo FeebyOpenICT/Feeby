@@ -15,7 +15,7 @@ class User(Base):
   id = Column(Integer, primary_key=True, nullable=False)
   fullname = Column(String(length=255), nullable=True)
   canvas_email = Column(String(length=255), nullable=True, unique=True)
-  canvas_id = Column(String, nullable=False, unique=True, index=True)
+  canvas_id = Column(Integer, nullable=False, unique=True, index=True)
   disabled = Column(Boolean, nullable=False, default=False)
 
   role_id = Column(Integer, ForeignKey('role.id'), nullable=False)

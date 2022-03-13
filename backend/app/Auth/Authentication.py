@@ -17,7 +17,7 @@ router = APIRouter(
 )
 
 @router.get("/callback")
-async def callback(response: Response, code: str = None, error: str = None, error_description: str = None, db: Session = Depends(get_db_connection)):
+async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: str = None, error: str = None, error_description: str = None, db: Session = Depends(get_db_connection)):
     """
     Callback for oauth2 flow https://canvas.instructure.com/doc/api/file.oauth.html
     """
@@ -27,7 +27,7 @@ async def callback(response: Response, code: str = None, error: str = None, erro
             raise OAuth2AuthenticationException(message=error_description)
         raise OAuth2AuthenticationException(title=error)
     elif code:
-        # Got the code, still need to check if the state has been tempered with.
+        # TODO verify state
         r = requests.post(f'{BASE_URL}/login/oauth2/token', data={
             'grant_type': 'authorization_code',
             'client_id': DELEVOPER_KEY_ID,
@@ -59,25 +59,24 @@ async def callback(response: Response, code: str = None, error: str = None, erro
         """
 
         # check if user already exists in db
-        user = User.get_user_by_canvas_id(json["user"]["id"], db)
+        jwt_token = AccessToken.decode_token(jwt)
+
+        if jwt_token.canvas_id != json["user"]["id"]:
+            raise OAuth2AuthenticationException(message=f"LTI launch user_id: {jwt_token.canvas_id}, type: {type(jwt_token.canvas_id).__name__} does not equal get token user_id: {json['user']['id']} , type: {type(json['user']['id']).__name__}")
+
+        user = User.get_user_by_canvas_id(jwt_token.canvas_id, db)
 
         if not user:
             # no user found > create new one and save in db
-            self = requests.get(f'{BASE_URL}/api/v1/users/self', headers={ 'Authorization': f'Bearer {json["access_token"]}' })
-            self_json = self.json()
-            # TODO get permissions from canvas
-            user = Student(db=db, fullname=self_json["name"], canvas_id=json["user"]["id"])
+            # TODO check roles and create proper person based on highest permission role
+            user = Student(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
             user.save_self(db)
 
-        token = AccessToken(
-            canvas_id=user.canvas_id,
-            access_token=json['access_token'],
-            refresh_token=json['refresh_token'],
-            scopes= ["me"]
-        )
-
+        jwt_token.access_token = json['access_token']
+        jwt_token.refresh_token = json['refresh_token']
+    
         response = RedirectResponse('/')
-        response.set_cookie("jwt", token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
+        response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
         return response
     else:
         raise OAuth2AuthenticationException()
