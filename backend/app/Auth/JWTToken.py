@@ -54,7 +54,7 @@ class AccessToken:
 
     json = r.json()
 
-    if self.canvas_id != json['user']['id']:
+    if self.canvas_id != json['id']:
       raise HTTPException(403, "Invalid user_id, please reauthenticate", {"WWW-Authenticate": "Bearer"})
 
     return json
