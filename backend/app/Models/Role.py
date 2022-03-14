@@ -29,29 +29,29 @@ class Role(Base):
 
     db = db connection session
     """
-    student_role = db.query(Role).filter(Role.title == 'student').first()
-    if not student_role:
+    role = db.query(Role).filter(Role.title == 'student').first()
+    if not role:
       # no student role in db, create one
-      student_role = Role(title="student", description="I am a student")
-      db.add(student_role)
+      role = Role(title="student", description="I am a student")
+      db.add(role)
       db.commit()
-      db.refresh(student_role)
-    return student_role
+      db.refresh(role)
+    return role
 
-  def get_external_expert_role(db: Session):
+  def get_observer_role(db: Session):
     """
-    Gets the external_expert role object mapping
+    Gets the observer role object mapping
 
     db = db connection session
     """
-    external_expert_role = db.query(Role).filter(Role.title == 'external_expert').first()
-    if not external_expert_role:
+    role = db.query(Role).filter(Role.title == 'observer').first()
+    if not role:
       # no student role in db, create one
-      external_expert_role = Role(title="external_expert", description="I am an external_expert")
-      db.add(external_expert_role)
+      role = Role(title="observer", description="I am an observer")
+      db.add(role)
       db.commit()
-      db.refresh(external_expert_role)
-    return external_expert_role
+      db.refresh(role)
+    return role
 
   def get_admin_role(db: Session):
     """
@@ -59,14 +59,14 @@ class Role(Base):
 
     db = db connection session
     """
-    admin_role = db.query(Role).filter(Role.title == 'admin').first()
-    if not admin_role:
+    role = db.query(Role).filter(Role.title == 'admin').first()
+    if not role:
       # no student role in db, create one
-      admin_role = Role(title="admin", description="I am an admin")
-      db.add(admin_role)
+      role = Role(title="admin", description="I am an admin")
+      db.add(role)
       db.commit()
-      db.refresh(admin_role)
-    return admin_role
+      db.refresh(role)
+    return role
   
   def get_instructor_role(db: Session):
     """
@@ -74,11 +74,41 @@ class Role(Base):
 
     db = db connection session
     """
-    instructor_role = db.query(Role).filter(Role.title == 'instructor').first()
-    if not instructor_role:
+    role = db.query(Role).filter(Role.title == 'instructor').first()
+    if not role:
       # no student role in db, create one
-      instructor_role = Role(title="instructor", description="I am a instructor")
-      db.add(instructor_role)
+      role = Role(title="instructor", description="I am a instructor")
+      db.add(role)
       db.commit()
-      db.refresh(instructor_role)
-    return instructor_role
+      db.refresh(role)
+    return role
+
+  def get_teaching_assisstent_role(db: Session):
+    """
+    Gets the teaching assisstent role object mapping
+
+    db = db connection session
+    """
+    role = db.query(Role).filter(Role.title == 'teaching_assistant').first()
+    if not role:
+      # no student role in db, create one
+      role = Role(title="teaching_assistant", description="I am a teaching_assistant")
+      db.add(role)
+      db.commit()
+      db.refresh(role)
+    return role
+
+  def get_content_developer_role(db: Session):
+    """
+    Gets the content developer role object mapping
+
+    db = db connection session
+    """
+    role = db.query(Role).filter(Role.title == 'content_developer').first()
+    if not role:
+      # no student role in db, create one
+      role = Role(title="content_developer", description="I am a content developer")
+      db.add(role)
+      db.commit()
+      db.refresh(role)
+    return role
