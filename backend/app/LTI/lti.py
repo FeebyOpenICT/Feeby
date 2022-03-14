@@ -120,7 +120,7 @@ async def launch(
       fullname=lis_person_name_full,
       canvas_id=custom_canvas_user_id_int, 
       email=custom_canvas_user_login_id, 
-      roles=ext_roles.split(',')
+      roles=AccessToken.format_roles(ext_roles)
     )
     redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
     return redir_to_auth_response
@@ -131,7 +131,13 @@ async def launch(
 
     if jwt_token.canvas_id != custom_canvas_user_id_int or jwt_token.refresh_token == None:
       # different user is trying to log in or the user has not completed the auth flow before and does not have a refresh token yet
-      redir_to_auth_response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
+      new_jwt_token = AccessToken(
+        fullname=lis_person_name_full,
+        canvas_id=custom_canvas_user_id_int,
+        email=custom_canvas_user_login_id,
+        roles=AccessToken.format_roles(ext_roles)
+      )
+      redir_to_auth_response.set_cookie("jwt", new_jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
       return redir_to_auth_response
 
     return RedirectResponse('/')

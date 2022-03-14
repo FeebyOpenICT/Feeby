@@ -11,26 +11,12 @@ class AccessToken:
 
   Not in database but can decode, encode and validate itself against canvas
   """
-  def __init__(self, canvas_id: int, fullname: str, email: str, roles: List[str], access_token: str = None, refresh_token: str = None) -> None:
+  def __init__(self, canvas_id: int, fullname: str, email: str, roles: str, access_token: str = None, refresh_token: str = None) -> None:
     self.access_token = access_token
     self.refresh_token = refresh_token
     self.canvas_id = canvas_id
     self.fullname = fullname
     self.email = email
-    """
-    All roles ive found so far:
-
-    urn:lti:instrole:ims/lis/Administrator,
-    urn:lti:instrole:ims/lis/Instructor,
-    urn:lti:role:ims/lis/Instructor,
-    urn:lti:sysrole:ims/lis/SysAdmin,
-    urn:lti:sysrole:ims/lis/User
-    urn:lti:instrole:ims/lis/Student,
-    urn:lti:role:ims/lis/Learner,
-    urn:lti:sysrole:ims/lis/User
-
-    TODO 
-    """
     self.roles = roles
 
   def __repr__(self) -> str:
@@ -67,7 +53,80 @@ class AccessToken:
       raise HTTPException(status_code=r.status_code, detail=r.json())
 
     json = r.json()
+
+    if self.canvas_id != json['user']['id']:
+      raise HTTPException(403, "Invalid user_id, please reauthenticate", {"WWW-Authenticate": "Bearer"})
+
     return json
+
+  
+  def format_roles(canvas_ext_roles):
+    """
+    Formats the canvas roles to internal tool roles
+
+    returns a list of strings of all roles that apply
+    """
+
+    """
+    Admin
+    "roles": [
+        "urn:lti:instrole:ims/lis/Administrator",
+        "urn:lti:instrole:ims/lis/Instructor",
+        "urn:lti:role:ims/lis/Instructor",
+        "urn:lti:sysrole:ims/lis/SysAdmin",
+        "urn:lti:sysrole:ims/lis/User"
+    ]
+
+    Content designer
+    "roles": [
+        "urn:lti:instrole:ims/lis/Instructor",
+        "urn:lti:role:ims/lis/ContentDeveloper",
+        "urn:lti:sysrole:ims/lis/User"
+    ]
+
+    TA
+    "roles": [
+        "urn:lti:role:ims/lis/TeachingAssistant",
+        "urn:lti:sysrole:ims/lis/User"
+    ]
+
+    Teacher
+    "roles": [
+        "urn:lti:instrole:ims/lis/Instructor",
+        "urn:lti:role:ims/lis/Instructor",
+        "urn:lti:sysrole:ims/lis/User"
+    ]
+
+    Observer
+    "roles": [
+        "urn:lti:role:ims/lis/Learner/NonCreditLearner",
+        "urn:lti:role:ims/lis/Mentor",
+        "urn:lti:sysrole:ims/lis/User"
+    ]
+
+    Student
+    "roles": [
+        "urn:lti:instrole:ims/lis/Student",
+        "urn:lti:role:ims/lis/Learner",
+        "urn:lti:sysrole:ims/lis/User"
+    ]
+    """
+    roles: List[str] = []
+
+    if "urn:lti:instrole:ims/lis/Administrator" in canvas_ext_roles or "urn:lti:sysrole:ims/lis/SysAdmin" in canvas_ext_roles:
+      roles.append('admin')
+    if "urn:lti:instrole:ims/lis/Instructor" in canvas_ext_roles or "urn:lti:role:ims/lis/Instructor" in canvas_ext_roles:
+      roles.append('instructor')
+    if "urn:lti:role:ims/lis/ContentDeveloper" in canvas_ext_roles:
+      roles.append('content_developer')
+    if "urn:lti:role:ims/lis/TeachingAssistant" in canvas_ext_roles:
+      roles.append('teaching_assistant')
+    if "urn:lti:instrole:ims/lis/Student" in canvas_ext_roles or "urn:lti:role:ims/lis/Learner" in canvas_ext_roles:
+      roles.append('student')
+    if "urn:lti:role:ims/lis/Learner/NonCreditLearner" in canvas_ext_roles or "urn:lti:role:ims/lis/Mentor" in canvas_ext_roles:
+      roles.append('observer')
+    
+    return roles
 
 
   def decode_token(token: str):
