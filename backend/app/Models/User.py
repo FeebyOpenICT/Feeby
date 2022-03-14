@@ -1,9 +1,9 @@
-from datetime import date
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
-
+from fastapi import HTTPException
 from .Role import Base, Role
-
+from Exceptions.NotFound import NotFound
 class User(Base):
   """
   Mapped User class
@@ -13,13 +13,15 @@ class User(Base):
   __tablename__ = 'user'
 
   id = Column(Integer, primary_key=True, nullable=False)
-  fullname = Column(String(length=255), nullable=True)
-  canvas_email = Column(String(length=255), nullable=True, unique=True)
+  fullname = Column(String(length=255), nullable=False, index=True)
+  canvas_email = Column(String(length=255), nullable=False, unique=True)
   canvas_id = Column(Integer, nullable=False, unique=True, index=True)
   disabled = Column(Boolean, nullable=False, default=False)
+  time_created = Column(DateTime(timezone=True), server_default=func.now())
+  time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
   role_id = Column(Integer, ForeignKey('role.id'), nullable=False)
-  role = relationship('Role')
+  role: Role = relationship('Role')
 
   def __init__(
     self, 
@@ -46,10 +48,16 @@ class User(Base):
 
     Returns a python user mapped class from the database
     """
-    user, role = db.query(User, Role).filter(User.canvas_id == id).join(User.role).first()
+    result = db.query(User, Role).filter(User.canvas_id == id).join(User.role).first()
+
+    if not result:
+      raise NotFound("user")
+
+    user, role = result
     user.role = role
     return user
-  
+
+
   def save_self(self, db: Session):
     """
     Saves own instance in the database

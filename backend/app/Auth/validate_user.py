@@ -16,7 +16,7 @@ from database import get_db_connection
 token_auth_scheme = HTTPBearer()
 
 
-async def get_current_user(jwt_token: HTTPAuthorizationCredentials = Depends(token_auth_scheme), db: Session = Depends(get_db_connection)):
+async def get_current_user(jwt_token: HTTPAuthorizationCredentials = Depends(token_auth_scheme), db: Session = Depends(get_db_connection)) -> User:
   """
   Gets the current user from the database by decoding the jwt bearer token
 
@@ -37,7 +37,7 @@ async def get_current_user(jwt_token: HTTPAuthorizationCredentials = Depends(tok
 
 async def get_current_active_user(
   current_user: User = Depends(get_current_user)
-):    
+) -> User:    
   """
   Gets current active user thats making an api request
 

@@ -65,7 +65,10 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
     if jwt_token.canvas_id != json["user"]["id"]:
         raise OAuth2AuthenticationException(message=f"LTI launch user_id: {jwt_token.canvas_id}, type: {type(jwt_token.canvas_id).__name__} does not equal get token user_id: {json['user']['id']} , type: {type(json['user']['id']).__name__}")
 
-    user = User.get_user_by_canvas_id(jwt_token.canvas_id, db)
+    try:
+      user = User.get_user_by_canvas_id(jwt_token.canvas_id, db)
+    except NotFound:
+      user = None
 
     if not user:
       # no user found > create new one and save in db
