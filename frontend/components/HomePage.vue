@@ -3,7 +3,6 @@
     <HeaderCom />
     <div class="testpage">
       <h3>FEEBY</h3>
-      <p>hello</p>
       <CardCom />
     </div>
     <FooterCom />
