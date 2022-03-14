@@ -83,9 +83,9 @@ class Role(Base):
       db.refresh(role)
     return role
 
-  def get_teaching_assisstent_role(db: Session):
+  def get_teaching_assistant_role(db: Session):
     """
-    Gets the teaching assisstent role object mapping
+    Gets the teaching assistant role object mapping
 
     db = db connection session
     """
