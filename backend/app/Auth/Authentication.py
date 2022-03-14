@@ -9,7 +9,7 @@ from .JWTToken import AccessToken
 
 from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
-from Models.User import User, Student
+from Models.User import *
 
 router = APIRouter(
   prefix="/auth",
@@ -68,13 +68,25 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
 
         if not user:
             # no user found > create new one and save in db
-            # TODO check roles and create proper person based on highest permission role
-            user = Student(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            if "admin" in jwt_token.roles:
+                user = Admin(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            elif "teaching_assistant" in jwt_token.roles:
+                user = TeachingAssistant(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            elif "instructor" in jwt_token.roles:
+                user = Instructor(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            elif "content_developer" in jwt_token.roles:
+                user = ContentDeveloper(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            elif "student" in jwt_token.roles:
+                user = Student(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            elif "observer" in jwt_token.roles:
+                user = Observer(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
+            else:
+                raise OAuth2AuthenticationException(400, "Bad roles", "No roles given in JWT token. Please try reauthenticating via the lti launch")
             user.save_self(db)
 
         jwt_token.access_token = json['access_token']
         jwt_token.refresh_token = json['refresh_token']
-    
+
         response = RedirectResponse('/')
         response.set_cookie("jwt", jwt_token.encoded_token, max_age=2147483647, httponly=False, samesite="None", secure=True)
         return response

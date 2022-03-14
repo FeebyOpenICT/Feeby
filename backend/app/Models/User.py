@@ -79,12 +79,12 @@ class Instructor(User):
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
-class ExternelExpert(User):
+class Observer(User):
   """
-  User class with external expert role auto assigned
+  User class with observer role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_external_expert_role(db)
+    self.role = Role.get_observer_role(db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
@@ -94,4 +94,23 @@ class Admin(User):
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
     self.role = Role.get_admin_role(db)
+    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
+
+
+
+class ContentDeveloper(User):
+  """
+  User class with content developer role auto assigned
+  """
+  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
+    self.role = Role.get_content_developer_role(db)
+    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
+
+
+class TeachingAssistant(User):
+  """
+  User class with teaching assistant role auto assigned
+  """
+  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
+    self.role = Role.get_teaching_assistant_role(db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
