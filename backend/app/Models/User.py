@@ -46,7 +46,7 @@ class User(Base):
 
     Returns a python user mapped class from the database
     """
-    user = db.query(User).filter(User.canvas_id == id).join(User.role).first()
+    user, role = db.query(User, Role).filter(User.canvas_id == id).join(User.role).first()
     return user
   
   def save_self(self, db: Session):
