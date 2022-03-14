@@ -1,25 +1,23 @@
-from fastapi import APIRouter, Form, Depends, Response
-from starlette import status
-from sqlalchemy.orm import Session
-from database import get_db_connection
+from fastapi import APIRouter, Form, Depends
 from Models.Post import Post
 from Auth.validate_user import get_current_user
+from sqlalchemy.orm import Session
+from database import get_db_connection
 
 router = APIRouter(
     prefix="/post",
-    tags=["P.O.S.T."]
+    tags=["StudentPost"]
 )
 
 
-@router.post(
-    '/',
-    status_code=status.HTTP_201_CREATED
-    # response_model=Post
-)
+@router.post('/')
 async def post(
-        title: str = Form(...),
-        description: str = Form(...),
-        user_id: get_current_user = Depends(get_current_user),
-        db: Session = Depends(get_db_connection)
+    title: str = Form(...),
+    description: str = Form(...),
+    current_user: get_current_user = Depends(get_current_user),
+    db: Session = Depends(get_db_connection)
+
 ):
-    return post()
+    data = Post(title, description, current_user)
+    data.save_self(db)
+    return data
