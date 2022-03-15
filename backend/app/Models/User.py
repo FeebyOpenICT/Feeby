@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
-from fastapi import HTTPException
+
 from .Role import Base, Role, Roles
 from Exceptions.NotFound import NotFound
 class User(Base):
