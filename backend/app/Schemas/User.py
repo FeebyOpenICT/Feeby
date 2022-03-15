@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 from Schemas.Role import GetRole
 
+
 class GetUser(BaseModel):
   id: int
   fullname: str

@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.sql import func
 from sqlalchemy.orm import Session, relationship
 from .User import Base
 
@@ -10,6 +11,8 @@ class Post(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
     description: str = Column(String(length=1000), nullable=False)
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('User')
