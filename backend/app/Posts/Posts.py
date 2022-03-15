@@ -18,7 +18,6 @@ async def post(
     db: Session = Depends(get_db_connection)
 
 ):
-    # data = Post(body, user)
     post = Post(
         title=body.title,
         description=body.description,
