@@ -6,6 +6,8 @@ from config import BASE_URL, BASE_APP_API_CALLBACK_URL, DELEVOPER_KEY_ID
 def redir_to_oauth() -> RedirectResponse:
   """
   Redirects the user to Oauth2 flow from canvas
+
+  Returns a RedirectResponse from fastapi.responses formatted to the /login/oauth2 call for canvas
   """
   print("Redirecting to auth")
   return RedirectResponse(

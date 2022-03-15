@@ -43,6 +43,7 @@ class AccessToken:
     validates the token against the canvas api
 
     returns canvas self from /api/v1/users/self
+    raises HTTP errors if any faults are found
     """
     headers = {
       "Authorization": f"Bearer {self.access_token}"
@@ -71,44 +72,44 @@ class AccessToken:
     """
     Admin
     "roles": [
-        "urn:lti:instrole:ims/lis/Administrator",
+        "urn:lti:instrole:ims/lis/Administrator", <
         "urn:lti:instrole:ims/lis/Instructor",
         "urn:lti:role:ims/lis/Instructor",
-        "urn:lti:sysrole:ims/lis/SysAdmin",
+        "urn:lti:sysrole:ims/lis/SysAdmin", <
         "urn:lti:sysrole:ims/lis/User"
     ]
 
     Content designer
     "roles": [
         "urn:lti:instrole:ims/lis/Instructor",
-        "urn:lti:role:ims/lis/ContentDeveloper",
+        "urn:lti:role:ims/lis/ContentDeveloper", <
         "urn:lti:sysrole:ims/lis/User"
     ]
 
     TA
     "roles": [
-        "urn:lti:role:ims/lis/TeachingAssistant",
+        "urn:lti:role:ims/lis/TeachingAssistant", <
         "urn:lti:sysrole:ims/lis/User"
     ]
 
     Teacher
     "roles": [
         "urn:lti:instrole:ims/lis/Instructor",
-        "urn:lti:role:ims/lis/Instructor",
+        "urn:lti:role:ims/lis/Instructor", <
         "urn:lti:sysrole:ims/lis/User"
     ]
 
-    Observer
+    Observer < Currently gets both OBSERVER and MENTOR role in db
     "roles": [
-        "urn:lti:role:ims/lis/Learner/NonCreditLearner",
-        "urn:lti:role:ims/lis/Mentor",
+        "urn:lti:role:ims/lis/Learner/NonCreditLearner", <
+        "urn:lti:role:ims/lis/Mentor", <
         "urn:lti:sysrole:ims/lis/User"
     ]
 
     Student
     "roles": [
         "urn:lti:instrole:ims/lis/Student",
-        "urn:lti:role:ims/lis/Learner",
+        "urn:lti:role:ims/lis/Learner", < 
         "urn:lti:sysrole:ims/lis/User"
     ]
     """

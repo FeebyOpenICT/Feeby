@@ -6,14 +6,13 @@ from fastapi.security import (
     SecurityScopes,
 )
 
-from .redir_to_auth import redir_to_oauth
-
-
 from .JWTToken import AccessToken
 from Models.User import User
 from database import get_db_connection
 
-# automatically checks if there is a Bearer ... token in the Authorizaiton header
+# automatically checks if there is a Bearer token in the Authorization header
+# Cant use OAuth2AuthorizationCodeBearer from fastapi.security because it requires a url to create a token and log in at. \
+# we get the token from canvas so we can't do that.
 token_auth_scheme = HTTPBearer()
 
 
@@ -42,7 +41,9 @@ async def get_current_user(
 
   for token_role in token.roles:
     if token_role in scopes:
+      # user has one of the required roles so no need to check any further roles
       has_required_role = True
+      break
 
   if has_required_role == False:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
@@ -51,9 +52,6 @@ async def get_current_user(
   canvas_user = token.validate_self()
 
   user = User.get_user_by_canvas_id(canvas_user['id'], db)
-
-  if not User:
-    return redir_to_oauth()
 
   return user
 
