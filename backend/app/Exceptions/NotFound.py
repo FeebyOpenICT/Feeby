@@ -1,5 +1,5 @@
-from fastapi import status
-from fastapi.responses import ORJSONResponse
+from fastapi import Request, status
+from fastapi.responses import JSONResponse
 
 class NotFound(Exception):
   """
@@ -13,11 +13,11 @@ class NotFound(Exception):
     self.status_code = status_code
 
 
-async def not_found_exception_handler(exc: NotFound):
+async def not_found_exception_handler(request: Request, exc: NotFound):
   """
   Return a json response with error and 
   """
-  return ORJSONResponse(
+  return JSONResponse(
     content={
       "detail": f"Requested {exc.item} not found in database",
     },

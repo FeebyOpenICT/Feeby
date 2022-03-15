@@ -61,6 +61,22 @@ class User(Base):
 
     return user
 
+  
+  def get_user_by_id(id: int, db: Session):
+    """
+    Gets the user by their id
+
+    id = integer equal to the the id
+
+    Returns a python user mapped class from the database
+    """
+    user = db.query(User).filter(User.id == id).first()
+
+    if not User:
+      raise NotFound("user")
+
+    return user
+
 
   def save_self(self, db: Session):
     """
