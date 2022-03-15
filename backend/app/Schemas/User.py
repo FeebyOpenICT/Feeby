@@ -4,6 +4,7 @@ from typing import List
 from pydantic import BaseModel
 from Schemas.Role import RoleInDB
 
+
 class User(BaseModel):
   fullname: str
   canvas_email: str
