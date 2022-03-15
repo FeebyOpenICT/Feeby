@@ -4,6 +4,7 @@ from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.Post import PostBody
 from database import get_db_connection
+from Exceptions.NotFound import NotFound
 
 router = APIRouter(
     prefix="/post",
@@ -25,4 +26,7 @@ async def post(
     )
 
     post.save_self(db)
+    if not post:
+        raise NotFound("post")
+
     return post
