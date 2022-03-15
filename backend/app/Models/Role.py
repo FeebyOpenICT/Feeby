@@ -2,6 +2,41 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import Session
 from database import Base
 
+class Roles:
+  """
+  Constants for Roles in the tool
+  """
+  STUDENT = {
+    "title": "student",
+    "description": ""
+  }
+
+  OBSERVER = {
+    "title": "observer",
+    "description": ""
+  }
+
+  INSTRUCTOR = {
+    "title": "instructor",
+    "description": ""
+  }
+
+  ADMIN = {
+    "title": "admin",
+    "description": ""
+  }
+
+  TEACHING_ASSISTANT = {
+    "title": "teaching_assistant",
+    "description": ""
+  }
+
+  CONTENT_DEVELOPER = {
+    "title": "content_developer",
+    "description": ""
+  }
+
+
 class Role(Base):
   """
   Mapped Role class
@@ -22,92 +57,13 @@ class Role(Base):
   def __repr__(self) -> str:
     return f"<Role title={self.title} description={self.description}>"
 
-  # get_..._role are all seperate so that I can easily create them if they don't exist in the db yet
-  def get_student_role(db: Session):
+  def get_role(role, db: Session):
     """
-    Gets the student role object mapping
-
-    db = db connection session
+    Gets role object mapping from db
     """
-    role = db.query(Role).filter(Role.title == 'student').first()
+    role = db.query(Role).filter(Role.title == role.title).first()
     if not role:
-      # no student role in db, create one
-      role = Role(title="student", description="I am a student")
-      db.add(role)
-      db.commit()
-      db.refresh(role)
-    return role
-
-  def get_observer_role(db: Session):
-    """
-    Gets the observer role object mapping
-
-    db = db connection session
-    """
-    role = db.query(Role).filter(Role.title == 'observer').first()
-    if not role:
-      # no student role in db, create one
-      role = Role(title="observer", description="I am an observer")
-      db.add(role)
-      db.commit()
-      db.refresh(role)
-    return role
-
-  def get_admin_role(db: Session):
-    """
-    Gets the admin role object mapping
-
-    db = db connection session
-    """
-    role = db.query(Role).filter(Role.title == 'admin').first()
-    if not role:
-      # no student role in db, create one
-      role = Role(title="admin", description="I am an admin")
-      db.add(role)
-      db.commit()
-      db.refresh(role)
-    return role
-  
-  def get_instructor_role(db: Session):
-    """
-    Gets the instructor role object mapping
-
-    db = db connection session
-    """
-    role = db.query(Role).filter(Role.title == 'instructor').first()
-    if not role:
-      # no student role in db, create one
-      role = Role(title="instructor", description="I am a instructor")
-      db.add(role)
-      db.commit()
-      db.refresh(role)
-    return role
-
-  def get_teaching_assistant_role(db: Session):
-    """
-    Gets the teaching assistant role object mapping
-
-    db = db connection session
-    """
-    role = db.query(Role).filter(Role.title == 'teaching_assistant').first()
-    if not role:
-      # no student role in db, create one
-      role = Role(title="teaching_assistant", description="I am a teaching_assistant")
-      db.add(role)
-      db.commit()
-      db.refresh(role)
-    return role
-
-  def get_content_developer_role(db: Session):
-    """
-    Gets the content developer role object mapping
-
-    db = db connection session
-    """
-    role = db.query(Role).filter(Role.title == 'content_developer').first()
-    if not role:
-      # no student role in db, create one
-      role = Role(title="content_developer", description="I am a content developer")
+      role = Role(title=role.title, description=role.description)
       db.add(role)
       db.commit()
       db.refresh(role)
