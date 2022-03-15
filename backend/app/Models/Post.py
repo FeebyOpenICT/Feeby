@@ -5,7 +5,11 @@ from .User import Base
 
 
 class Post(Base):
+    """
+    Mapped Post class
 
+    Represents a post in the database
+    """
     __tablename__ = 'post'
 
     id = Column(Integer, primary_key=True, nullable=False)
@@ -28,10 +32,3 @@ class Post(Base):
         db.commit()
         db.refresh(self)
         return self
-
-
-
-
-
-
-

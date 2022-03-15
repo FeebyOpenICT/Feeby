@@ -10,8 +10,8 @@ from Schemas.Post import PostInDB
 
 
 router = APIRouter(
-    prefix="/post",
-    tags=["StudentPost"]
+    prefix="/posts",
+    tags=["Posts"]
 )
 
 
@@ -26,16 +26,19 @@ async def post(
           Roles.INSTRUCTOR['title'],
           Roles.CONTENT_DEVELOPER['title'],
           Roles.TEACHING_ASSISTANT['title'],
-          Roles.OBSERVER['title'],
         ]
     ),
-    user: get_current_active_user = Depends(get_current_active_user),
     db: Session = Depends(get_db_connection)
 ):
+    """
+    Create post
+
+    Allowed roles: admin, instructor, student, content_developer, teaching_assistant
+    """
     post = Post(
         title=body.title,
         description=body.description,
-        user=user
+        user=current_active_user
     )
     post.save_self(db)
     return post
