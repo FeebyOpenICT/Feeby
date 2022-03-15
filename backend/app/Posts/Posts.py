@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Form, Depends
+from fastapi import APIRouter, Depends
 from Models.Post import Post
-from Auth.validate_user import get_current_user
+from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.Post import PostBody
 from database import get_db_connection
@@ -14,10 +14,16 @@ router = APIRouter(
 @router.post('/')
 async def post(
     body: PostBody,
-    current_user: get_current_user = Depends(get_current_user),
+    user: get_current_active_user = Depends(get_current_active_user),
     db: Session = Depends(get_db_connection)
 
 ):
-    data = Post(body, current_user)
-    data.save_self(db)
-    return data
+    # data = Post(body, user)
+    post = Post(
+        title=body.title,
+        description=body.description,
+        user=user
+    )
+
+    post.save_self(db)
+    return post
