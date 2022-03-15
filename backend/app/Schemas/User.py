@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from typing import Optional
+from typing import List
 from pydantic import BaseModel
 from Schemas.Role import RoleInDB
 
@@ -9,7 +9,7 @@ class User(BaseModel):
   canvas_email: str
   canvas_id: int
   disabled: bool
-  role: RoleInDB
+  roles: List[RoleInDB]
 
 
 class UserInDB(User):

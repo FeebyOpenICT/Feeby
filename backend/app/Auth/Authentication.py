@@ -73,20 +73,24 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
     if not user:
       # no user found > create new one and save in db
       # Order matters! TA will get instructor role if it isn't above the instructor in the chain
-      if Roles.ADMIN in jwt_token.roles:
-        user = Admin(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif Roles.TEACHING_ASSISTANT in jwt_token.roles:
-        user = TeachingAssistant(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif Roles.INSTRUCTOR in jwt_token.roles:
-        user = Instructor(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif Roles.CONTENT_DEVELOPER in jwt_token.roles:
-        user = ContentDeveloper(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif Roles.STUDENT in jwt_token.roles:
-        user = Student(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif Roles.OBSERVER in jwt_token.roles:
-        user = Observer(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      else:
+      if not jwt_token.roles:
         raise OAuth2AuthenticationException(400, "Bad roles", "No roles given in JWT token. Please try reauthenticating via the lti launch")
+
+      user = User(fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id, roles=[])
+
+      if Roles.ADMIN['title'] in jwt_token.roles:
+        user.roles.append(Role.get_role(Roles.ADMIN, db))
+      if Roles.TEACHING_ASSISTANT['title'] in jwt_token.roles:
+        user.roles.append(Role.get_role(Roles.TEACHING_ASSISTANT, db))
+      if Roles.INSTRUCTOR['title'] in jwt_token.roles:
+        user.roles.append(Role.get_role(Roles.INSTRUCTOR, db))
+      if Roles.CONTENT_DEVELOPER['title'] in jwt_token.roles:
+        user.roles.append(Role.get_role(Roles.CONTENT_DEVELOPER, db))
+      if Roles.STUDENT['title'] in jwt_token.roles:
+        user.roles.append(Role.get_role(Roles.STUDENT, db))
+      if Roles.OBSERVER['title'] in jwt_token.roles:
+        user.roles.append(Role.get_role(Roles.OBSERVER, db))
+
       user.save_self(db)
 
     jwt_token.access_token = json['access_token']

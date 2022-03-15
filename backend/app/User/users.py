@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Security
+from fastapi import APIRouter, Security
 from Auth.validate_user import get_current_active_user
 from Models.User import User
 from Schemas.User import UserInDB
