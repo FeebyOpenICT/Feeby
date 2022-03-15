@@ -1,26 +1,19 @@
 <template>
   <div>
     <div
-      v-for="list in lists"
+      v-for="card in lists"
       id="header"
-      :key="list.id"
+      :key="card.id"
+      :sort-by="sortBy"
+      :sort-desc="sortDesc"
     >
       <v-card class="postcard">
         <div class="header">
-          <v-card-title>{{ list.title }}</v-card-title>
-          <v-card-subtitle>{{ list.date }}</v-card-subtitle>
+          <v-card-title>{{ card.title }}</v-card-title>
+          <v-card-subtitle>{{ card.date }}</v-card-subtitle>
         </div>
-        <v-card-text class="body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Proin laoreet sapien at nibh luctus accumsan.
-          Sed accumsan sem nulla, venenatis lacinia lacus pellentesque eget.
-          Mauris vitae efficitur nisl.
-          Ut mattis nisl ut rutrum commodo.
-          Ut in tellus nunc.
-          In venenatis, arcu ultrices condimentum vulputate, tortor purus ultrices tellus, eget congue nunc nunc in justo.
-          Nulla at bibendum magna.
-          Curabitur molestie a tortor non tempor.
-          Nulla nunc justo, facilisis ut diam eu, condimentum ultricies augue.
+        <v-card-text id="body">
+          {{ card.text }}
         </v-card-text>
       </v-card>
     </div>
@@ -32,10 +25,12 @@ export default {
   name: 'CardCom',
   data () {
     return {
+      sortDesc: false,
+      sortBy: 'id',
       lists: [
-        { id: 1, title: 'test1', date: '11-03-2022' },
-        { id: 2, title: 'test2', date: '14-03-2022' },
-        { id: 3, title: 'test3', date: '17-02-2022' }
+        { id: 1, title: 'test1', date: '11-03-2022', text: 'test text 1' },
+        { id: 3, title: 'test3', date: '07-02-2022', text: 'test text 3' },
+        { id: 2, title: 'test2', date: '14-03-2022', text: 'test text 2' }
       ]
     }
   }

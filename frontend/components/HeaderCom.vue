@@ -1,7 +1,7 @@
 <template>
   <v-card class="menu">
-    <v-app-bar color="#0079CF">
-      <v-app-bar-nav-icon @click="modal = true" />
+    <v-app-bar class="bar" color="#0079CF">
+      <v-app-bar-nav-icon class="bar" @click="modal = true" />
       <v-toolbar-title>FEEBY</v-toolbar-title>
     </v-app-bar>
 
@@ -67,5 +67,9 @@ export default {
     position: sticky;
     z-index: 2;
     border-radius: 0;
+    background-color: #0079CF;
   }
+.bar{
+  color: white;
+}
 </style>

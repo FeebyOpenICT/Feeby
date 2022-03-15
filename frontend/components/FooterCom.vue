@@ -1,7 +1,5 @@
 <template>
-  <div class="footer">
-    <v-app-bar color="#0079CF" />
-  </div>
+  <v-footer class="footer" color="#0079CF" />
 </template>
 
 <script>
@@ -14,7 +12,8 @@ export default {
 .footer {
     width: 100vw;
     bottom: 0;
-    position: relative;
+    position: absolute;
     padding: 0;
+    height: 5%;
   }
 </style>

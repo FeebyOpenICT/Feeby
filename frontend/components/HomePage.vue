@@ -2,7 +2,6 @@
   <div>
     <HeaderCom />
     <div class="testpage">
-      <h3>FEEBY</h3>
       <CardCom />
     </div>
     <FooterCom />
@@ -21,7 +20,5 @@ export default {
 </script>
 
 <style scoped>
-.testpage{
-  height: 100vw;
-}
+
 </style>
