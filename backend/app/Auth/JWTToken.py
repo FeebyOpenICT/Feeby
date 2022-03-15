@@ -115,17 +115,17 @@ class AccessToken:
     roles: List[str] = []
 
     if "urn:lti:instrole:ims/lis/Administrator" in canvas_ext_roles or "urn:lti:sysrole:ims/lis/SysAdmin" in canvas_ext_roles:
-      roles.append(Roles.ADMIN)
+      roles.append(Roles.ADMIN['title'])
     if "urn:lti:instrole:ims/lis/Instructor" in canvas_ext_roles or "urn:lti:role:ims/lis/Instructor" in canvas_ext_roles:
-      roles.append(Roles.INSTRUCTOR)
+      roles.append(Roles.INSTRUCTOR['title'])
     if "urn:lti:role:ims/lis/ContentDeveloper" in canvas_ext_roles:
-      roles.append(Roles.CONTENT_DEVELOPER)
+      roles.append(Roles.CONTENT_DEVELOPER['title'])
     if "urn:lti:role:ims/lis/TeachingAssistant" in canvas_ext_roles:
-      roles.append(Roles.TEACHING_ASSISTANT)
+      roles.append(Roles.TEACHING_ASSISTANT['title'])
     if "urn:lti:instrole:ims/lis/Student" in canvas_ext_roles or "urn:lti:role:ims/lis/Learner" in canvas_ext_roles:
-      roles.append(Roles.STUDENT)
+      roles.append(Roles.STUDENT['title'])
     if "urn:lti:role:ims/lis/Learner/NonCreditLearner" in canvas_ext_roles or "urn:lti:role:ims/lis/Mentor" in canvas_ext_roles:
-      roles.append(Roles.OBSERVER)
+      roles.append(Roles.OBSERVER['title'])
     
     return roles
 

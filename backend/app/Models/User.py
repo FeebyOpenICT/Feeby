@@ -1,9 +1,12 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
+from typing import List
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
-from .Role import Base, Role, Roles
+from .Role import Role, Roles
+from .User_Role import Base
 from Exceptions.NotFound import NotFound
+
 class User(Base):
   """
   Mapped User class
@@ -20,8 +23,7 @@ class User(Base):
   time_created = Column(DateTime(timezone=True), server_default=func.now())
   time_updated = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
-  role_id = Column(Integer, ForeignKey('role.id'), nullable=False)
-  role: Role = relationship('Role')
+  roles = relationship("Role", secondary='user_role')
 
   def __init__(
     self, 
@@ -29,12 +31,14 @@ class User(Base):
     canvas_email: str = None, 
     canvas_id: int = None, 
     disabled: bool = False,
+    roles: List[Role] = [],
     **kwargs
   ) -> None:
     self.fullname = fullname
     self.canvas_email = canvas_email
     self.canvas_id = canvas_id
     self.disabled = disabled
+    self.roles = roles
     super().__init__(**kwargs)
 
   def __repr__(self) -> str:
@@ -48,13 +52,11 @@ class User(Base):
 
     Returns a python user mapped class from the database
     """
-    result = db.query(User, Role).filter(User.canvas_id == id).join(User.role).first()
+    user = db.query(User).filter(User.canvas_id == id).first()
 
-    if not result:
+    if not user:
       raise NotFound("user")
 
-    user, role = result
-    user.role = role
     return user
 
 
@@ -68,58 +70,3 @@ class User(Base):
     db.commit()
     db.refresh(self)
     return self
-
-
-class Student(User):
-  """
-  User class with student role auto assigned
-  """
-  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_role(Roles.STUDENT, db)
-    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
-
-
-class Instructor(User):
-  """
-  User class with instructor role auto assigned
-  """
-  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_role(Roles.INSTRUCTOR, db)
-    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
-
-
-class Observer(User):
-  """
-  User class with observer role auto assigned
-  """
-  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_role(Roles.OBSERVER, db)
-    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
-
-
-class Admin(User):
-  """
-  User class with admin role auto assigned
-  """
-  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_role(Roles.ADMIN, db)
-    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
-
-
-
-class ContentDeveloper(User):
-  """
-  User class with content developer role auto assigned
-  """
-  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_role(Roles.CONTENT_DEVELOPER, db)
-    super().__init__(fullname, canvas_email, canvas_id, **kwargs)
-
-
-class TeachingAssistant(User):
-  """
-  User class with teaching assistant role auto assigned
-  """
-  def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_role(Roles.TEACHING_ASSISTANT, db)
-    super().__init__(fullname, canvas_email, canvas_id, **kwargs)

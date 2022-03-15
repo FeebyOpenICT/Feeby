@@ -12,7 +12,7 @@ from Posts import Posts
 
 from database import engine
 
-# Chain: Role > User
+# Chain: Role > User_Role > User
 # Import base from latest in chain so base gets initialized in all models before getting called
 from Models.User import Base
 
