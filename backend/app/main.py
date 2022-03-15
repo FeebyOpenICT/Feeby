@@ -1,11 +1,12 @@
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
 from User import users
+from Exceptions.NotFound import NotFound, not_found_exception_handler
 
 
 from database import engine
@@ -27,6 +28,8 @@ app = FastAPI(
 app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
 app.add_exception_handler(LTILaunchException, lti_launch_authentication_exception_handler)
+
+app.add_exception_handler(NotFound, not_found_exception_handler)
 
 app.include_router(lti.router)
 

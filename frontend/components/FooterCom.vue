@@ -12,9 +12,9 @@ export default {
 
 <style scoped>
 .footer {
-    overflow: hidden;
+    width: 100vw;
     bottom: 0;
-    position: sticky;
+    position: relative;
     padding: 0;
   }
 </style>

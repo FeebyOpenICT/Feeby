@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 from fastapi import HTTPException
-from .Role import Base, Role
+from .Role import Base, Role, Roles
 from Exceptions.NotFound import NotFound
 class User(Base):
   """
@@ -75,7 +75,7 @@ class Student(User):
   User class with student role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_student_role(db)
+    self.role = Role.get_role(Roles.STUDENT, db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
@@ -84,7 +84,7 @@ class Instructor(User):
   User class with instructor role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_instructor_role(db)
+    self.role = Role.get_role(Roles.INSTRUCTOR, db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
@@ -93,7 +93,7 @@ class Observer(User):
   User class with observer role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_observer_role(db)
+    self.role = Role.get_role(Roles.OBSERVER, db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
@@ -102,7 +102,7 @@ class Admin(User):
   User class with admin role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_admin_role(db)
+    self.role = Role.get_role(Roles.ADMIN, db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
@@ -112,7 +112,7 @@ class ContentDeveloper(User):
   User class with content developer role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_content_developer_role(db)
+    self.role = Role.get_role(Roles.CONTENT_DEVELOPER, db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)
 
 
@@ -121,5 +121,5 @@ class TeachingAssistant(User):
   User class with teaching assistant role auto assigned
   """
   def __init__(self, db: Session, fullname: str = None, canvas_email: str = None, canvas_id: int = None, **kwargs) -> None:
-    self.role = Role.get_teaching_assistant_role(db)
+    self.role = Role.get_role(Roles.TEACHING_ASSISTANT, db)
     super().__init__(fullname, canvas_email, canvas_id, **kwargs)

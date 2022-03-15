@@ -73,17 +73,17 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
     if not user:
       # no user found > create new one and save in db
       # Order matters! TA will get instructor role if it isn't above the instructor in the chain
-      if "admin" in jwt_token.roles:
+      if Roles.ADMIN in jwt_token.roles:
         user = Admin(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif "teaching_assistant" in jwt_token.roles:
+      elif Roles.TEACHING_ASSISTANT in jwt_token.roles:
         user = TeachingAssistant(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif "instructor" in jwt_token.roles:
+      elif Roles.INSTRUCTOR in jwt_token.roles:
         user = Instructor(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif "content_developer" in jwt_token.roles:
+      elif Roles.CONTENT_DEVELOPER in jwt_token.roles:
         user = ContentDeveloper(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif "student" in jwt_token.roles:
+      elif Roles.STUDENT in jwt_token.roles:
         user = Student(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
-      elif "observer" in jwt_token.roles:
+      elif Roles.OBSERVER in jwt_token.roles:
         user = Observer(db=db, fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id)
       else:
         raise OAuth2AuthenticationException(400, "Bad roles", "No roles given in JWT token. Please try reauthenticating via the lti launch")
