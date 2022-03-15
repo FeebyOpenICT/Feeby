@@ -78,18 +78,9 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
 
       user = User(fullname=jwt_token.fullname, canvas_email=jwt_token.email, canvas_id=jwt_token.canvas_id, roles=[])
 
-      if Roles.ADMIN['title'] in jwt_token.roles:
-        user.roles.append(Role.get_role(Roles.ADMIN, db))
-      if Roles.TEACHING_ASSISTANT['title'] in jwt_token.roles:
-        user.roles.append(Role.get_role(Roles.TEACHING_ASSISTANT, db))
-      if Roles.INSTRUCTOR['title'] in jwt_token.roles:
-        user.roles.append(Role.get_role(Roles.INSTRUCTOR, db))
-      if Roles.CONTENT_DEVELOPER['title'] in jwt_token.roles:
-        user.roles.append(Role.get_role(Roles.CONTENT_DEVELOPER, db))
-      if Roles.STUDENT['title'] in jwt_token.roles:
-        user.roles.append(Role.get_role(Roles.STUDENT, db))
-      if Roles.OBSERVER['title'] in jwt_token.roles:
-        user.roles.append(Role.get_role(Roles.OBSERVER, db))
+      for role in jwt_token.roles:
+        role = getattr(Roles, role.upper())
+        user.roles.append(Role.get_role(role, db))
 
       user.save_self(db)
 

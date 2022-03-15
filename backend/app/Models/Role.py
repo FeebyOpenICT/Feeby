@@ -36,6 +36,11 @@ class Roles:
     "description": ""
   }
 
+  MENTOR = {
+    "title": "mentor",
+    "description": ""
+  }
+
 
 class Role(Base):
   """

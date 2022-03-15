@@ -20,7 +20,11 @@ async def read_users_me(
       Roles.CONTENT_DEVELOPER['title'],
       Roles.TEACHING_ASSISTANT['title'],
       Roles.OBSERVER['title'],
+      Roles.MENTOR['title']
     ]
   )
 ):
+  """
+  Gets current active user
+  """
   return current_active_user

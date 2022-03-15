@@ -12,7 +12,7 @@ class AccessToken:
 
   Not in database but can decode, encode and validate itself against canvas
   """
-  def __init__(self, canvas_id: int, fullname: str, email: str, roles: List[dict], access_token: str = None, refresh_token: str = None) -> None:
+  def __init__(self, canvas_id: int, fullname: str, email: str, roles: List[str], access_token: str = None, refresh_token: str = None) -> None:
     self.access_token = access_token
     self.refresh_token = refresh_token
     self.canvas_id = canvas_id
@@ -116,16 +116,18 @@ class AccessToken:
 
     if "urn:lti:instrole:ims/lis/Administrator" in canvas_ext_roles or "urn:lti:sysrole:ims/lis/SysAdmin" in canvas_ext_roles:
       roles.append(Roles.ADMIN['title'])
-    if "urn:lti:instrole:ims/lis/Instructor" in canvas_ext_roles or "urn:lti:role:ims/lis/Instructor" in canvas_ext_roles:
+    if "urn:lti:role:ims/lis/Instructor" in canvas_ext_roles:
       roles.append(Roles.INSTRUCTOR['title'])
     if "urn:lti:role:ims/lis/ContentDeveloper" in canvas_ext_roles:
       roles.append(Roles.CONTENT_DEVELOPER['title'])
     if "urn:lti:role:ims/lis/TeachingAssistant" in canvas_ext_roles:
       roles.append(Roles.TEACHING_ASSISTANT['title'])
-    if "urn:lti:instrole:ims/lis/Student" in canvas_ext_roles or "urn:lti:role:ims/lis/Learner" in canvas_ext_roles:
+    if "urn:lti:role:ims/lis/Learner" in canvas_ext_roles:
       roles.append(Roles.STUDENT['title'])
-    if "urn:lti:role:ims/lis/Learner/NonCreditLearner" in canvas_ext_roles or "urn:lti:role:ims/lis/Mentor" in canvas_ext_roles:
-      roles.append(Roles.OBSERVER['title'])
+    if "urn:lti:role:ims/lis/Learner/NonCreditLearner" in canvas_ext_roles:
+      roles.append(Roles.OBSERVER['title']) 
+    if "urn:lti:role:ims/lis/Mentor" in canvas_ext_roles:
+      roles.append(Roles.MENTOR['title'])
     
     return roles
 
