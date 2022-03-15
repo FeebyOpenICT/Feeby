@@ -1,5 +1,5 @@
-CLIENT_ID = "laskjhfdlkjh"
-CLIENT_SECRET = "TWO"
+CLIENT_ID = "ONE"
+CLIENT_SECRET = "LwTvyGLDcn56qdNDxz4U"
 DEVELOPER_KEY = "XmF8czbHavW1YooJCQZJ3Z5YhajtsNaDHslxtZc7xi9ieiAWPmV2vZPuPTOnLibU"
 DELEVOPER_KEY_ID = "34"
 # Canvas instance
