@@ -12,7 +12,7 @@ class AccessToken:
 
   Not in database but can decode, encode and validate itself against canvas
   """
-  def __init__(self, canvas_id: int, fullname: str, email: str, roles: str, access_token: str = None, refresh_token: str = None) -> None:
+  def __init__(self, canvas_id: int, fullname: str, email: str, roles: List[dict], access_token: str = None, refresh_token: str = None) -> None:
     self.access_token = access_token
     self.refresh_token = refresh_token
     self.canvas_id = canvas_id

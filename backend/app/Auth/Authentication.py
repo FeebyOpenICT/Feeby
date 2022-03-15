@@ -109,7 +109,7 @@ async def refresh_token(response: Response, jwt: HTTPAuthorizationCredentials = 
     if jwt is None:
       return HTTPException(status_code=400, detail="No jwt token was provided")
 
-    jwt_token = AccessToken.decode_token(jwt.credentials)
+    jwt_token = AccessToken.decode_token(jwt)
 
     if jwt_token.refresh_token is None:
       return HTTPException(400, "No refresh token was provided")
