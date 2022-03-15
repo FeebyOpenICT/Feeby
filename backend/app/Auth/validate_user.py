@@ -47,7 +47,7 @@ async def get_current_user(
   if has_required_role == False:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
 
-  # validate access token against 
+  # validate access token against canvas
   canvas_user = token.validate_self()
 
   user = User.get_user_by_canvas_id(canvas_user['id'], db)
