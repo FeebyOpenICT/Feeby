@@ -15,6 +15,6 @@ class User(BaseModel):
 class UserInDB(User):
   id: int
   time_created: datetime
-  time_updated: Optional[datetime]
+  time_updated: datetime
   class Config:
     orm_mode = True
