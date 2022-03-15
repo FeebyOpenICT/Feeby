@@ -61,10 +61,10 @@ class Role(Base):
     """
     Gets role object mapping from db
     """
-    role = db.query(Role).filter(Role.title == role.title).first()
-    if not role:
-      role = Role(title=role.title, description=role.description)
-      db.add(role)
+    db_role = db.query(Role).filter(Role.title == role['title']).first()
+    if not db_role:
+      db_role = Role(title=role['title'], description=role['description'])
+      db.add(db_role)
       db.commit()
-      db.refresh(role)
-    return role
+      db.refresh(db_role)
+    return db_role
