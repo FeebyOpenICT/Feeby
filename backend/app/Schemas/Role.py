@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 
-class GetRole(BaseModel):
-  id: int
+class Role(BaseModel):
   title: str
   description: str
+  
+class RoleInDB(Role):
+  id: int
 
   class Config:
     orm_mode = True
