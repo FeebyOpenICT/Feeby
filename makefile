@@ -33,3 +33,6 @@ prod-logs:
 
 database-start:
 	docker-compose up -d db adminer traefik
+
+pytest:
+	PYTHONPATH=backend/app pytest
