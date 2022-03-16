@@ -1,7 +1,9 @@
 <template>
-  <div class="footer">
-    <v-app-bar color="#0079CF" />
-  </div>
+  <v-footer
+    color="#0079CF"
+    padless
+    height="50%"
+  />
 </template>
 
 <script>
@@ -9,12 +11,3 @@ export default {
   name: 'FooterCom'
 }
 </script>
-
-<style scoped>
-.footer {
-    width: 100vw;
-    bottom: 0;
-    position: relative;
-    padding: 0;
-  }
-</style>

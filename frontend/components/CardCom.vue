@@ -1,42 +1,71 @@
 <template>
-  <div>
-    <div
-      v-for="list in lists"
-      id="header"
-      :key="list.id"
+  <div id="header">
+    <v-card
+      v-for="card in orderedLists"
+      :key="card.id"
+      class="postcard"
     >
-      <v-card class="postcard">
-        <div class="header">
-          <v-card-title>{{ list.title }}</v-card-title>
-          <v-card-subtitle>{{ list.date }}</v-card-subtitle>
-        </div>
-        <v-card-text class="body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Proin laoreet sapien at nibh luctus accumsan.
-          Sed accumsan sem nulla, venenatis lacinia lacus pellentesque eget.
-          Mauris vitae efficitur nisl.
-          Ut mattis nisl ut rutrum commodo.
-          Ut in tellus nunc.
-          In venenatis, arcu ultrices condimentum vulputate, tortor purus ultrices tellus, eget congue nunc nunc in justo.
-          Nulla at bibendum magna.
-          Curabitur molestie a tortor non tempor.
-          Nulla nunc justo, facilisis ut diam eu, condimentum ultricies augue.
-        </v-card-text>
-      </v-card>
-    </div>
+      <div class="header">
+        <v-card-title>{{ card.title }}</v-card-title>
+        <v-card-subtitle>{{ card.date }}</v-card-subtitle>
+      </div>
+      <v-card-text id="body">
+        {{ card.text }}
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'CardCom',
   data () {
     return {
       lists: [
-        { id: 1, title: 'test1', date: '11-03-2022' },
-        { id: 2, title: 'test2', date: '14-03-2022' },
-        { id: 3, title: 'test3', date: '17-02-2022' }
+        {
+          id: 1,
+          title: 'test1',
+          date: '11-03-2022',
+          text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+        },
+        {
+          id: 3,
+          title: 'test3',
+          date: '07-02-2022',
+          text: 'tLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+        },
+        {
+          id: 2,
+          title: 'test2',
+          date: '14-03-2022',
+          text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+        },
+        {
+          id: 5,
+          title: 'test5',
+          date: '15-05-2022',
+          text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+        },
+        {
+          id: 6,
+          title: 'test6',
+          date: '07-06-2022',
+          text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+        },
+        {
+          id: 4,
+          title: 'test4',
+          date: '14-04-2022',
+          text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+        }
       ]
+    }
+  },
+  computed: {
+    orderedLists () {
+      return _.orderBy(this.lists, 'date')
     }
   }
 }
@@ -45,7 +74,8 @@ export default {
 <style scoped>
   .postcard{
       width: 90vw;
-      height: 20vh;
+      height: 25vh;
+      overflow: auto;
       position: relative;
       left: 5vw;
       border-style: hidden solid solid;
