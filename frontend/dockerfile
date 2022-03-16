@@ -1,5 +1,5 @@
 FROM node:lts-alpine as development
-WORKDIR /app
+WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
@@ -11,7 +11,7 @@ EXPOSE 3000
 CMD [ "npm" ,"run", "dev" ]
 
 FROM node:lts as production-server
-WORKDIR /app
+WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
