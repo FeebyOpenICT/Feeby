@@ -7,7 +7,7 @@ services:
       - frontend
       - backend
       - adminer
-    container_name: feeby-traefik-dev
+    container_name: feeby-traefik-debug
     command:
       - --api.insecure=true
       - --providers.docker
@@ -21,13 +21,13 @@ services:
 
 
   backend:
-    container_name: feeby-backend-dev
+    container_name: feeby-backend-debug
     depends_on:
       - db
       - redis
     build:
       context: ./backend
-      target: development
+      target: debug
     volumes:
       - ./backend/app:/app
     ports:
@@ -41,38 +41,23 @@ services:
 
 
   frontend:
-    image: node:lts
-    container_name: feeby-frontend-dev
-    working_dir: /usr/src/app
-    command: npm run dev
+    container_name: feeby-frontend-debug
     depends_on:
       - backend
+    build:
+      context: ./frontend
+      target: development
+    volumes:
+      - ./frontend:/usr/src/app
     labels:
       traefik.enable: true
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
-    volumes:
-      - ./frontend:/usr/src/app
 
-
-  # frontend:
-  #   container_name: feeby-frontend-dev
-  #   depends_on:
-  #     - backend
-  #   build:
-  #     context: ./frontend
-  #     target: development
-  #   volumes:
-  #     - ./frontend:/usr/src/app
-  #   labels:
-  #     traefik.enable: true
-  #     traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
-  #     traefik.http.routers.frontend.entrypoints: web
-  #     traefik.http.services.frontend.loadbalancer.server.port: 3000
 
   db:
-    container_name: feeby-database-dev
+    container_name: feeby-database-debug
     image: postgres
     ports:
       - 5432:5432
@@ -82,12 +67,12 @@ services:
       
   
   redis:
-    container_name: feeby-redis-dev
+    container_name: feeby-redis-debug
     image: redis
 
 
   adminer:
-    container_name: feeby-adminer-dev
+    container_name: feeby-adminer-debug
     depends_on:
       - db
     image: adminer

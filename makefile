@@ -7,8 +7,20 @@ build:
 down:
 	docker-compose down
 
-test:
-	docker-compose -f docker-compose.test.yml up --build
+logs:
+	docker-compose logs -f
+
+debug:
+	docker-compose -f docker-compose.debug.yml up -d
+
+debug-build:
+	docker-compose -f docker-compose.debug.yml build
+
+debug-down:
+	docker-compose -f docker-compose.debug.yml down
+
+debug-logs:
+	docker-compose -f docker-compose.debug.yml logs -f
 
 prod-start:
 	docker-compose -f docker-compose.prod.yml up -d --build
@@ -19,5 +31,5 @@ prod-down:
 prod-logs:
 	docker-compose -f docker-compose.prod.yml logs -f
 
-logs:
-	docker-compose logs -f
+database-start:
+	docker-compose up -d db adminer traefik
