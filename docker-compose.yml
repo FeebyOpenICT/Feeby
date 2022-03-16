@@ -41,19 +41,35 @@ services:
 
 
   frontend:
+    image: node:lts
     container_name: feeby-frontend-dev
+    working_dir: /usr/src/app
+    command: npm run dev
     depends_on:
       - backend
-    build:
-      context: ./frontend
-      target: development
-    volumes:
-      - ./frontend:/usr/src/app
     labels:
       traefik.enable: true
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
+    volumes:
+      - ./frontend:/usr/src/app
+
+
+  # frontend:
+  #   container_name: feeby-frontend-dev
+  #   depends_on:
+  #     - backend
+  #   build:
+  #     context: ./frontend
+  #     target: development
+  #   volumes:
+  #     - ./frontend:/usr/src/app
+  #   labels:
+  #     traefik.enable: true
+  #     traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
+  #     traefik.http.routers.frontend.entrypoints: web
+  #     traefik.http.services.frontend.loadbalancer.server.port: 3000
 
   db:
     container_name: feeby-database-dev
