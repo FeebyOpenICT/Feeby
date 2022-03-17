@@ -1,37 +1,30 @@
-FROM python:3.9 as development
+FROM python:3.9-slim as base
 
-WORKDIR /development
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc
+WORKDIR /app
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+COPY ./app /app
 
-COPY ./requirements.txt /development/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /development/requirements.txt
+FROM base as development 
 
-COPY ./app /development/app
+WORKDIR /app
+CMD ["uvicorn", "main:app", "--proxy-headers", "--reload", "--host", "0.0.0.0", "--port", "80"]
 
-CMD ["uvicorn", "app.main:app", "--proxy-headers", "--reload", "--host", "0.0.0.0", "--port", "80"]
 
-FROM python:3.9-slim as testing
+FROM base as debug
 
-WORKDIR /testing
+RUN pip install debugpy
 
-COPY ./requirements.txt /testing/requirements.txt
+WORKDIR /app
+CMD python -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn main:app --reload --host 0.0.0.0 --port 80
 
-RUN pip install --no-cache-dir --upgrade -r /testing/requirements.txt
 
-COPY ./app /testing/app
+FROM base as production
 
-RUN ["pytest"]
-
-FROM python:3.9-alpine as production
-
-WORKDIR /code
-
-COPY ./requirements.txt /code/requirements.txt
-
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-COPY --from=testing /testing/app /code/app
-
+WORKDIR /app
+RUN PYTHONPATH=. pytest
 EXPOSE 80
-
-CMD ["uvicorn", "app.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
