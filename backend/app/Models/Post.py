@@ -28,6 +28,8 @@ class Post(Base):
         self.user = user
         super().__init__()
 
+    # static not class method because I want it to always return a Post instance
+    @staticmethod
     def get_posts_by_user_id(user_id: int, db: Session):
         """
         Gets post object mapping from db

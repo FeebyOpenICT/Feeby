@@ -46,6 +46,8 @@ class User(Base):
     def __repr__(self) -> str:
         return f"<User id={self.id} canvas_email={self.canvas_email} roles={self.roles} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"
 
+    # static not class method because I want it to always return a User instance
+    @staticmethod
     def get_user_by_canvas_id(id: int, db: Session):
         """
         Gets the user by their canvas id
@@ -61,6 +63,8 @@ class User(Base):
 
         return user
 
+    # static not class method because I want it to always return a User instance
+    @staticmethod
     def get_user_by_id(id: int, db: Session):
         """
         Gets the user by their id

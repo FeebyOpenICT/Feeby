@@ -64,6 +64,7 @@ class Role(Base):
     def __repr__(self) -> str:
         return f"<Role title={self.title} description={self.description}>"
 
+    @staticmethod
     def get_role(role, db: Session):
         """
         Gets role object mapping from db
