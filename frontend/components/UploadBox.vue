@@ -2,7 +2,7 @@
   <v-container class="uploadContainer">
     <h1>Upload je bestanden</h1>
     <div class="upload">
-      <v-file-input v-if="!isHidden"
+      <v-file-input
                     chips
                     multiple
                     truncate-length="50"
