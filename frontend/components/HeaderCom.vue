@@ -2,7 +2,7 @@
   <v-card class="menu">
     <v-app-bar color="var(--blue)">
       <v-app-bar-nav-icon class="iconbtn" @click="modal = true" />
-      <v-btn href="/" class="logobtn">
+      <v-btn to="/" nuxt class="logobtn">
         <v-toolbar-title>FEEBY</v-toolbar-title>
       </v-btn>
     </v-app-bar>
@@ -88,7 +88,11 @@ export default {
   text-decoration: none;
 }
 
-.theme--light.v-btn:hover::before {
+.v-btn:hover::before {
+  opacity: 0;
+}
+
+.v-btn--active::before {
   opacity: 0;
 }
 </style>

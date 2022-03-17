@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="testpage">
-      <CardCom />
-    </div>
+    <CardCom />
     <FooterCom />
   </div>
 </template>
