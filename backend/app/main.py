@@ -1,9 +1,6 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
-
-######
-# import all routers and exceptions
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Exceptions.NotFound import NotFound, not_found_exception_handler
@@ -11,7 +8,7 @@ from Auth import Authentication
 from LTI import lti
 from User import users
 from Posts import Posts
-######
+
 
 from database import engine
 # Chain: Role > User_Role > User > Post
@@ -25,21 +22,19 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Feeby",
     version=1,
-    root_path="/api/v1"  # Docker
+    root_path="/api/v1" # Docker
 )
 
-app.add_exception_handler(OAuth2AuthenticationException,
-                          oauth2_authentication_exception_handler)
+app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
 
-app.add_exception_handler(
-    LTILaunchException, lti_launch_authentication_exception_handler)
+app.add_exception_handler(LTILaunchException, lti_launch_authentication_exception_handler)
 
 app.add_exception_handler(NotFound, not_found_exception_handler)
 
 app.include_router(lti.router)
 
 app.include_router(Authentication.router)
-
+ 
 app.include_router(users.router)
 
 app.include_router(Posts.router)

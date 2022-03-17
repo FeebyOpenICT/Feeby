@@ -28,6 +28,13 @@ class Post(Base):
         self.user = user
         super().__init__()
 
+    def get_posts_by_user_id(user_id: int, db: Session):
+        """
+        Gets post object mapping from db
+        """
+        db_posts = db.query(Post).filter(Post.user_id == user_id).all()
+        return db_posts
+
     def save_self(self, db: Session):
         db.add(self)
         db.commit()
