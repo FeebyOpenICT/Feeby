@@ -7,7 +7,7 @@ from Auth import Authentication
 from LTI import lti
 from User import users
 from Exceptions.NotFound import NotFound, not_found_exception_handler
-from Posts import posts
+from Posts import Posts
 
 
 from database import engine
@@ -38,7 +38,7 @@ app.include_router(Authentication.router)
  
 app.include_router(users.router)
 
-app.include_router(posts.router)
+app.include_router(Posts.router)
 
 if __name__ == "__main__":
     uvicorn.run("__main__:app", host="0.0.0.0", port=8000, reload=True, workers=1)
