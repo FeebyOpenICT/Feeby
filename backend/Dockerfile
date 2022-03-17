@@ -25,6 +25,6 @@ CMD python -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn main:ap
 FROM base as production
 
 WORKDIR /app
-RUN ["pytest"]
+RUN PYTHONPATH=. pytest
 EXPOSE 80
 CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]

@@ -3,6 +3,10 @@ version: "3.8"
 services:
   traefik:
     image: traefik:v2.4
+    depends_on:
+      - frontend
+      - backend
+      - adminer
     container_name: feeby-traefik-dev
     command:
       - --api.insecure=true
@@ -18,6 +22,9 @@ services:
 
   backend:
     container_name: feeby-backend-dev
+    depends_on:
+      - db
+      - redis
     build:
       context: ./backend
       target: development
@@ -35,11 +42,13 @@ services:
 
   frontend:
     container_name: feeby-frontend-dev
+    depends_on:
+      - backend
     build:
       context: ./frontend
       target: development
     volumes:
-      - ./frontend:/app
+      - ./frontend:/usr/src/app
     labels:
       traefik.enable: true
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
@@ -63,6 +72,8 @@ services:
 
   adminer:
     container_name: feeby-adminer-dev
+    depends_on:
+      - db
     image: adminer
     restart: always
     labels:
