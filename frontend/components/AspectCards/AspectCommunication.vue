@@ -26,7 +26,6 @@
 <!--Makes textboxes appear upon activating or disabling checkboxes-->
 <script type="text/javascript">
 export default {
-  el: '#communication',
   name: 'SelectAspects',
   data: () => ({
     visible: true,
