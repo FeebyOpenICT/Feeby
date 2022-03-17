@@ -1,11 +1,15 @@
 <template>
-  <HomePage />
+  <div>
+    <HeaderCom />
+    <HomePage />
+  </div>
 </template>
 
 <script>
 import HomePage from '~/components/HomePage.vue'
+import HeaderCom from '~/components/HeaderCom.vue'
 export default {
   name: 'IndexPage',
-  components: { HomePage }
+  components: { HomePage, HeaderCom }
 }
 </script>

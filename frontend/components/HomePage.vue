@@ -1,6 +1,5 @@
 <template>
   <div>
-    <HeaderCom />
     <div class="testpage">
       <CardCom />
     </div>
@@ -9,12 +8,11 @@
 </template>
 
 <script>
-import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
 import CardCom from './CardCom.vue'
 
 export default {
   name: 'HomePage',
-  components: { HeaderCom, FooterCom, CardCom }
+  components: { FooterCom, CardCom }
 }
 </script>

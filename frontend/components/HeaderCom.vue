@@ -1,8 +1,10 @@
 <template>
   <v-card class="menu">
-    <v-app-bar class="bar" color="var(--blue)">
-      <v-app-bar-nav-icon @click="modal = true" />
-      <v-toolbar-title>FEEBY</v-toolbar-title>
+    <v-app-bar color="var(--blue)">
+      <v-app-bar-nav-icon class="iconbtn" @click="modal = true" />
+      <v-btn href="/" class="logobtn">
+        <v-toolbar-title>FEEBY</v-toolbar-title>
+      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -74,7 +76,19 @@ export default {
   position: absolute;
 }
 
-.bar{
+.iconbtn{
+  color: white !important;
+}
+
+.logobtn{
+  background-color: var(--blue) !important;
+  box-shadow: none;
+  font-size: large;
   color: white;
+  text-decoration: none;
+}
+
+.theme--light.v-btn:hover::before {
+  opacity: 0;
 }
 </style>
