@@ -1,7 +1,7 @@
 <template>
   <v-card class="menu">
     <v-app-bar color="#0079CF">
-      <v-app-bar-nav-icon class="navIcon" @click="modal = true" />
+      <v-app-bar-nav-icon @click="modal = true" />
       <v-toolbar-title>FEEBY</v-toolbar-title>
     </v-app-bar>
 
@@ -61,10 +61,6 @@ export default {
 </script>
 
 <style scoped>
-.navIcon{
-  position: absolute;
-  right: 2%;
-}
 .menu {
     overflow: visible;
     top: 0;

@@ -16,10 +16,10 @@ CMD ["uvicorn", "main:app", "--proxy-headers", "--reload", "--host", "0.0.0.0", 
 
 FROM base as debug
 
-RUN pip install ptvsd
+RUN pip install debugpy
 
 WORKDIR /app
-CMD python -m ptvsd --host 0.0.0.0 --port 5678 --wait --multiprocess -m uvicorn main:app --proxy-headers --host 0.0.0.0 --port 80
+CMD python -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn main:app --reload --host 0.0.0.0 --port 80
 
 
 FROM base as production

@@ -3,7 +3,7 @@ version: "3.8"
 services:
   traefik:
     image: traefik:v2.4
-    container_name: feeby-traefik-dev
+    container_name: feeby-traefik-debug
     command:
       - --api.insecure=true
       - --providers.docker
@@ -17,7 +17,8 @@ services:
 
 
   backend:
-    container_name: feeby-backend-dev
+    container_name: feeby-backend-debug
+    restart: unless-stopped
     build:
       context: ./backend
       target: debug
@@ -34,7 +35,7 @@ services:
 
 
   frontend:
-    container_name: feeby-frontend-dev
+    container_name: feeby-frontend-debug
     build:
       context: ./frontend
       target: development
@@ -46,17 +47,24 @@ services:
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
 
+
   db:
-    container_name: feeby-database-dev
+    container_name: feeby-database-debug
     image: postgres
     ports:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=hallo123
       - POSTGRES_USER=feeby
-      
+
+  
+  redis:
+    container_name: feeby-redis-debug
+    image: redis
+
+
   adminer:
-    container_name: feeby-adminer-dev
+    container_name: feeby-adminer-debug
     image: adminer
     restart: always
     labels:
