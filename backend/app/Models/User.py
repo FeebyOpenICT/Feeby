@@ -44,7 +44,7 @@ class User(Base):
         super().__init__(**kwargs)
 
     def __repr__(self) -> str:
-        return f"<User id={self.id} canvas_email={self.canvas_email} role={self.role} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"
+        return f"<User id={self.id} canvas_email={self.canvas_email} roles={self.roles} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"
 
     def get_user_by_canvas_id(id: int, db: Session):
         """
