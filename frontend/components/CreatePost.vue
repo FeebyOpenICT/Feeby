@@ -17,7 +17,7 @@ import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
 
 export default {
-  name: 'HomePage',
+  name: 'CreatePost',
   components: { HeaderCom, FooterCom }
 }
 </script>

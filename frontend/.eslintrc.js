@@ -16,7 +16,7 @@ module.exports = {
   ],
   // add your custom rules here
   "rules": {
-    "trailingComma" : "none",
+    "trailingComma" : "0",
   },
   overrides: [
     {
