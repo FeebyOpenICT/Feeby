@@ -15,7 +15,9 @@ module.exports = {
   plugins: [
   ],
   // add your custom rules here
-  rules: {},
+  rules: {
+    trailingComma: 1
+  },
   overrides: [
     {
       files: ['src/views/**/*.vue'],
