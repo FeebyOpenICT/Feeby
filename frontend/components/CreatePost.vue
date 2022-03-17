@@ -2,13 +2,16 @@
   <div>
     <HeaderCom />
     <div class="testpage">
-      <h3>FEEBY</h3>
-      <p>hello</p>
+      <h1 class="pageTitle">Product inleveren</h1>
+      <InputField />
+      <UploadBox />
+      <AspectCommunication />
+      <AspectKnowledge/>
+
     </div>
     <FooterCom />
   </div>
 </template>
-
 <script>
 import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
@@ -20,8 +23,11 @@ export default {
 </script>
 
 <style scoped>
-.testpage{
+.testpage {
   height: 2000px;
   z-index: 1;
+}
+.testpage h1 {
+  text-align: center;
 }
 </style>

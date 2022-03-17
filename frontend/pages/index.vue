@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import HomePage from '~/components/HomePage.vue'
+import HomePage from '~/components/CreatePost.vue'
 export default {
   name: 'IndexPage',
   components: { HomePage }
