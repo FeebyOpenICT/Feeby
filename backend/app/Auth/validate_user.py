@@ -6,67 +6,67 @@ from fastapi.security import (
     SecurityScopes,
 )
 
-from .redir_to_auth import redir_to_oauth
-
-
 from .JWTToken import AccessToken
 from Models.User import User
 from database import get_db_connection
 
-# automatically checks if there is a Bearer ... token in the Authorizaiton header
+# automatically checks if there is a Bearer token in the Authorization header
+# Cant use OAuth2AuthorizationCodeBearer from fastapi.security because it requires a url to create a token and log in at. \
+# we get the token from canvas so we can't do that.
 token_auth_scheme = HTTPBearer()
 
 
 async def get_current_user(
-  security_scopes: SecurityScopes,
-  jwt_token: HTTPAuthorizationCredentials = Depends(token_auth_scheme), 
-  db: Session = Depends(get_db_connection),
+    security_scopes: SecurityScopes,
+    jwt_token: HTTPAuthorizationCredentials = Depends(token_auth_scheme),
+    db: Session = Depends(get_db_connection),
 ) -> User:
-  """
-  Gets the current user from the database by decoding the jwt bearer token
+    """
+    Gets the current user from the database by decoding the jwt bearer token
 
-  Also checks allowed roles
+    Also checks allowed roles
 
-  Returns the User mapped class
-  """
-  if security_scopes.scopes:
-    scopes = security_scopes.scopes
+    Returns the User mapped class
+    """
+    if security_scopes.scopes:
+        scopes = security_scopes.scopes
 
-  token = AccessToken.decode_token(jwt_token.credentials)
+    token = AccessToken.decode_token(jwt_token.credentials)
 
-  if scopes and not token.roles:
-    # no roles in token, something went wrong whilst making the token.
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No roles found in jwt token")
-  
-  has_required_role = False
+    if scopes and not token.roles:
+        # no roles in token, something went wrong whilst making the token.
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="No roles found in jwt token")
 
-  for token_role in token.roles:
-    if token_role in scopes:
-      has_required_role = True
+    has_required_role = False
 
-  if has_required_role == False:
-    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
+    for token_role in token.roles:
+        if token_role in scopes:
+            # user has one of the required roles so no need to check any further roles
+            has_required_role = True
+            break
 
-  # validate access token against canvas
-  canvas_user = token.validate_self()
+    if has_required_role == False:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Not enough permissions")
 
-  user = User.get_user_by_canvas_id(canvas_user['id'], db)
+    # validate access token against canvas
+    canvas_user = token.validate_self()
 
-  if not User:
-    return redir_to_oauth()
+    user = User.get_user_by_canvas_id(canvas_user['id'], db)
 
-  return user
+    return user
 
 
 async def get_current_active_user(
-  current_user: User = Security(get_current_user, scopes=[])
-) -> User:    
-  """
-  Gets current active user thats making an api request
+    current_user: User = Security(get_current_user, scopes=[])
+) -> User:
+    """
+    Gets current active user thats making an api request
 
-  returns the User mapped class 
-  raises unauthenticated exception if the user is disabled in the database
-  """
-  if current_user.disabled:
-    raise HTTPException(status_code=400, detail="Inactive User")
-  return current_user
+    returns the User mapped class 
+    raises unauthenticated exception if the user is disabled in the database
+    """
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive User")
+    return current_user

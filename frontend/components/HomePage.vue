@@ -2,32 +2,25 @@
   <div>
     <HeaderCom />
     <div class="testpage">
-      <h1 class="pageTitle">Product inleveren</h1>
-      <InputField />
-      <UploadBox />
-      <AspectCommunication />
-      <AspectKnowledge/>
-
+      <h3>FEEBY</h3>
+      <p>hello</p>
     </div>
     <FooterCom />
   </div>
 </template>
+
 <script>
 import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
-
 export default {
-  name: 'CreatePost',
+  name: 'HomePage',
   components: { HeaderCom, FooterCom }
 }
 </script>
 
 <style scoped>
-.testpage {
-  height: 2000px;
+.testpage{
+  height: 100vw;
   z-index: 1;
-}
-.testpage h1 {
-  text-align: center;
 }
 </style>

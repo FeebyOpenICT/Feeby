@@ -15,8 +15,8 @@ module.exports = {
   plugins: [
   ],
   // add your custom rules here
-  "rules": {
-    "trailingComma" : "none",
+  rules: {
+    trailingComma: 1
   },
   overrides: [
     {

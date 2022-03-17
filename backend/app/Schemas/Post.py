@@ -15,4 +15,3 @@ class PostInDB(CreatePost):
 
     class Config:
         orm_mode = True
-
