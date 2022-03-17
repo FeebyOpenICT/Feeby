@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Security
+from typing import List
 from Models.Post import Post
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
@@ -14,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get('/self')
+@router.get('/self',  response_model=List[PostInDB])
 async def get_posts(
         current_active_user: User = Security(
             get_current_active_user,
