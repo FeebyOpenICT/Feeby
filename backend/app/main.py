@@ -7,7 +7,6 @@ from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Auth import Authentication
 from LTI import lti
 from User import users
-from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Posts import Posts
 
 

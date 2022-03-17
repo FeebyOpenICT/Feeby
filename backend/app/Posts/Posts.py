@@ -29,7 +29,7 @@ async def get_posts(
         db: Session = Depends(get_db_connection)
 ):
     """
-    Read post
+    Read post from self
 
     Allowed roles: admin, instructor, student, content_developer, teaching_assistant
     """
@@ -39,18 +39,6 @@ async def get_posts(
 
 @router.post('/', response_model=PostInDB)
 async def post(
-    body: CreatePost,
-    current_active_user: User = Security(
-        get_current_active_user,
-        scopes=[
-        Roles.STUDENT['title'],
-        Roles.ADMIN['title'],
-        Roles.INSTRUCTOR['title'],
-        Roles.CONTENT_DEVELOPER['title'],
-        Roles.TEACHING_ASSISTANT['title'],
-        ]
-    ),
-    db: Session = Depends(get_db_connection)
         body: CreatePost,
         current_active_user: User = Security(
             get_current_active_user,
