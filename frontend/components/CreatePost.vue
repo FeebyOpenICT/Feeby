@@ -8,11 +8,11 @@
       <UploadBox />
       <AspectCommunication />
       <AspectKnowledge/>
-
     </div>
     <FooterCom />
   </div>
 </template>
+
 <script>
 import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
@@ -21,9 +21,6 @@ export default {
   components: { HeaderCom, FooterCom }
 }
 </script>
-
-
-
 
 <style scoped>
 .testpage {

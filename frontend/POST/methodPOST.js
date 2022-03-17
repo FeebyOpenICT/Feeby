@@ -1,17 +1,8 @@
 import axios from 'axios'
+import getCookie from './getCookie'
 
-axios.get('localhost/api/v1/posts/').then (
-  response => console.log(response)
-)
+const axiosInstance = axios.create({
+  headers: {"Authorization": `Bearer` ${getCookie("jwt")},
 
-axios.post ('api/v1/post/', {
-  headers : {
-    'Content-Type' : 'application/json',
-    'Accept' : 'application/json',
-    'Authorization' : 'Bearer {jwt}',
-    "title": "string",
-    "description": "string",
   }
-}).then ( response => console.log(response) )
-
-
+});
