@@ -47,6 +47,8 @@ services:
     command: npm run dev
     depends_on:
       - backend
+    environment:
+      - HOST=0.0.0.0
     labels:
       traefik.enable: true
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)

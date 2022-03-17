@@ -1,13 +1,20 @@
 <template>
   <v-footer
-    color="#0079CF"
-    padless
-    height="50%"
+    class="footer"
+    color="var(--blue)"
   />
 </template>
 
 <script>
+import '../style/style.css'
 export default {
   name: 'FooterCom'
 }
 </script>
+
+<style scoped>
+.footer{
+  padding: 0;
+  height: 5vh;
+}
+</style>

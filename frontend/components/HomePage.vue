@@ -18,7 +18,3 @@ export default {
   components: { HeaderCom, FooterCom, CardCom }
 }
 </script>
-
-<style scoped>
-
-</style>
