@@ -3,7 +3,7 @@ from Models.User import User
 from Models.Role import Role, Roles
 
 
-def test_users_get_self(client, db):
+def test_get_user_self(client, db):
     response = client.get("/users/self")
 
     user: User = db.query(User).filter(User.canvas_id == 1).first()
@@ -21,7 +21,7 @@ def test_users_get_self(client, db):
         assert res_role['id'] == query_role.id
 
 
-def test_users_get_by_id(client, db):
+def test_get_user_by_id(client, db):
     response = client.get("/users/self")
 
     user: User = db.query(User).filter(User.id == 1).first()
@@ -46,7 +46,7 @@ def test_get_user_by_id_not_found(client):
     assert response.json()['detail'] == "Requested user not found in database"
 
 
-def test_users_get_by_canvas_id(client, db):
+def test_get_user_by_canvas_id(client, db):
     # setup new user
     new_user_json = {
         "fullname": "testmename",
