@@ -3,37 +3,33 @@ from Models.User import User
 from Models.Role import Role, Roles
 
 
-def test_get_user_self(client, db):
+def test_get_user_self(client, db, current_active_user):
     response = client.get("/users/self")
 
-    user: User = db.query(User).filter(User.canvas_id == 1).first()
-
     assert response.status_code == 200
-    assert response.json()['id'] == user.id
-    assert response.json()['fullname'] == user.fullname
-    assert response.json()['canvas_email'] == user.canvas_email
-    assert response.json()['canvas_id'] == user.canvas_id
-    assert response.json()['disabled'] == user.disabled
+    assert response.json()['id'] == current_active_user.id
+    assert response.json()['fullname'] == current_active_user.fullname
+    assert response.json()['canvas_email'] == current_active_user.canvas_email
+    assert response.json()['canvas_id'] == current_active_user.canvas_id
+    assert response.json()['disabled'] == current_active_user.disabled
 
-    for res_role, query_role in zip(response.json()['roles'], user.roles):
+    for res_role, query_role in zip(response.json()['roles'], current_active_user.roles):
         assert res_role['title'] == query_role.title
         assert res_role['description'] == query_role.description
         assert res_role['id'] == query_role.id
 
 
-def test_get_user_by_id(client, db):
+def test_get_user_by_id(client, current_active_user):
     response = client.get("/users/self")
 
-    user: User = db.query(User).filter(User.id == 1).first()
-
     assert response.status_code == 200
-    assert response.json()['id'] == user.id
-    assert response.json()['fullname'] == user.fullname
-    assert response.json()['canvas_email'] == user.canvas_email
-    assert response.json()['canvas_id'] == user.canvas_id
-    assert response.json()['disabled'] == user.disabled
+    assert response.json()['id'] == current_active_user.id
+    assert response.json()['fullname'] == current_active_user.fullname
+    assert response.json()['canvas_email'] == current_active_user.canvas_email
+    assert response.json()['canvas_id'] == current_active_user.canvas_id
+    assert response.json()['disabled'] == current_active_user.disabled
 
-    for res_role, query_role in zip(response.json()['roles'], user.roles):
+    for res_role, query_role in zip(response.json()['roles'], current_active_user.roles):
         assert res_role['title'] == query_role.title
         assert res_role['description'] == query_role.description
         assert res_role['id'] == query_role.id
