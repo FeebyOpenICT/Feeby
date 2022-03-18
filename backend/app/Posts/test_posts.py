@@ -1,4 +1,4 @@
-def test_create_post(client):
+def test_post_create_post(client):
     data = {
         "title": "test",
         "description": "testdesc"
@@ -9,7 +9,7 @@ def test_create_post(client):
     assert response.json()['description'] == "testdesc"
 
 
-def test_empty_get_post(client):
+def test_get_empty_posts(client):
     response = client.get("/posts/self")
     assert response.status_code == 200
     assert response.json() == []

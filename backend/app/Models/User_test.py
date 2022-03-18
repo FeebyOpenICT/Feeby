@@ -1,3 +1,4 @@
+import pytest
 from Models.User import User
 from Models.Role import Role, Roles
 from sqlalchemy.orm import Session
@@ -12,6 +13,16 @@ def test_find_user_by_id(db: Session, current_active_user: User):
         assert isinstance(role, Role)
 
     assert test_user == current_active_user
+    assert isinstance(test_user.id, int)
+    assert isinstance(test_user.fullname, str)
+    assert isinstance(test_user.canvas_email, str)
+    assert isinstance(test_user.canvas_id, int)
+    assert isinstance(test_user.disabled, bool)
+
+
+def test_initiate_user_without_roles(db: Session):
+    with pytest.raises(ValueError):
+        user = User("kajshdf", "kajhsdf", 2, False, [])
 
 
 def test_find_user_by_canvas_id(db: Session, current_active_user: User):

@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+import sqlite3
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
@@ -40,6 +42,8 @@ class User(Base):
         self.canvas_email = canvas_email
         self.canvas_id = canvas_id
         self.disabled = disabled
+        if len(roles) == 0:
+            raise ValueError("roles may not be empty")
         self.roles = roles
         super().__init__(**kwargs)
 
