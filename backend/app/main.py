@@ -8,10 +8,11 @@ from Auth import Authentication
 from LTI import lti
 from User import users
 from Posts import Posts
+from Aspect import Aspects
 
 
 from database import engine
-# Chain: Role > User_Role > User > Post
+# Chain: Role > User_Role > User > Post > Aspect
 # Import base from latest in chain so base gets initialized in all models before getting called
 # same as in test_main
 from Models.Post import Base
@@ -38,6 +39,8 @@ app.include_router(Authentication.router)
 app.include_router(users.router)
 
 app.include_router(Posts.router)
+
+app.include_router(Aspects.router)
 
 if __name__ == "__main__":
     uvicorn.run("__main__:app", host="0.0.0.0",
