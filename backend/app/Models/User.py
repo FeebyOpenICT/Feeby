@@ -31,11 +31,11 @@ class User(Base):
 
     def __init__(
         self,
-        fullname: str = None,
-        canvas_email: str = None,
-        canvas_id: int = None,
-        disabled: bool = False,
-        roles: List[Role] = [],
+        fullname: str,
+        canvas_email: str,
+        canvas_id: int,
+        disabled: bool,
+        roles: List[Role],
         **kwargs
     ) -> None:
         self.fullname = fullname
