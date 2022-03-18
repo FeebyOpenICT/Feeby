@@ -1,3 +1,85 @@
-def test_users_get_self(client):
+import json
+from Models.User import User
+from Models.Role import Role, Roles
+
+
+def test_users_get_self(client, db):
     response = client.get("/users/self")
+
+    user: User = db.query(User).filter(User.canvas_id == 1).first()
+
     assert response.status_code == 200
+    assert response.json()['id'] == user.id
+    assert response.json()['fullname'] == user.fullname
+    assert response.json()['canvas_email'] == user.canvas_email
+    assert response.json()['canvas_id'] == user.canvas_id
+    assert response.json()['disabled'] == user.disabled
+
+    for res_role, query_role in zip(response.json()['roles'], user.roles):
+        assert res_role['title'] == query_role.title
+        assert res_role['description'] == query_role.description
+        assert res_role['id'] == query_role.id
+
+
+def test_users_get_by_id(client, db):
+    response = client.get("/users/self")
+
+    user: User = db.query(User).filter(User.id == 1).first()
+
+    assert response.status_code == 200
+    assert response.json()['id'] == user.id
+    assert response.json()['fullname'] == user.fullname
+    assert response.json()['canvas_email'] == user.canvas_email
+    assert response.json()['canvas_id'] == user.canvas_id
+    assert response.json()['disabled'] == user.disabled
+
+    for res_role, query_role in zip(response.json()['roles'], user.roles):
+        assert res_role['title'] == query_role.title
+        assert res_role['description'] == query_role.description
+        assert res_role['id'] == query_role.id
+
+
+def test_get_user_by_id_not_found(client):
+    response = client.get('/users/canvas/999999')
+
+    assert response.status_code == 404
+    assert response.json()['detail'] == "Requested user not found in database"
+
+
+def test_users_get_by_canvas_id(client, db):
+    # setup new user
+    new_user_json = {
+        "fullname": "testmename",
+        "canvas_id": 2,
+        "canvas_email": "testmeemail@hu.nl",
+        "disabled": False,
+        "roles": [
+            Role.get_role(Roles.ADMIN, db),
+            Role.get_role(Roles.CONTENT_DEVELOPER, db),
+            Role.get_role(Roles.INSTRUCTOR, db),
+        ]
+    }
+
+    new_user = User(**new_user_json)
+    new_user = new_user.save_self(db)
+
+    response = client.get(f"/users/canvas/{new_user_json['canvas_id']}")
+
+    assert response.status_code == 200
+    assert response.json()['id'] == new_user.id
+    assert response.json()['fullname'] == new_user.fullname
+    assert response.json()['canvas_email'] == new_user.canvas_email
+    assert response.json()['canvas_id'] == new_user.canvas_id
+    assert response.json()['disabled'] == new_user.disabled
+
+    for res_role, query_role in zip(response.json()['roles'], new_user.roles):
+        assert res_role['title'] == query_role.title
+        assert res_role['description'] == query_role.description
+        assert res_role['id'] == query_role.id
+
+
+def test_get_user_by_canvas_id_not_found(client):
+    response = client.get('/users/canvas/999999')
+
+    assert response.status_code == 404
+    assert response.json()['detail'] == "Requested user not found in database"
