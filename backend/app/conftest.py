@@ -110,3 +110,9 @@ def client(db):
     app.dependency_overrides[get_current_active_user] = override_get_current_active_user
 
     yield TestClient(app)
+
+
+@pytest.fixture()
+def current_active_user(db) -> User:
+    user = User.get_user_by_canvas_id(1, db)
+    yield user
