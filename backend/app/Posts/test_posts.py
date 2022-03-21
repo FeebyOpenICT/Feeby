@@ -24,6 +24,8 @@ def test_get_posts_self(client, db, current_active_user):
     post1.save_self(db)
     post2.save_self(db)
 
+    print("ignore me")
+
     response = client.get('/posts/self')
 
     assert response.status_code == 200
