@@ -22,32 +22,6 @@ import '../style/style.css'
 
 export default {
   name: 'CardCom',
-  props: {
-    id: {
-      type: Number,
-      required: true
-    },
-    user_id: {
-      type: Number,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    time_created: {
-      type: Date,
-      required: true
-    },
-    time_updated: {
-      type: Date,
-      required: true
-    }
-  },
   data () {
     return {
       lists: [
@@ -63,7 +37,7 @@ export default {
           id: 3,
           user_id: 1,
           title: 'test3',
-          description: 'tLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
+          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
           time_created: '07-02-2022',
           time_updated: ''
         },
@@ -114,7 +88,7 @@ export default {
 .postcard{
     width: 90vw;
     height: 25vh;
-    overflow: auto;
+    overflow: hidden;
     position: relative;
     left: 5vw;
     border-style: hidden solid solid;
