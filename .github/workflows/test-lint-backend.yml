@@ -17,13 +17,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: '/backend'
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: "3.9"
         cache: 'pip'
+        working-directory: 'backend'
     - name: Install dependencies
       working-directory: backend
       run: |
