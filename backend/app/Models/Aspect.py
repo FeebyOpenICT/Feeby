@@ -27,7 +27,7 @@ class Aspect(Base):
         """
         Gets post object mapping from db
         """
-        db_aspects = db.query(Aspect).all()
+        db_aspects = db.query(Aspect).order_by(Aspect.title).all()
         return db_aspects
 
     def save_self(self, db: Session):
