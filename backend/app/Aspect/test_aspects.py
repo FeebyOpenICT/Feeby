@@ -1,4 +1,4 @@
-def test_create_post(client):
+def test_create_aspect(client):
     data = {
         "title": "test",
         "short_description": "testshort",
