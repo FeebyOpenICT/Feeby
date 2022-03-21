@@ -11,7 +11,7 @@ on:
     
 defaults:
   run:
-    working-directory: ./backend/app
+    working-directory: backend/app
 
 jobs:
   build:
