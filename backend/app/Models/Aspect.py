@@ -2,9 +2,10 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from .Post import Base
+from .SaveableModel import SaveableModel
 
 
-class Aspect(Base):
+class Aspect(Base, SaveableModel):
     """
     Mapped Aspect class
 
@@ -29,10 +30,3 @@ class Aspect(Base):
         """
         db_aspects = db.query(Aspect).order_by(Aspect.title).all()
         return db_aspects
-
-    def save_self(self, db: Session):
-        db.add(self)
-        db.commit()
-        db.refresh(self)
-        return self
-
