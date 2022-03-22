@@ -2,18 +2,18 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class Post(BaseModel):
+class AspectRating(BaseModel):
     title: str
+    short_description: str
     description: str
 
 
-class CreatePost(Post):
+class CreateAspectRating(AspectRating):
     pass
 
 
-class PostInDB(Post):
+class AspectRatingInDB(AspectRating):
     id: int
-    user_id: int
     time_created: datetime
     time_updated: datetime
 

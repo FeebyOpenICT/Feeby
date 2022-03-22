@@ -3,18 +3,19 @@ from Models.Aspect import Aspect
 from typing import List
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
-from Schemas.Aspect import CreateAspect, AspectInDB
+from Models.AspectRating import AspectRating
+from Schemas.AspectRating import AspectRatingInDB, CreateAspectRating
 from database import get_db_connection
 from Models.Role import Roles
 from Models.User import User
 
 router = APIRouter(
-    prefix="/aspects",
-    tags=["Aspects"]
+    prefix="/aspects/ratings",
+    tags=["Aspect ratings"]
 )
 
 
-@router.get('/', response_model=List[AspectInDB])
+@router.get('/', response_model=List[AspectRatingInDB])
 async def get_aspects(
         current_active_user: User = Security(
             get_current_active_user,
@@ -29,17 +30,17 @@ async def get_aspects(
         db: Session = Depends(get_db_connection)
 ):
     """
-    Read all Aspects
+    Read all Aspects Ratings
 
-    Allowed roles: admin, instructor
+    Allowed roles: admin, instructor, content_developer, teaching_assistant, student
     """
-    all_aspects = Aspect.get_all_aspects(db)
-    return all_aspects
+    all_aspect_ratings = AspectRating.get_aspect_ratings(db)
+    return all_aspect_ratings
 
 
-@router.post('/', response_model=AspectInDB)
+@router.post('/', response_model=AspectRatingInDB)
 async def aspect(
-        body: CreateAspect,
+        body: CreateAspectRating,
         current_active_user: User = Security(
             get_current_active_user,
             scopes=[
@@ -50,15 +51,14 @@ async def aspect(
         db: Session = Depends(get_db_connection)
 ):
     """
-    Create aspect
+    Create aspect rating
 
     Allowed roles: admin, instructor
     """
-    aspect = Aspect(
+    aspect_rating = AspectRating(
         title=body.title,
         short_description=body.short_description,
         description=body.description,
-        external_url=body.external_url,
     )
-    aspect.save_self(db)
-    return aspect
+    aspect_rating.save_self(db)
+    return aspect_rating

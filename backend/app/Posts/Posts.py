@@ -3,7 +3,7 @@ from typing import List
 from Models.Post import Post
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
-from Schemas.Post import CreatePost
+from Schemas.Post import CreatePost, Post
 from database import get_db_connection
 from Models.Role import Roles
 from Models.User import User

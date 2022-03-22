@@ -13,7 +13,7 @@ class AspectRating(Base, SaveableModel):
 
     Represents an aspect in the database
     """
-    __tablename__ = 'aspect'
+    __tablename__ = 'aspect_rating'
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
@@ -25,7 +25,7 @@ class AspectRating(Base, SaveableModel):
 
     # static not class method because I want it to always return an Aspect instance
     @staticmethod
-    def get_aspect_ratings(db: Session):
+    def get_all_aspect_ratings(db: Session):
         """
         Gets aspect rating object mappings from db
 

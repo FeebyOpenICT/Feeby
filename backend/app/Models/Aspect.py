@@ -24,7 +24,7 @@ class Aspect(Base, SaveableModel):
 
     # static not class method because I want it to always return an Aspect instance
     @staticmethod
-    def get_aspects(db: Session):
+    def get_all_aspects(db: Session):
         """
         Gets aspect object mappings from db
 
