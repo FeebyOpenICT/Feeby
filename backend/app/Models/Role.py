@@ -75,5 +75,5 @@ class Role(Base, SaveableModel):
         if not db_role:
             db_role = Role(title=role['title'],
                            description=role['description'])
-            db_role.save_self()
+            db_role.save_self(db)
         return db_role
