@@ -87,7 +87,11 @@ export default {
 <style scoped>
 .postcard{
     width: 90vw;
+    max-width: 90vw;
+    min-width: 30vw;
     height: 25vh;
+    min-height: 10vw;
+    max-height: 25vw;
     overflow: hidden;
     position: relative;
     left: 5vw;
