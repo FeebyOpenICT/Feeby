@@ -8,7 +8,7 @@ from Auth import Authentication
 from LTI import lti
 from Users import users
 from Posts import Posts
-from Aspect import Aspects
+from Aspects import Aspects
 from AspectRatings import AspectRatings
 
 
