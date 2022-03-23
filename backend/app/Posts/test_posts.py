@@ -7,7 +7,7 @@ def test_post_create_post(client):
         "description": "testdesc"
     }
     response = client.post("/posts/", json=data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['title'] == "test"
     assert response.json()['description'] == "testdesc"
 

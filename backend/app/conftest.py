@@ -12,9 +12,10 @@ from Auth import Authentication
 from LTI import lti
 from Models.Role import Role, Roles
 from Models.User import User
-from User import users
+from Users import users
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Posts import Posts
+from Aspects import Aspects
 ######
 
 # Import the SQLAlchemy parts
@@ -23,7 +24,11 @@ from sqlalchemy.orm import sessionmaker, Session
 
 from database import get_db_connection
 from Auth.validate_user import get_current_active_user
-from Models.Post import Base
+
+# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Role
+# Import base from latest in chain so base gets initialized in all models before getting called
+# same as in main.py
+from Models.Aspect_Rating import Base
 
 # Create the new database session
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -104,6 +109,8 @@ def client(db):
     app.include_router(users.router)
 
     app.include_router(Posts.router)
+
+    app.include_router(Aspects.router)
 
     app.dependency_overrides[get_db_connection] = override_get_db
 

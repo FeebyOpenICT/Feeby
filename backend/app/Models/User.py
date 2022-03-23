@@ -5,12 +5,14 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
-from .Role import Role, Roles
+from Models.SaveableModel import SaveableModel
+from .Role import Role
 from .User_Role import Base
+
 from Exceptions.NotFound import NotFound
 
 
-class User(Base):
+class User(Base, SaveableModel):
     """
     Mapped User class
 
@@ -83,14 +85,3 @@ class User(Base):
             raise NotFound("user")
 
         return user
-
-    def save_self(self, db: Session):
-        """
-        Saves own instance in the database
-
-        Returns a python user mapped class from the database
-        """
-        db.add(self)
-        db.commit()
-        db.refresh(self)
-        return self
