@@ -1,10 +1,11 @@
+from typing import Any
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 
 from Models.SaveableModel import SaveableModel
 
-from .Aspect import Base
+from .Post import Base
 
 
 class Rating(Base, SaveableModel):
@@ -22,6 +23,12 @@ class Rating(Base, SaveableModel):
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
+
+    def __init__(self, title: str, short_description: str, description: str,) -> None:
+        self.title = title
+        self.short_description = short_description
+        self.description = description
+        super().__init__()
 
     # static not class method because I want it to always return an Aspect instance
     @staticmethod

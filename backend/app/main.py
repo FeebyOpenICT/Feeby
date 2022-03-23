@@ -13,7 +13,7 @@ from Ratings import Ratings
 
 
 from database import engine
-# Chain: Role > User_Role > User > Post > Aspect > Rating > Aspect_Role
+# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Role
 # Import base from latest in chain so base gets initialized in all models before getting called
 # same as in test_main
 from Models.Aspect_Rating import Base
