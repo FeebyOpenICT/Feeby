@@ -6,16 +6,17 @@ from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authent
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Auth import Authentication
 from LTI import lti
-from User import users
+from Users import users
 from Posts import Posts
-from Aspect import Aspects
+from Aspects import Aspects
+from Ratings import Ratings
 
 
 from database import engine
-# Chain: Role > User_Role > User > Post > Aspect
+# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Role
 # Import base from latest in chain so base gets initialized in all models before getting called
 # same as in test_main
-from Models.Post import Base
+from Models.Aspect_Rating import Base
 
 # Create all tables in database
 Base.metadata.create_all(bind=engine)
@@ -23,24 +24,28 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Feeby",
     version=1,
-    root_path="/api/v1" # Docker
+    root_path="/api/v1"  # Docker
 )
 
-app.add_exception_handler(OAuth2AuthenticationException, oauth2_authentication_exception_handler)
+app.add_exception_handler(OAuth2AuthenticationException,
+                          oauth2_authentication_exception_handler)
 
-app.add_exception_handler(LTILaunchException, lti_launch_authentication_exception_handler)
+app.add_exception_handler(
+    LTILaunchException, lti_launch_authentication_exception_handler)
 
 app.add_exception_handler(NotFound, not_found_exception_handler)
 
 app.include_router(lti.router)
 
 app.include_router(Authentication.router)
- 
+
 app.include_router(users.router)
 
 app.include_router(Posts.router)
 
 app.include_router(Aspects.router)
+
+app.include_router(Ratings.router)
 
 if __name__ == "__main__":
     uvicorn.run("__main__:app", host="0.0.0.0",

@@ -1,10 +1,12 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Session, relationship
-from .User import Base
+
+from .SaveableModel import SaveableModel
+from .User import Base, User
 
 
-class Post(Base):
+class Post(Base, SaveableModel):
     """
     Mapped Post class
 
@@ -22,7 +24,7 @@ class Post(Base):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('User')
 
-    def __init__(self, title, description, user) -> None:
+    def __init__(self, title, description, user: User) -> None:
         self.title = title
         self.description = description
         self.user = user
@@ -36,9 +38,3 @@ class Post(Base):
         """
         db_posts = db.query(Post).filter(Post.user_id == user_id).all()
         return db_posts
-
-    def save_self(self, db: Session):
-        db.add(self)
-        db.commit()
-        db.refresh(self)
-        return self

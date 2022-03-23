@@ -11,6 +11,7 @@ from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 from Models.User import *
+from Models.Role import Roles
 
 router = APIRouter(
     prefix="/auth",
@@ -79,13 +80,14 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
             if not jwt_token.roles:
                 raise OAuth2AuthenticationException(
                     400, "Bad roles", "No roles given in JWT token. Please try reauthenticating via the lti launch")
-
-            user = User(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
-                        canvas_id=jwt_token.canvas_id, roles=[])
+            roles = []
 
             for role in jwt_token.roles:
                 role = getattr(Roles, role.upper())
-                user.roles.append(Role.get_role(role, db))
+                roles.append(Role.get_role(role, db))
+
+            user = User(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
+                        canvas_id=jwt_token.canvas_id, roles=roles, disabled=False)
 
             user.save_self(db)
 

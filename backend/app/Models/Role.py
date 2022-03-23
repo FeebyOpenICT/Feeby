@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import Session
+
+from .SaveableModel import SaveableModel
 from database import Base
 
 
@@ -43,13 +45,14 @@ class Roles:
     }
 
 
-class Role(Base):
+class Role(Base, SaveableModel):
     """
     Mapped Role class
 
     Represents a role in the database
     """
     __tablename__ = 'role'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False,
@@ -73,7 +76,5 @@ class Role(Base):
         if not db_role:
             db_role = Role(title=role['title'],
                            description=role['description'])
-            db.add(db_role)
-            db.commit()
-            db.refresh(db_role)
+            db_role.save_self(db)
         return db_role

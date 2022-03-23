@@ -1,14 +1,18 @@
+from dataclasses import dataclass
+import sqlite3
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
-from .Role import Role, Roles
+from Models.SaveableModel import SaveableModel
+from .Role import Role
 from .User_Role import Base
+
 from Exceptions.NotFound import NotFound
 
 
-class User(Base):
+class User(Base, SaveableModel):
     """
     Mapped User class
 
@@ -29,17 +33,19 @@ class User(Base):
 
     def __init__(
         self,
-        fullname: str = None,
-        canvas_email: str = None,
-        canvas_id: int = None,
-        disabled: bool = False,
-        roles: List[Role] = [],
+        fullname: str,
+        canvas_email: str,
+        canvas_id: int,
+        disabled: bool,
+        roles: List[Role],
         **kwargs
     ) -> None:
         self.fullname = fullname
         self.canvas_email = canvas_email
         self.canvas_id = canvas_id
         self.disabled = disabled
+        if len(roles) == 0:
+            raise ValueError("roles may not be empty")
         self.roles = roles
         super().__init__(**kwargs)
 
@@ -79,14 +85,3 @@ class User(Base):
             raise NotFound("user")
 
         return user
-
-    def save_self(self, db: Session):
-        """
-        Saves own instance in the database
-
-        Returns a python user mapped class from the database
-        """
-        db.add(self)
-        db.commit()
-        db.refresh(self)
-        return self
