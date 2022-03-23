@@ -27,9 +27,7 @@ export default {
     value: ''
   })
 }
-
 </script>
-
 <style>
 @import '.css/styles.css';
 #characterLimit{
