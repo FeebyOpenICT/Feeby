@@ -6,7 +6,7 @@ def test_create_aspect(client):
         "external_url": "testurl"
     }
     response = client.post("/aspects/", json=data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['title'] == "test"
     assert response.json()['short_description'] == "testshort"
     assert response.json()['description'] == "testdesc"

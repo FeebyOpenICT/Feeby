@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Security
+from fastapi import APIRouter, Depends, Security, status
 from Models.Aspect import Aspect
 from typing import List
 from Auth.validate_user import get_current_active_user
@@ -37,7 +37,7 @@ async def get_aspects(
     return all_aspects
 
 
-@router.post('/', response_model=AspectInDB)
+@router.post('/', response_model=AspectInDB, status_code=status.HTTP_201_CREATED)
 async def aspect(
         body: CreateAspect,
         current_active_user: User = Security(
