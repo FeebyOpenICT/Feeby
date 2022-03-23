@@ -7,6 +7,7 @@ from Schemas.Aspect import CreateAspect, AspectInDB
 from database import get_db_connection
 from Models.Role import Roles
 from Models.User import User
+from Models.Rating import Rating
 
 router = APIRouter(
     prefix="/aspects",
@@ -54,11 +55,17 @@ async def aspect(
 
     Allowed roles: admin, instructor
     """
+    ratings = [Rating.get_rating_by_id(rating_id=rating_id, db=db)
+               for rating_id in body.rating_ids]
+
     aspect = Aspect(
         title=body.title,
         short_description=body.short_description,
         description=body.description,
         external_url=body.external_url,
+        ratings=ratings
     )
+
     aspect.save_self(db)
+
     return aspect

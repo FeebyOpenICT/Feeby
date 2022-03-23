@@ -1,7 +1,7 @@
 from Models.User import User
 from Models.Role import Roles
 from database import get_db_connection
-from Schemas.AspectRating import AspectRatingInDB, CreateAspectRating
+from Schemas.Rating import RatingInDB, CreateRating
 from Models.Rating import Rating
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[AspectRatingInDB])
+@router.get('/', response_model=List[RatingInDB])
 async def get_ratings(
         current_active_user: User = Security(
             get_current_active_user,
@@ -33,13 +33,13 @@ async def get_ratings(
 
     Allowed roles: admin, instructor, content_developer, teaching_assistant, student
     """
-    all_aspect_ratings = Rating.get_aspect_ratings(db)
+    all_aspect_ratings = Rating.get_all_aspect_ratings(db)
     return all_aspect_ratings
 
 
-@router.post('/', response_model=AspectRatingInDB, status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=RatingInDB, status_code=status.HTTP_201_CREATED)
 async def create_aspect(
-        body: CreateAspectRating,
+        body: CreateRating,
         current_active_user: User = Security(
             get_current_active_user,
             scopes=[

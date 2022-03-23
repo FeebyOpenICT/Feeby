@@ -2,6 +2,7 @@ from typing import Any
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
+from Exceptions.NotFound import NotFound
 
 from Models.SaveableModel import SaveableModel
 
@@ -41,3 +42,17 @@ class Rating(Base, SaveableModel):
         db_aspect_ratings = db.query(
             Rating).order_by(Rating.title).all()
         return db_aspect_ratings
+
+    @staticmethod
+    def get_rating_by_id(rating_id: int, db: Session):
+        """
+        Get rating object mapping from db
+
+        return rating mapped object class
+        """
+        rating = db.query(Rating).filter(Rating.id == rating_id).first()
+
+        if not rating:
+            raise NotFound(f"rating: {rating_id}")
+
+        return rating
