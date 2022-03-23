@@ -1,7 +1,7 @@
 <template>
-  <div id="header">
+  <div id="postcard">
     <v-card
-      v-for="card in orderedLists"
+      v-for="card in cards"
       :key="card.id"
       class="postcard"
     >
@@ -13,73 +13,32 @@
         {{ card.description }}
       </v-card-text>
     </v-card>
+    <p>{{ cards }}</p>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import '../style/style.css'
+import { axiosInstance } from '../lib/axiosInstance'
 
 export default {
   name: 'CardCom',
   data () {
     return {
-      lists: [
-        {
-          id: 1,
-          user_id: 1,
-          title: 'test1',
-          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
-          time_created: '11-03-2022',
-          time_updated: ''
-        },
-        {
-          id: 3,
-          user_id: 1,
-          title: 'test3',
-          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
-          time_created: '07-02-2022',
-          time_updated: ''
-        },
-        {
-          id: 2,
-          user_id: 1,
-          title: 'test2',
-          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
-          time_created: '14-03-2022',
-          time_updated: ''
-        },
-        {
-          id: 5,
-          user_id: 1,
-          title: 'test5',
-          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
-          time_created: '15-05-2022',
-          time_updated: ''
-        },
-        {
-          id: 6,
-          user_id: 1,
-          title: 'test6',
-          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
-          time_created: '07-06-2022',
-          time_updated: ''
-        },
-        {
-          id: 4,
-          user_id: 1,
-          title: 'test4',
-          description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.',
-          time_created: '14-04-2022',
-          time_updated: ''
-        }
-      ]
+      cards: null
     }
   },
   computed: {
-    orderedLists () {
-      return _.orderBy(this.lists, 'time_created')
+    orderedCards () {
+      return _.orderBy(this.cards, 'time_created')
     }
+  },
+  mounted () {
+    axiosInstance
+      .get('/api/v1/posts/self')
+      .then(response => (this.cards = response.data), console.log(this.cards))
+      .catch(error => console.log(error))
   }
 }
 </script>
