@@ -6,7 +6,7 @@ from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authent
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Auth import Authentication
 from LTI import lti
-from User import users
+from Users import users
 from Posts import Posts
 from Aspect import Aspects
 from AspectRatings import AspectRatings
