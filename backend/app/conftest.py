@@ -24,7 +24,11 @@ from sqlalchemy.orm import sessionmaker, Session
 
 from database import get_db_connection
 from Auth.validate_user import get_current_active_user
-from Models.Post import Base
+
+# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Role
+# Import base from latest in chain so base gets initialized in all models before getting called
+# same as in main.py
+from Models.Aspect_Rating import Base
 
 # Create the new database session
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
