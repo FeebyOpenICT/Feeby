@@ -7,13 +7,13 @@ from Models.SaveableModel import SaveableModel
 from .Aspect import Base
 
 
-class AspectRating(Base, SaveableModel):
+class Rating(Base, SaveableModel):
     """
     Mapped Aspect class
 
     Represents an aspect in the database
     """
-    __tablename__ = 'aspect_rating'
+    __tablename__ = 'rating'
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
@@ -32,5 +32,5 @@ class AspectRating(Base, SaveableModel):
         returns a list of aspect rating mapped classes, returns an empty list if none are found
         """
         db_aspect_ratings = db.query(
-            AspectRating).order_by(AspectRating.title).all()
+            Rating).order_by(Rating.title).all()
         return db_aspect_ratings

@@ -1,22 +1,21 @@
-from fastapi import APIRouter, Depends, Security
-from Models.Aspect import Aspect
-from typing import List
-from Auth.validate_user import get_current_active_user
-from sqlalchemy.orm import Session
-from Models.AspectRating import AspectRating
-from Schemas.AspectRating import AspectRatingInDB, CreateAspectRating
-from database import get_db_connection
-from Models.Role import Roles
 from Models.User import User
+from Models.Role import Roles
+from database import get_db_connection
+from Schemas.AspectRating import AspectRatingInDB, CreateAspectRating
+from Models.Rating import Rating
+from sqlalchemy.orm import Session
+from Auth.validate_user import get_current_active_user
+from typing import List
+from fastapi import APIRouter, Depends, Security, status
 
 router = APIRouter(
     prefix="/ratings",
-    tags=["Aspect ratings"]
+    tags=["Ratings"]
 )
 
 
 @router.get('/', response_model=List[AspectRatingInDB])
-async def get_aspects(
+async def get_ratings(
         current_active_user: User = Security(
             get_current_active_user,
             scopes=[
@@ -34,12 +33,12 @@ async def get_aspects(
 
     Allowed roles: admin, instructor, content_developer, teaching_assistant, student
     """
-    all_aspect_ratings = AspectRating.get_aspect_ratings(db)
+    all_aspect_ratings = Rating.get_aspect_ratings(db)
     return all_aspect_ratings
 
 
-@router.post('/', response_model=AspectRatingInDB)
-async def aspect(
+@router.post('/', response_model=AspectRatingInDB, status_code=status.HTTP_201_CREATED)
+async def create_aspect(
         body: CreateAspectRating,
         current_active_user: User = Security(
             get_current_active_user,
@@ -55,7 +54,7 @@ async def aspect(
 
     Allowed roles: admin, instructor
     """
-    aspect_rating = AspectRating(
+    aspect_rating = Rating(
         title=body.title,
         short_description=body.short_description,
         description=body.description,

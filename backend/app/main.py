@@ -9,14 +9,14 @@ from LTI import lti
 from Users import users
 from Posts import Posts
 from Aspects import Aspects
-from AspectRatings import AspectRatings
+from Ratings import Ratings
 
 
 from database import engine
 # Chain: Role > User_Role > User > Post > Aspect > AspectRating
 # Import base from latest in chain so base gets initialized in all models before getting called
 # same as in test_main
-from Models.AspectRating import Base
+from Models.Rating import Base
 
 # Create all tables in database
 Base.metadata.create_all(bind=engine)
@@ -45,7 +45,7 @@ app.include_router(Posts.router)
 
 app.include_router(Aspects.router)
 
-app.include_router(AspectRatings.router)
+app.include_router(Ratings.router)
 
 if __name__ == "__main__":
     uvicorn.run("__main__:app", host="0.0.0.0",
