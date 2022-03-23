@@ -10,7 +10,7 @@ from Models.Role import Roles
 from Models.User import User
 
 router = APIRouter(
-    prefix="/aspects/ratings",
+    prefix="/ratings",
     tags=["Aspect ratings"]
 )
 
