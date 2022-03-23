@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, relationship
 from sqlalchemy.sql import func
 from .Post import Base
 from .SaveableModel import SaveableModel
@@ -21,6 +21,8 @@ class Aspect(Base, SaveableModel):
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
+
+    ratings = relationship("Rating", secondary='aspect_rating')
 
     # static not class method because I want it to always return an Aspect instance
     @staticmethod
