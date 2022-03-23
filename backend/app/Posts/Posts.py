@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Security
+from fastapi import APIRouter, Depends, Security, status
 from typing import List
 from Models.Post import Post
 from Auth.validate_user import get_current_active_user
@@ -38,7 +38,7 @@ async def get_posts(
     return all_posts
 
 
-@router.post('/', response_model=PostInDB)
+@router.post('/', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
 async def post(
         body: CreatePost,
         current_active_user: User = Security(
