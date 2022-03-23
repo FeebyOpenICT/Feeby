@@ -13,7 +13,6 @@
         {{ card.description }}
       </v-card-text>
     </v-card>
-    <p>{{ cards }}</p>
   </div>
 </template>
 
@@ -37,7 +36,7 @@ export default {
   mounted () {
     axiosInstance
       .get('/api/v1/posts/self')
-      .then(response => (this.cards = response.data), console.log(this.cards))
+      .then(response => (this.cards = response.data))
       .catch(error => console.log(error))
   }
 }
