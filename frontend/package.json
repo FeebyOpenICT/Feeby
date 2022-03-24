@@ -15,6 +15,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
+    "chokidar": "^3.5.3",
     "core-js": "^3.19.3",
     "nuxt": "^2.15.8",
     "vue": "^2.6.14",
