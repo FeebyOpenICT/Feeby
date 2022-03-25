@@ -1,40 +1,50 @@
-
-.textField{
+.textField {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   min-height: 75px;
   padding: 15px;
   opacity: 100%;
-  border-color: #0079CF;
+  border-color: #0079cf;
   border-width: 2px;
   border-style: solid;
   margin: 25px 15px;
 }
 
-.pageTitle{
+.pageTitle {
   font-size: 32px;
   font-weight: bold;
   margin-top: 15px;
 }
 .textBoxTitle {
-  font-size: 16px;
+  font-size: 28px;
 }
 
-#aspectCheck{
-  background-color: #0079CF;
-
+#aspectCheck {
+  background-color: #0079cf;
 }
-#productTextContainer{
+#productTextContainer {
   margin-bottom: 50px;
 }
-.underlineContent{
-  display:inline-block;
-  width:90%;
-  border: 1px solid #0079CF;
+.underlineContent {
+  display: inline-block;
+  width: 90%;
+  border: 1px solid #0079cf;
 }
-.checkBoxContainer{
+.checkBoxContainer {
   max-width: 90%;
   margin: 0 auto;
 }
 #textFieldContainer {
   max-height: 25%;
+}
+.aspectRatingsBox {
+  width: 90%;
+  max-height: 25%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  min-height: 75px;
+  padding: 15px;
+  opacity: 100%;
+  border-color: #0079cf;
+  border-width: 2px;
+  border-style: solid;
+  margin: 25px 15px;
 }
