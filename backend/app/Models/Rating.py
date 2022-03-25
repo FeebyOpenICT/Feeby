@@ -16,6 +16,7 @@ class Rating(Base, SaveableModel):
     Represents an aspect in the database
     """
     __tablename__ = 'rating'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)

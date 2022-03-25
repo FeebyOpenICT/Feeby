@@ -79,4 +79,4 @@ def test_get_user_by_canvas_id_not_found(client):
 
     assert response.status_code == 404
     assert response.json()[
-        'detail'] == "Requested user: 999999 not found in database"
+        'detail'] == "Requested user not found in database"

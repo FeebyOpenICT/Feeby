@@ -13,6 +13,7 @@ class Post(Base, SaveableModel):
     Represents a post in the database
     """
     __tablename__ = 'post'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)

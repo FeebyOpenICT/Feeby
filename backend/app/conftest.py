@@ -26,7 +26,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from database import get_db_connection
 from Auth.validate_user import get_current_active_user
 
-# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Role
+# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Rating
 # Import base from latest in chain so base gets initialized in all models before getting called
 # same as in main.py
 from Models.Aspect_Rating import Base
@@ -35,7 +35,7 @@ from Models.Aspect_Rating import Base
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={
-                       "check_same_thread": False})
+    "check_same_thread": False})
 
 TestingSessionLocal = sessionmaker(
     autocommit=False, autoflush=False, bind=engine)
@@ -46,6 +46,8 @@ def db() -> Session:
     """
     Create db session
     """
+
+    # Base.metadata.reflect(bind=engine)
 
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)

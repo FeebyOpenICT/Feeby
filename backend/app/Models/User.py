@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import sqlite3
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
@@ -19,6 +18,7 @@ class User(Base, SaveableModel):
     Represents a user in the database
     """
     __tablename__ = 'user'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     fullname = Column(String(length=255), nullable=False, index=True)
