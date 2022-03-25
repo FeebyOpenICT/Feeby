@@ -11,6 +11,7 @@ from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 from Models.User import *
+from Models.Role import Roles
 
 router = APIRouter(
     prefix="/auth",

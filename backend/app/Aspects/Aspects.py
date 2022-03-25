@@ -1,22 +1,22 @@
 from fastapi import APIRouter, Depends, Security, status
+from Models.Aspect import Aspect
 from typing import List
-from Models.Post import Post
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
-from Schemas.Post import CreatePost
+from Schemas.Aspect import CreateAspect, AspectInDB
 from database import get_db_connection
 from Models.Role import Roles
 from Models.User import User
-from Schemas.Post import PostInDB
+from Models.Rating import Rating
 
 router = APIRouter(
-    prefix="/posts",
-    tags=["Posts"]
+    prefix="/aspects",
+    tags=["Aspects"]
 )
 
 
-@router.get('/self',  response_model=List[PostInDB])
-async def get_posts(
+@router.get('/', response_model=List[AspectInDB])
+async def get_aspects(
         current_active_user: User = Security(
             get_current_active_user,
             scopes=[
@@ -30,38 +30,42 @@ async def get_posts(
         db: Session = Depends(get_db_connection)
 ):
     """
-    Read post from self
+    Read all Aspects
 
-    Allowed roles: admin, instructor, student, content_developer, teaching_assistant
+    Allowed roles: admin, instructor
     """
-    all_posts = Post.get_posts_by_user_id(current_active_user.id, db)
-    return all_posts
+    all_aspects = Aspect.get_all_aspects(db)
+    return all_aspects
 
 
-@router.post('/', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
-async def post(
-        body: CreatePost,
+@router.post('/', response_model=AspectInDB, status_code=status.HTTP_201_CREATED)
+async def aspect(
+        body: CreateAspect,
         current_active_user: User = Security(
             get_current_active_user,
             scopes=[
-                Roles.STUDENT['title'],
                 Roles.ADMIN['title'],
                 Roles.INSTRUCTOR['title'],
-                Roles.CONTENT_DEVELOPER['title'],
-                Roles.TEACHING_ASSISTANT['title'],
             ]
         ),
         db: Session = Depends(get_db_connection)
 ):
     """
-    Create post
+    Create aspect
 
-    Allowed roles: admin, instructor, student, content_developer, teaching_assistant
+    Allowed roles: admin, instructor
     """
-    post = Post(
+    ratings = [Rating.get_rating_by_id(rating_id=rating_id, db=db)
+               for rating_id in body.rating_ids]
+
+    aspect = Aspect(
         title=body.title,
+        short_description=body.short_description,
         description=body.description,
-        user=current_active_user
+        external_url=body.external_url,
+        ratings=ratings
     )
-    post.save_self(db)
-    return post
+
+    aspect.save_self(db)
+
+    return aspect
