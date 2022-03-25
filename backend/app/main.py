@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
+# import all routers and exception handlers
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Exceptions.NotFound import NotFound, not_found_exception_handler
@@ -12,8 +13,6 @@ from Aspects import Aspects
 from Ratings import Ratings
 
 
-from database import engine, Base
-
 # import all models that need to be initiated
 from Models.Aspect import AspectModel
 from Models.Rating import RatingModel
@@ -23,6 +22,9 @@ from Models.Role import RoleModel
 from Models.User_Role import User_Role_Model
 from Models.Post import PostModel
 
+
+# import database
+from database import engine, Base
 
 # Create all tables in database
 Base.metadata.create_all(bind=engine)
