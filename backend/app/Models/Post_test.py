@@ -1,11 +1,11 @@
-from pdb import post_mortem
-from sqlalchemy.orm import Session
 import pytest
+
+from sqlalchemy.orm import Session
 
 from Models.Post import PostModel
 
 
-def test_initiate_post_without_user(db: Session):
+def test_initiate_post_without_user():
     with pytest.raises(TypeError):
         post = PostModel("kajshdf", "kajhsdf")
 
