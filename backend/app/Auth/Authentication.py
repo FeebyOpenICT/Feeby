@@ -6,12 +6,13 @@ from sqlalchemy.orm import Session
 import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
+from Exceptions.NotFound import NotFound
 from .JWTToken import AccessToken
 from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
-from Models.User import *
-from Models.Role import Roles
+from Models.User import UserModel
+from Models.Role import RoleModel, Roles
 
 router = APIRouter(
     prefix="/auth",
@@ -70,7 +71,7 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
                 message=f"LTI launch user_id: {jwt_token.canvas_id}, type: {type(jwt_token.canvas_id).__name__} does not equal get token user_id: {json['user']['id']} , type: {type(json['user']['id']).__name__}")
 
         try:
-            user = User.get_user_by_canvas_id(jwt_token.canvas_id, db)
+            user = UserModel.get_user_by_canvas_id(jwt_token.canvas_id, db)
         except NotFound:
             user = None
 
@@ -84,10 +85,10 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
 
             for role in jwt_token.roles:
                 role = getattr(Roles, role.upper())
-                roles.append(Role.get_role(role, db))
+                roles.append(RoleModel.get_role(role, db))
 
-            user = User(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
-                        canvas_id=jwt_token.canvas_id, roles=roles, disabled=False)
+            user = UserModel(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
+                             canvas_id=jwt_token.canvas_id, roles=roles, disabled=False)
 
             user.save_self(db)
 

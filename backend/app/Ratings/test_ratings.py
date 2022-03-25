@@ -1,10 +1,11 @@
-from Models.Rating import Rating
+from Models.Rating import RatingModel
 from sqlalchemy.orm import Session
 
 
 def test_get_ratings(client, db: Session):
-    rating1 = Rating('lakasdf', 'lkjahsdf', 'lkajsdhflkjashdf')
-    rating2 = Rating('lakasdfasdf', 'lkjahsdfasdf', 'lkajsdhflkjashdasdff')
+    rating1 = RatingModel('lakasdf', 'lkjahsdf', 'lkajsdhflkjashdf')
+    rating2 = RatingModel('lakasdfasdf', 'lkjahsdfasdf',
+                          'lkajsdhflkjashdasdff')
 
     db.add_all([rating1, rating2])
     db.commit()

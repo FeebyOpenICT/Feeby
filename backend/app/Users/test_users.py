@@ -1,6 +1,6 @@
 import json
-from Models.User import User
-from Models.Role import Role, Roles
+from Models.User import UserModel
+from Models.Role import RoleModel, Roles
 
 
 def test_get_user_self(client, db, current_active_user):
@@ -50,13 +50,13 @@ def test_get_user_by_canvas_id(client, db):
         "canvas_email": "testmeemail@hu.nl",
         "disabled": False,
         "roles": [
-            Role.get_role(Roles.ADMIN, db),
-            Role.get_role(Roles.CONTENT_DEVELOPER, db),
-            Role.get_role(Roles.INSTRUCTOR, db),
+            RoleModel.get_role(Roles.ADMIN, db),
+            RoleModel.get_role(Roles.CONTENT_DEVELOPER, db),
+            RoleModel.get_role(Roles.INSTRUCTOR, db),
         ]
     }
 
-    new_user = User(**new_user_json)
+    new_user = UserModel(**new_user_json)
     new_user = new_user.save_self(db)
 
     response = client.get(f"/users/canvas/{new_user_json['canvas_id']}")

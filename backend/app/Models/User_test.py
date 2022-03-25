@@ -1,16 +1,16 @@
 import pytest
-from Models.User import User
-from Models.Role import Role, Roles
+from Models.User import UserModel
+from Models.Role import RoleModel, Roles
 from sqlalchemy.orm import Session
 
 
-def test_find_user_by_id(db: Session, current_active_user: User):
-    test_user = User.get_user_by_id(1, db)
+def test_find_user_by_id(db: Session, current_active_user: UserModel):
+    test_user = UserModel.get_user_by_id(1, db)
 
-    assert isinstance(test_user, User)
+    assert isinstance(test_user, UserModel)
 
     for role in test_user.roles:
-        assert isinstance(role, Role)
+        assert isinstance(role, RoleModel)
 
     assert test_user == current_active_user
     assert isinstance(test_user.id, int)
@@ -22,11 +22,12 @@ def test_find_user_by_id(db: Session, current_active_user: User):
 
 def test_initiate_user_without_roles():
     with pytest.raises(ValueError):
-        user = User("kajshdf", "kajhsdf", 2, False, [])
+        user = UserModel("kajshdf", "kajhsdf", 2, False, [])
 
 
 def test_initiate_user_with_positional_args(db: Session):
-    user = User("name", "email", 2, False, [Role.get_role(Roles.ADMIN, db)])
+    user = UserModel("name", "email", 2, False, [
+        RoleModel.get_role(Roles.ADMIN, db)])
     user.save_self(db)
 
     assert isinstance(user.id, int)
@@ -34,12 +35,12 @@ def test_initiate_user_with_positional_args(db: Session):
     assert user.fullname == "name"
     assert user.canvas_id == 2
     assert user.disabled == False
-    assert user.roles == [Role.get_role(Roles.ADMIN, db)]
+    assert user.roles == [RoleModel.get_role(Roles.ADMIN, db)]
 
 
 def test_initiate_user_with_missing_values():
     with pytest.raises(TypeError):
-        user = User(
+        user = UserModel(
             fullname="kjshdf",
             canvas_id=2,
             disabled=False,
@@ -48,22 +49,23 @@ def test_initiate_user_with_missing_values():
         )
 
 
-def test_find_user_by_canvas_id(db: Session, current_active_user: User):
-    test_user = User.get_user_by_canvas_id(current_active_user.canvas_id, db)
+def test_find_user_by_canvas_id(db: Session, current_active_user: UserModel):
+    test_user = UserModel.get_user_by_canvas_id(
+        current_active_user.canvas_id, db)
 
-    assert isinstance(test_user, User)
+    assert isinstance(test_user, UserModel)
 
     for role in test_user.roles:
-        assert isinstance(role, Role)
+        assert isinstance(role, RoleModel)
 
     assert test_user == current_active_user
 
 
 def test_user_save_self(db: Session):
-    test_user = User("test", "ljksd", 999, False, roles=[
-                     Role.get_role(Roles.ADMIN, db)])
+    test_user = UserModel("test", "ljksd", 999, False, roles=[
+        RoleModel.get_role(Roles.ADMIN, db)])
     test_user.save_self(db)
 
-    test_found_user = User.get_user_by_canvas_id(999, db)
+    test_found_user = UserModel.get_user_by_canvas_id(999, db)
 
     assert test_found_user == test_user

@@ -1,10 +1,10 @@
 import pytest
 
-from Models.Rating import Rating
+from Models.Rating import RatingModel
 
 
 def test_create_aspect(client, db):
-    rating = Rating('sdjkfh', 'askdjfh', 'sdf')
+    rating = RatingModel('sdjkfh', 'askdjfh', 'sdf')
     rating.save_self(db)
 
     data = {

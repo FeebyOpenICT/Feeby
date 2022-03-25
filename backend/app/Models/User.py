@@ -1,17 +1,16 @@
-from dataclasses import dataclass
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
 from Models.SaveableModel import SaveableModel
-from .Role import Role
-from .User_Role import Base
+from .Role import RoleModel
+from database import Base
 
 from Exceptions.NotFound import NotFound
 
 
-class User(Base, SaveableModel):
+class UserModel(Base, SaveableModel):
     """
     Mapped User class
 
@@ -29,7 +28,7 @@ class User(Base, SaveableModel):
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    roles = relationship("Role", secondary='user_role')
+    roles = relationship("RoleModel", secondary='user_role')
 
     def __init__(
         self,
@@ -37,7 +36,7 @@ class User(Base, SaveableModel):
         canvas_email: str,
         canvas_id: int,
         disabled: bool,
-        roles: List[Role],
+        roles: List[RoleModel],
         **kwargs
     ) -> None:
         self.fullname = fullname
@@ -62,7 +61,7 @@ class User(Base, SaveableModel):
 
         Returns a python user mapped class from the database
         """
-        user = db.query(User).filter(User.canvas_id == id).first()
+        user = db.query(UserModel).filter(UserModel.canvas_id == id).first()
 
         if not user:
             raise NotFound("user")
@@ -79,9 +78,9 @@ class User(Base, SaveableModel):
 
         Returns a python user mapped class from the database
         """
-        user = db.query(User).filter(User.id == id).first()
+        user = db.query(UserModel).filter(UserModel.id == id).first()
 
-        if not User:
+        if not UserModel:
             raise NotFound(f"user")
 
         return user

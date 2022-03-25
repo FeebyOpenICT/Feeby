@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Security, Depends
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
-from Models.User import User
+from Models.User import UserModel
 from Schemas.User import UserInDB
 from Models.Role import Roles
 from database import get_db_connection
@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.get('/self', response_model=UserInDB)
 async def get_user_self(
-    current_active_user: User = Security(
+    current_active_user: UserModel = Security(
         get_current_active_user,
         scopes=[
         Roles.STUDENT['title'],
@@ -38,7 +38,7 @@ async def get_user_self(
 @router.get('/{user_id}', response_model=UserInDB)
 async def get_user_by_id(
     user_id: int,
-    current_active_user: User = Security(
+    current_active_user: UserModel = Security(
         get_current_active_user,
         scopes=[
         Roles.ADMIN['title'],
@@ -52,14 +52,14 @@ async def get_user_by_id(
 
     Allowed roles: admin, instructor
     """
-    user = User.get_user_by_id(user_id, db)
+    user = UserModel.get_user_by_id(user_id, db)
     return user
 
 
 @router.get('/canvas/{user_id}', response_model=UserInDB)
 async def get_user_by_canvas_id(
     user_id: int,
-    current_active_user: User = Security(
+    current_active_user: UserModel = Security(
         get_current_active_user,
         scopes=[
         Roles.ADMIN['title'],
@@ -73,5 +73,5 @@ async def get_user_by_canvas_id(
 
     Allowed roles: admin, instructor
     """
-    user = User.get_user_by_canvas_id(user_id, db)
+    user = UserModel.get_user_by_canvas_id(user_id, db)
     return user

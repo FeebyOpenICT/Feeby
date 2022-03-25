@@ -12,11 +12,17 @@ from Aspects import Aspects
 from Ratings import Ratings
 
 
-from database import engine
-# Chain: Role > User_Role > User > Post > Rating > Aspect > Aspect_Rating
-# Import base from latest in chain so base gets initialized in all models before getting called
-# same as in test_main
-from Models.Aspect_Rating import Base
+from database import engine, Base
+
+# import all models that need to be initiated
+from Models.Aspect import AspectModel
+from Models.Rating import RatingModel
+from Models.Aspect_Rating import Aspect_Rating_Model
+from Models.User import UserModel
+from Models.Role import RoleModel
+from Models.User_Role import User_Role_Model
+from Models.Post import PostModel
+
 
 # Create all tables in database
 Base.metadata.create_all(bind=engine)

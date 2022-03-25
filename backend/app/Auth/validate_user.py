@@ -7,7 +7,7 @@ from fastapi.security import (
 )
 
 from .JWTToken import AccessToken
-from Models.User import User
+from Models.User import UserModel
 from database import get_db_connection
 
 # automatically checks if there is a Bearer token in the Authorization header
@@ -20,7 +20,7 @@ async def get_current_user(
     security_scopes: SecurityScopes,
     jwt_token: HTTPAuthorizationCredentials = Depends(token_auth_scheme),
     db: Session = Depends(get_db_connection),
-) -> User:
+) -> UserModel:
     """
     Gets the current user from the database by decoding the jwt bearer token
 
@@ -53,14 +53,14 @@ async def get_current_user(
     # validate access token against canvas
     canvas_user = token.validate_self()
 
-    user = User.get_user_by_canvas_id(canvas_user['id'], db)
+    user = UserModel.get_user_by_canvas_id(canvas_user['id'], db)
 
     return user
 
 
 async def get_current_active_user(
-    current_user: User = Security(get_current_user, scopes=[])
-) -> User:
+    current_user: UserModel = Security(get_current_user, scopes=[])
+) -> UserModel:
     """
     Gets current active user thats making an api request
 
