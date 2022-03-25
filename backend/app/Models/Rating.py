@@ -53,6 +53,6 @@ class Rating(Base, SaveableModel):
         rating = db.query(Rating).filter(Rating.id == rating_id).first()
 
         if not rating:
-            raise NotFound(f"rating: {rating_id}")
+            raise NotFound(f"rating")
 
         return rating

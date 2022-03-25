@@ -82,6 +82,6 @@ class User(Base, SaveableModel):
         user = db.query(User).filter(User.id == id).first()
 
         if not User:
-            raise NotFound(f"user: {id}")
+            raise NotFound(f"user")
 
         return user
