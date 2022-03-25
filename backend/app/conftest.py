@@ -16,6 +16,7 @@ from Users import users
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Posts import Posts
 from Aspects import Aspects
+from Ratings import Ratings
 ######
 
 # Import the SQLAlchemy parts
@@ -111,6 +112,8 @@ def client(db):
     app.include_router(Posts.router)
 
     app.include_router(Aspects.router)
+
+    app.include_router(Ratings.router)
 
     app.dependency_overrides[get_db_connection] = override_get_db
 
