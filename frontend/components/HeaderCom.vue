@@ -95,4 +95,8 @@ export default {
 .v-btn--active::before {
   opacity: 0;
 }
+
+v-list-item-content {
+  background-color: var(--blue);
+}
 </style>

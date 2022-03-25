@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+import sqlite3
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
@@ -29,23 +31,27 @@ class User(Base):
 
     def __init__(
         self,
-        fullname: str = None,
-        canvas_email: str = None,
-        canvas_id: int = None,
-        disabled: bool = False,
-        roles: List[Role] = [],
+        fullname: str,
+        canvas_email: str,
+        canvas_id: int,
+        disabled: bool,
+        roles: List[Role],
         **kwargs
     ) -> None:
         self.fullname = fullname
         self.canvas_email = canvas_email
         self.canvas_id = canvas_id
         self.disabled = disabled
+        if len(roles) == 0:
+            raise ValueError("roles may not be empty")
         self.roles = roles
         super().__init__(**kwargs)
 
     def __repr__(self) -> str:
         return f"<User id={self.id} canvas_email={self.canvas_email} roles={self.roles} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"
 
+    # static not class method because I want it to always return a User instance
+    @staticmethod
     def get_user_by_canvas_id(id: int, db: Session):
         """
         Gets the user by their canvas id
@@ -61,6 +67,8 @@ class User(Base):
 
         return user
 
+    # static not class method because I want it to always return a User instance
+    @staticmethod
     def get_user_by_id(id: int, db: Session):
         """
         Gets the user by their id

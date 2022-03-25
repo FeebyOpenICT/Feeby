@@ -49,6 +49,7 @@ services:
       - backend
     environment:
       - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
     labels:
       traefik.enable: true
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)

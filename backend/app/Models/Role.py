@@ -50,6 +50,7 @@ class Role(Base):
     Represents a role in the database
     """
     __tablename__ = 'role'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False,
@@ -64,6 +65,7 @@ class Role(Base):
     def __repr__(self) -> str:
         return f"<Role title={self.title} description={self.description}>"
 
+    @staticmethod
     def get_role(role, db: Session):
         """
         Gets role object mapping from db
