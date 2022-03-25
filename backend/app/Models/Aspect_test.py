@@ -4,7 +4,6 @@
 # from .Rating import Rating
 # from .Aspect import Aspect
 
-
 # def test_create_aspect_with_positional_arguments(db: Session):
 #     rating = Rating('title', 'short_desc', 'desc')
 #     rating.save_self(db)

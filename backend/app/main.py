@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
