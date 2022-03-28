@@ -1,13 +1,15 @@
 <template>
   <div id="postcard">
     <v-card
-      v-for="card in cards"
+      v-for="card in orderedCards"
       :key="card.id"
       class="postcard"
     >
       <div class="cardheader">
         <v-card-title>{{ card.title }}</v-card-title>
-        <v-card-subtitle>{{ card.time_created }}</v-card-subtitle>
+        <v-card-subtitle>
+          {{ card.time_created }}
+        </v-card-subtitle>
       </div>
       <v-card-text id="body">
         {{ card.description }}

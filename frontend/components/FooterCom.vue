@@ -16,7 +16,5 @@ export default {
 .footer{
   padding: 0;
   height: 5vh;
-  bottom: 0;
-  position: absolute;
 }
 </style>
