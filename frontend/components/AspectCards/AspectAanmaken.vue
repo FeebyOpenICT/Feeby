@@ -7,10 +7,10 @@
       <v-hover />
       <v-textarea
         id="aspectTitel"
+        v-model="values.title"
         class="textField"
         counter
         :max-length="255"
-        :value="Title"
         type="text"
         placeholder="Schrijf hier je Titel van je aspect..."
       />
@@ -26,10 +26,10 @@
       <v-hover />
       <v-textarea
         id="aspectBeschrijving"
+        v-model="values.description"
         class="textField"
         counter
         :max-length="1000"
-        :value="Description"
         type="text"
         placeholder="Schrijf hier je beschrijving over dit aspect..."
       />
@@ -45,10 +45,10 @@
       <v-hover />
       <v-textarea
         id="aspectKorteBeschrijving"
+        v-model="values.short_description"
         class="textField"
         counter
         :max-length="255"
-        :value="ShortDescription"
         type="text"
         placeholder="Schrijf hier je korte beschrijving over dit aspect..."
       />
@@ -64,10 +64,10 @@
       <v-hover />
       <v-textarea
         id="aspectLink"
+        v-model="values.external_url"
         class="textField"
         counter
         :max-length="2000"
-        :value="Link"
         type="text"
         placeholder="Schrijf hier je externe link van je aspect..."
       />
@@ -99,13 +99,14 @@
       >
         Aspect Rating Toevoegen
       </v-btn>
-      <v-overlay>
-        <v-card>
-          <v-card-title>Aspect Rating Aanmaken</v-card-title>
-          <v-card-content>
-            <AspectRatingAanmaken />
-          </v-card-content>
-        </v-card>
+      <v-overlay :value="overlay" class="overlay">
+        <v-overlay-content>
+          <AspectRatingAanmaken />
+        </v-overlay-content>
+        <br>
+        <v-btn width="100%" @click="overlay = false">
+          Close
+        </v-btn>
       </v-overlay>
     </div>
   </form>
@@ -120,16 +121,16 @@ export default {
   components: { AspectRatingAanmaken },
   data () {
     return {
-      values: null,
-      overlay: false
+      values: {
+        title: '',
+        short_description: '',
+        description: '',
+        external_url: '',
+        rating_ids: ''
+      },
+      overlay: false,
+      absolute: true
     }
-  },
-  mounted () {
-    axiosInstance
-      .request([this.reqpost, this.reqget])
-      .then(response => (this.values = response.data))
-      // eslint-disable-next-line no-console
-      .catch(error => console.log(error))
   }
 }
 </script>

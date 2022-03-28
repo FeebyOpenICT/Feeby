@@ -1,16 +1,17 @@
 <template>
-  <v-card>
-    <form onsubmit="handleSubmit">
+  <v-card class="RatingCard">
+    <form @submit.prevent="submitForm">
       <div id="productTextContainer" class="container">
-        <h1 class="textBoxTitle">
+        <h2 class="textBoxTitle">
           Titel
-        </h1>
+        </h2>
         <v-hover />
         <v-textarea
           id="AspectRatingTitel"
+          v-model="ratings.title"
           class="textField"
+          counter
           :max-length="255"
-          :value="values.title"
           type="text"
           placeholder="Schrijf hier je titel van je aspect rating..."
         />
@@ -20,16 +21,16 @@
         </div>
       </div>
       <div id="productTextContainer" class="container">
-        <h1 class="textBoxTitle">
+        <h2 class="textBoxTitle">
           Beschrijving
-        </h1>
+        </h2>
         <v-hover />
         <v-textarea
           id="AspectRatingBeschrijving"
+          v-model="ratings.description"
           class="textField"
           counter
           :max-length="1000"
-          :value="values.description"
           type="text"
           placeholder="Schrijf hier je beschrijving over dit aspect rating..."
         />
@@ -39,16 +40,16 @@
         </div>
       </div>
       <div id="productTextContainer" class="container">
-        <h1 class="textBoxTitle">
+        <h2 class="textBoxTitle">
           Korte Beschrijving
-        </h1>
+        </h2>
         <v-hover />
         <v-textarea
           id="AspectRatingKorteBeschrijving"
+          v-model="ratings.short_description"
           class="textField"
           counter
           :max-length="255"
-          :value="values.short_description"
           type="text"
           placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
         />
@@ -57,7 +58,10 @@
           max. 255 characters
         </div>
       </div>
-      <v-btn type="submit">
+      <v-btn
+        type="submit"
+        width="90%"
+      >
         Opslaan
       </v-btn>
     </form>
@@ -69,30 +73,26 @@ export default {
   name: 'AspectRatingAanmaken',
   data () {
     return {
-      values: {
+      ratings: {
         title: '',
         short_description: '',
         description: ''
-      },
-      overlay: false
+      }
     }
   },
-  mounted () {
-    axiosInstance
-      .post('api/v1/ratings/', this.methods.userData)
-      .then((response) => {
-        // eslint-disable-next-line no-console
-        console.log(response)
-      })
-  },
   methods: {
-    handleSubmit: (e) => {
-      e.preventDefault()
-    },
-    userData: {
-      title: this.values.title,
-      short_description: this.values.short_description,
-      description: this.values.description
+    submitForm () {
+      axiosInstance.post('api/v1/ratings/', this.ratings)
+        .then((response) => {
+          // Perform Success Action
+          console.log(response)
+        })
+        .catch((error) => {
+          // error.response.status Check status code
+          console.log(error)
+        }).finally(() => {
+          // Perform action in always
+        })
     }
   }
 }
