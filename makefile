@@ -11,7 +11,7 @@ logs:
 	docker-compose logs -f
 
 debug:
-	docker-compos\e -f docker-compose.debug.yml up -d
+	docker-compose -f docker-compose.debug.yml up -d
 
 debug-build:
 	docker-compose -f docker-compose.debug.yml build
