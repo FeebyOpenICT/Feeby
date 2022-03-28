@@ -22,7 +22,6 @@
   background-color: #0079cf;
 }
 #productTextContainer {
-  margin-bottom: 50px;
 }
 .underlineContent {
   display: inline-block;
@@ -49,8 +48,9 @@
   margin: 25px 15px;
 }
 .RatingCard{
-  width: 70vw;
+  width: 50vw;
   height: auto;
+  margin: 0 auto;
   max-height: 100%;
   min-height: 75%;
   max-width: 90%;
@@ -59,21 +59,15 @@
 }
 
 .overlay{
-  position: absolute;
-  top: 25%;
+  position: fixed;
 }
 
-.v-overlay__scrim {
-    border-radius: inherit;
-    height: 100vh;
-    max-height: 100vh;
-    min-height: 100vh;
-    left: 0;
-    position: absolute;
-    top: 0;
+.overlay__scrim {
+  width: 100%;
     transition: inherit;
-    width: 100vw;
-    max-width: 100vw;
-    min-width: 100vw;
     will-change: opacity;
+  height: 100%;
+}
+#submitButton{
+  max-width: 20%;
 }
