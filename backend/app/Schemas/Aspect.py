@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, validator
 from datetime import datetime
 from .Rating import RatingInDB
@@ -29,3 +29,10 @@ class AspectInDB(Aspect):
 
     class Config:
         orm_mode = True
+
+
+class AspectUpdate(BaseModel):
+    title: Optional[str] = None
+    short_description: Optional[str] = None
+    description: Optional[str] = None
+    external_url: Optional[str] = None

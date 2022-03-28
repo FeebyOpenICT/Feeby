@@ -69,3 +69,8 @@ async def aspect(
     aspect.save_self(db)
 
     return aspect
+
+
+@router.patch('/', response_model=List[AspectInDB])
+async def patch_aspect():
+    pass
