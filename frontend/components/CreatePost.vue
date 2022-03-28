@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import { axiosInstance } from '../lib/axiosInstance'
 import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
