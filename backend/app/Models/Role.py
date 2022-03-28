@@ -45,7 +45,7 @@ class Roles:
     }
 
 
-class Role(Base, SaveableModel):
+class RoleModel(Base, SaveableModel):
     """
     Mapped Role class
 
@@ -72,9 +72,10 @@ class Role(Base, SaveableModel):
         """
         Gets role object mapping from db
         """
-        db_role = db.query(Role).filter(Role.title == role['title']).first()
+        db_role = db.query(RoleModel).filter(
+            RoleModel.title == role['title']).first()
         if not db_role:
-            db_role = Role(title=role['title'],
-                           description=role['description'])
+            db_role = RoleModel(title=role['title'],
+                                description=role['description'])
             db_role.save_self(db)
         return db_role

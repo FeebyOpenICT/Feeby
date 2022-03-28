@@ -4,18 +4,19 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import Session, relationship
 from sqlalchemy.sql import func
 
-from Models.Rating import Rating
-from .Rating import Base
+from Models.Rating import RatingModel
+from database import Base
 from .SaveableModel import SaveableModel
 
 
-class Aspect(Base, SaveableModel):
+class AspectModel(Base, SaveableModel):
     """
     Mapped Aspect class
 
     Represents an aspect in the database
     """
     __tablename__ = 'aspect'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
@@ -26,9 +27,9 @@ class Aspect(Base, SaveableModel):
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    ratings = relationship("Rating", secondary='aspect_rating')
+    ratings = relationship("RatingModel", secondary='aspect_rating')
 
-    def __init__(self, title: str, short_description: str, description: str, external_url: str, ratings: List[Rating]) -> None:
+    def __init__(self, title: str, short_description: str, description: str, external_url: str, ratings: List[RatingModel]) -> None:
         self.title = title
         self.short_description = short_description
         self.description = description
@@ -46,5 +47,5 @@ class Aspect(Base, SaveableModel):
 
         returns a list of aspect mapped classes, returns an empty list if none are found
         """
-        db_aspects = db.query(Aspect).order_by(Aspect.title).all()
+        db_aspects = db.query(AspectModel).order_by(AspectModel.title).all()
         return db_aspects

@@ -99,15 +99,16 @@
       >
         Aspect Rating Toevoegen
       </v-btn>
-      <v-overlay :value="overlay" class="overlay">
         <v-overlay-content>
+          <v-overlay :absolute="absolute" :value="overlay" class="overlay">
           <AspectRatingAanmaken />
+            <v-btn width="100%" @click="overlay = false">
+              Close
+            </v-btn>
+          </v-overlay>
         </v-overlay-content>
         <br>
-        <v-btn width="100%" @click="overlay = false">
-          Close
-        </v-btn>
-      </v-overlay>
+
     </div>
   </form>
 </template>

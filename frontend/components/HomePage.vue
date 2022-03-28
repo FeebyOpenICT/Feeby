@@ -1,7 +1,7 @@
 <template>
   <div>
-    <CardCom />
-    <FooterCom />
+    <addButton />
+      <FooterCom />
   </div>
 </template>
 

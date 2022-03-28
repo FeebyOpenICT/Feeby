@@ -6,16 +6,17 @@ from Exceptions.NotFound import NotFound
 
 from Models.SaveableModel import SaveableModel
 
-from .Post import Base
+from database import Base
 
 
-class Rating(Base, SaveableModel):
+class RatingModel(Base, SaveableModel):
     """
     Mapped Aspect class
 
     Represents an aspect in the database
     """
     __tablename__ = 'rating'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
@@ -40,7 +41,7 @@ class Rating(Base, SaveableModel):
         returns a list of aspect rating mapped classes, returns an empty list if none are found
         """
         db_aspect_ratings = db.query(
-            Rating).order_by(Rating.title).all()
+            RatingModel).order_by(RatingModel.title).all()
         return db_aspect_ratings
 
     @staticmethod
@@ -50,9 +51,10 @@ class Rating(Base, SaveableModel):
 
         return rating mapped object class
         """
-        rating = db.query(Rating).filter(Rating.id == rating_id).first()
+        rating = db.query(RatingModel).filter(
+            RatingModel.id == rating_id).first()
 
         if not rating:
-            raise NotFound(f"rating: {rating_id}")
+            raise NotFound(f"rating")
 
         return rating

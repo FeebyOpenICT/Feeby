@@ -1,7 +1,7 @@
-from .Rating import Base
+from database import Base
 from sqlalchemy import Table, Column, ForeignKey
 
-aspect_rating = Table('aspect_rating', Base.metadata,
-                      Column('aspect_id', ForeignKey('aspect.id')),
-                      Column('rating_id', ForeignKey('rating.id'))
-                      )
+Aspect_Rating_Model = Table('aspect_rating', Base.metadata,
+                            Column('aspect_id', ForeignKey('aspect.id')),
+                            Column('rating_id', ForeignKey('rating.id'))
+                            )
