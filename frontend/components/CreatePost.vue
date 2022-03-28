@@ -37,7 +37,7 @@ export default {
   },
   mounted () {
     axiosInstance
-      .get('api/v1/posts/self')
+      .post('api/v1/posts/self')
       .then(response => (this.posts = response.data))
       .catch(error => console.log(error))
   }
