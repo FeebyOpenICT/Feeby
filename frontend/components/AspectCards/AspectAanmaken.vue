@@ -93,24 +93,42 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+
+      <v-btn
+        @click="overlay = !overlay"
+      >
+        Aspect Rating Toevoegen
+      </v-btn>
+      <v-overlay>
+        <v-card>
+          <v-card-title>Aspect Rating Aanmaken</v-card-title>
+          <v-card-content>
+            <AspectRatingAanmaken />
+          </v-card-content>
+        </v-card>
+      </v-overlay>
     </div>
   </form>
 </template>
 <script>
 import { axiosInstance } from '../../lib/axiosInstance'
+import AspectRatingAanmaken from './AspectRatingAanmaken'
 export default {
   name: 'AspectAanmaken',
   reqpost: axiosInstance.post('/api/v1/aspects/'),
   reqget: axiosInstance.get('/api/v1/ratings/'),
+  components: { AspectRatingAanmaken },
   data () {
     return {
-      values: null
+      values: null,
+      overlay: false
     }
   },
   mounted () {
     axiosInstance
       .request([this.reqpost, this.reqget])
       .then(response => (this.values = response.data))
+      // eslint-disable-next-line no-console
       .catch(error => console.log(error))
   }
 }
