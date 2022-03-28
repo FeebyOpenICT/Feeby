@@ -1,4 +1,4 @@
-from Models.Post import Post
+from Models.Post import PostModel
 
 
 def test_post_create_post(client):
@@ -7,7 +7,7 @@ def test_post_create_post(client):
         "description": "testdesc"
     }
     response = client.post("/posts/", json=data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()['title'] == "test"
     assert response.json()['description'] == "testdesc"
 
@@ -19,7 +19,7 @@ def test_get_empty_posts(client):
 
 
 def test_get_posts_self(client, db, current_active_user):
-    post1, post2 = Post("title1", "desc1", current_active_user), Post(
+    post1, post2 = PostModel("title1", "desc1", current_active_user), PostModel(
         "title2", "desc2", current_active_user)
     post1.save_self(db)
     post2.save_self(db)
