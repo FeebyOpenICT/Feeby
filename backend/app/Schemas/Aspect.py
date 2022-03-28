@@ -36,3 +36,8 @@ class AspectUpdate(BaseModel):
     short_description: Optional[str] = None
     description: Optional[str] = None
     external_url: Optional[str] = None
+    rating_ids: Optional[List[int]] = None
+
+    class Config:
+        orm_mode = True
+
