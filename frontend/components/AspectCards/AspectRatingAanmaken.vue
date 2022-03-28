@@ -58,7 +58,8 @@
           max. 255 characters
         </div>
       </div>
-      <v-btn id="submitButton"
+      <v-btn
+        id="submitButton"
         type="submit"
         width="90%"
       >

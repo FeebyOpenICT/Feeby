@@ -87,7 +87,7 @@
             v-for="rating in cards"
             :key="rating.id"
           >
-            <v-list-item-content>
+            <v-list-item-content v-model="values.rating_ids">
               <v-list-item-title v-text="rating.title" />
             </v-list-item-content>
           </v-list-item>
@@ -99,17 +99,19 @@
       >
         Aspect Rating Toevoegen
       </v-btn>
-        <v-overlay-content>
-          <v-overlay :absolute="absolute" :value="overlay" class="overlay">
+      <v-overlay-content>
+        <v-overlay :absolute="absolute" :value="overlay" class="overlay">
           <AspectRatingAanmaken />
-            <v-btn width="100%" @click="overlay = false">
-              Close
-            </v-btn>
-          </v-overlay>
-        </v-overlay-content>
-        <br>
-
+          <v-btn width="100%" @click="overlay = false">
+            Close
+          </v-btn>
+        </v-overlay>
+      </v-overlay-content>
+      <br>
     </div>
+    <v-btn type="submit">
+      Submit
+    </v-btn>
   </form>
 </template>
 <script>
