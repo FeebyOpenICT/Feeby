@@ -1,5 +1,5 @@
 <template>
-  <v-card class="RatingCard">
+  <v-card class="RatingCard" light>
     <form @submit.prevent="submitForm">
       <div id="productTextContainer" class="container">
         <h2 class="textBoxTitle">
