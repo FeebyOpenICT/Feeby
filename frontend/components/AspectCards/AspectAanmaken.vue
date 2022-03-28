@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="submitForm">
     <div id="productTextContainer" class="container">
       <h1 class="textBoxTitle">
         Titel
@@ -84,11 +84,11 @@
       <v-list class="aspectRatingsBox">
         <v-list-item-group>
           <v-list-item
-            v-for="value in values"
-            :key="value"
+            v-for="rating in cards"
+            :key="rating.id"
           >
             <v-list-item-content>
-              <v-list-item-title v-text="value.rating" />
+              <v-list-item-title v-text="rating.title" />
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -116,11 +116,10 @@ import { axiosInstance } from '../../lib/axiosInstance'
 import AspectRatingAanmaken from './AspectRatingAanmaken'
 export default {
   name: 'AspectAanmaken',
-  reqpost: axiosInstance.post('/api/v1/aspects/'),
-  reqget: axiosInstance.get('/api/v1/ratings/'),
   components: { AspectRatingAanmaken },
   data () {
     return {
+      cards: null,
       values: {
         title: '',
         short_description: '',
@@ -130,6 +129,27 @@ export default {
       },
       overlay: false,
       absolute: true
+    }
+  },
+  mounted () {
+    axiosInstance
+      .get('api/v1/ratings/')
+      .then(response => (this.cards = response.data))
+      .catch(error => console.log(error))
+  },
+  methods: {
+    submitForm () {
+      axiosInstance.post('api/v1/aspects/', this.values)
+        .then((response) => {
+          // Perform Success Action
+          console.log(response)
+        })
+        .catch((error) => {
+          // error.response.status Check status code
+          console.log(error)
+        }).finally(() => {
+          // Perform action in always
+        })
     }
   }
 }
