@@ -98,9 +98,7 @@ async def patch_aspect(
         setattr(db_aspect, key, value)
 
     ratings = [RatingModel.get_rating_by_id(rating_id=rating_id, db=db)
-               for rating_id in db_aspect.rating_ids]
-    if len(ratings) == 0:
-        return status.HTTP_400_BAD_REQUEST
+               for rating_id in body.rating_ids]
 
     db_aspect.save_self(db)
 
