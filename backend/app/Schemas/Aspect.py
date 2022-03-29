@@ -38,6 +38,4 @@ class AspectUpdate(BaseModel):
     external_url: Optional[str] = None
     rating_ids: Optional[List[int]] = None
 
-    class Config:
-        orm_mode = True
 
