@@ -28,7 +28,7 @@ class AspectModel(Base, SaveableModel):
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    rating_ids = relationship("RatingModel", secondary='aspect_rating')
+    ratings = relationship("RatingModel", secondary='aspect_rating')
 
     def __init__(self, title: str, short_description: str, description: str, external_url: str, ratings: List[RatingModel]) -> None:
         self.title = title
@@ -37,7 +37,7 @@ class AspectModel(Base, SaveableModel):
         self.external_url = external_url
         if len(ratings) == 0:
             raise ValueError("ratings may not be empty")
-        self.rating_ids = ratings
+        self.ratings = ratings
         super().__init__()
 
     # static not class method because I want it to always return an Aspect instance
