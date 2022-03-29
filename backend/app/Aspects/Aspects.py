@@ -71,7 +71,7 @@ async def aspect(
     return aspect
 
 
-@router.patch('/{aspect_id}', response_model=List[AspectUpdate], status_code=status.HTTP_200_OK)
+@router.patch('/{aspect_id}', response_model=AspectInDB, status_code=status.HTTP_200_OK)
 async def patch_aspect(
         aspect_id: int,
         body: AspectUpdate,
@@ -89,17 +89,16 @@ async def patch_aspect(
 
     Allowed roles: admin, instructor
     """
-    with Session(db) as session:
-        db_aspect = session.get(body, aspect_id)
-        if not db_aspect:
-            raise HTTPException(status_code=404, detail="aspect not found")
-        aspect_data = body.dict(exclude_unset=True)
-        for key, value in aspect_data.items():
-            setattr(db_aspect, key, value)
+    db_aspect = AspectModel.get_aspect_by_id(aspect_id, db)
+
+    aspect_data = body.dict(exclude_unset=True)
+    for key, value in aspect_data.items():
+        setattr(db_aspect, key, value)
 
     ratings = [RatingModel.get_rating_by_id(rating_id=rating_id, db=db)
-               for rating_id in body.rating_ids]
+               for rating_id in db_aspect.rating_ids]
+    #400 foutmelding
 
-    aspect.save_self(db)
+    db_aspect.save_self(db)
 
-    return aspect
+    return db_aspect
