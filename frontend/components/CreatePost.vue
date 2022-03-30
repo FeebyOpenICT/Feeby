@@ -1,24 +1,35 @@
-<template>
+<template class="container">
   <div>
     <HeaderCom />
-    <PostTitle />
     <div class="postPage">
       <h1 class="pageTitle">Product inleveren</h1>
-      <InputField />
-      <UploadBox />
-      <AspectCommunication />
-      <AspectKnowledge/>
-
-      <v-card
-        v-for="post in posts"
-        :key="post.id"
-        class="cardsList"
-      >
-        <div class="postContainer">
-        <v-card-title>{{post.title}}</v-card-title>
-      </div>
-      </v-card>
-    </div>
+      <form v-on:submit.prevent="submitForm">
+        <div class="form-group">
+          <h2><strong>Titel</strong></h2>
+          <v-textarea type="text"
+                 class="formField"
+                 id="title"
+                 placeholder="Schrijf hier de titel van je post..."
+                 v-model="form.title">
+          </v-textarea>
+        </div>
+        <div class="form-group">
+          <h2><strong>Toelichting</strong></h2>
+          <v-textarea type="text"
+                 class="formField"
+                 id="Description"
+                 placeholder="Schrijf hier de beschrijving van je post..."
+                 v-model="form.description">
+        </v-textarea>
+        </div>
+          <div class="aspect-group">
+          <AspectKnowledge v-model="form.aspects" />
+          </div>
+        <div class="form-buttons">
+          <button class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+  </div>
     <FooterCom />
   </div>
 </template>
@@ -32,41 +43,20 @@ export default {
   components: { HeaderCom, FooterCom },
   data () {
     return {
-      posts: null
+      form: {
+        title: '',
+        description: '',
+        aspects: ''
+      }
     }
   },
-  mounted () {
-    axiosInstance
-      .post('api/v1/posts/self')
-      .then(response => (this.posts = response.data))
-      .catch(error => console.log(error))
+  methods: {
+    submitForm () {
+      axiosInstance
+        .post('api/v1/posts', this.form)
+        .then(response => (this.form = response.data))
+        .catch(error => console.log(error))
+    }
   }
 }
 </script>
-
-<style scoped>
-.testpage {
-  height: 2000px;
-  z-index: 1;
-}
-.testpage h1 {
-  text-align: center;
-}
-.cardsList{
-  width: 90vw;
-  max-width: 90vw;
-  min-width: 30vw;
-  height: 25vh;
-  min-height: 10vw;
-  max-height: 25vw;
-  overflow: hidden;
-  position: relative;
-  left: 5vw;
-  border-style: hidden solid solid;
-  border-width: 1px;
-  border-color: black;
-  margin-bottom: 2vw;
-  margin-top: 2vw;
-}
-
-</style>
