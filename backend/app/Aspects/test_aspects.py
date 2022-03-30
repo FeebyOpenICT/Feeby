@@ -43,3 +43,15 @@ def test_empty_get_aspect(client):
     response = client.get("/aspects/")
     assert response.status_code == 200
     assert response.json() == []
+
+
+def test_patch_aspect(client):
+    data = {
+        "title": "test",
+        "rating_ids": [1]
+    }
+    response = client.patch("/aspects/1", json=data)
+    assert response.status_code == 200
+    assert response.json()['title'] == "test"
+    assert response.json()['rating_ids'] == [1]
+
