@@ -1,5 +1,6 @@
 <template>
   <div>
+    <addButton />
     <CardCom />
     <FooterCom />
   </div>

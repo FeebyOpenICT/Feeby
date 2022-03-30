@@ -1,22 +1,23 @@
-from dataclasses import dataclass
-import sqlite3
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
-from .Role import Role, Roles
-from .User_Role import Base
+from Models.SaveableModel import SaveableModel
+from .Role import RoleModel
+from database import Base
+
 from Exceptions.NotFound import NotFound
 
 
-class User(Base):
+class UserModel(Base, SaveableModel):
     """
     Mapped User class
 
     Represents a user in the database
     """
     __tablename__ = 'user'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     fullname = Column(String(length=255), nullable=False, index=True)
@@ -27,7 +28,7 @@ class User(Base):
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    roles = relationship("Role", secondary='user_role')
+    roles = relationship("RoleModel", secondary='user_role')
 
     def __init__(
         self,
@@ -35,7 +36,7 @@ class User(Base):
         canvas_email: str,
         canvas_id: int,
         disabled: bool,
-        roles: List[Role],
+        roles: List[RoleModel],
         **kwargs
     ) -> None:
         self.fullname = fullname
@@ -60,7 +61,7 @@ class User(Base):
 
         Returns a python user mapped class from the database
         """
-        user = db.query(User).filter(User.canvas_id == id).first()
+        user = db.query(UserModel).filter(UserModel.canvas_id == id).first()
 
         if not user:
             raise NotFound("user")
@@ -77,20 +78,9 @@ class User(Base):
 
         Returns a python user mapped class from the database
         """
-        user = db.query(User).filter(User.id == id).first()
+        user = db.query(UserModel).filter(UserModel.id == id).first()
 
-        if not User:
-            raise NotFound("user")
+        if not UserModel:
+            raise NotFound(f"user")
 
         return user
-
-    def save_self(self, db: Session):
-        """
-        Saves own instance in the database
-
-        Returns a python user mapped class from the database
-        """
-        db.add(self)
-        db.commit()
-        db.refresh(self)
-        return self

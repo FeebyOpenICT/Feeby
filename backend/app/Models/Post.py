@@ -1,16 +1,20 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Session, relationship
-from .User import Base, User
+
+from .SaveableModel import SaveableModel
+from database import Base
+from .User import UserModel
 
 
-class Post(Base):
+class PostModel(Base, SaveableModel):
     """
     Mapped Post class
 
     Represents a post in the database
     """
     __tablename__ = 'post'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
@@ -20,9 +24,9 @@ class Post(Base):
                           server_default=func.now(), onupdate=func.now())
 
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    user = relationship('User')
+    user = relationship('UserModel')
 
-    def __init__(self, title, description, user: User) -> None:
+    def __init__(self, title, description, user: UserModel) -> None:
         self.title = title
         self.description = description
         self.user = user
@@ -34,11 +38,6 @@ class Post(Base):
         """
         Gets post object mapping from db
         """
-        db_posts = db.query(Post).filter(Post.user_id == user_id).all()
+        db_posts = db.query(PostModel).filter(
+            PostModel.user_id == user_id).all()
         return db_posts
-
-    def save_self(self, db: Session):
-        db.add(self)
-        db.commit()
-        db.refresh(self)
-        return self
