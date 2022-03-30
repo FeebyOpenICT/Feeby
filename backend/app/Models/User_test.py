@@ -3,9 +3,11 @@ from Models.User import UserModel
 from Models.Role import RoleModel, Roles
 from sqlalchemy.orm import Session
 
+from Repositories.User import UserRepository
+
 
 def test_find_user_by_id(db: Session, current_active_user: UserModel):
-    test_user = UserModel.get_user_by_id(1, db)
+    test_user = UserRepository.get_user_by_id(1, db)
 
     assert isinstance(test_user, UserModel)
 
@@ -50,7 +52,7 @@ def test_initiate_user_with_missing_values():
 
 
 def test_find_user_by_canvas_id(db: Session, current_active_user: UserModel):
-    test_user = UserModel.get_user_by_canvas_id(
+    test_user = UserRepository.get_user_by_canvas_id(
         current_active_user.canvas_id, db)
 
     assert isinstance(test_user, UserModel)
@@ -66,6 +68,6 @@ def test_user_save_self(db: Session):
         RoleModel.get_role(Roles.ADMIN, db)])
     test_user.save_self(db)
 
-    test_found_user = UserModel.get_user_by_canvas_id(999, db)
+    test_found_user = UserRepository.get_user_by_canvas_id(999, db)
 
     assert test_found_user == test_user

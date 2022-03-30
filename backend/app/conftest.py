@@ -11,6 +11,7 @@ from Exceptions.AuthenticationException import OAuth2AuthenticationException, oa
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
+from Repositories.User import UserRepository
 from Users import users
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Posts import Posts
@@ -99,7 +100,7 @@ def client(db):
             db.close()
 
     def override_get_current_active_user():
-        user = UserModel.get_user_by_canvas_id(1, db)
+        user = UserRepository.get_user_by_canvas_id(1, db)
         return user
 
     # Cant import from main.py, will result in Postgres being used for some reason. Placing it in a seperate file and function also does not work
@@ -134,5 +135,5 @@ def client(db):
 
 @pytest.fixture()
 def current_active_user(db) -> UserModel:
-    user = UserModel.get_user_by_canvas_id(1, db)
+    user = UserRepository.get_user_by_canvas_id(1, db)
     yield user

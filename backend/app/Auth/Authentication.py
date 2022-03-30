@@ -7,6 +7,7 @@ import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
 from Exceptions.NotFound import NotFound
+from Repositories.User import UserRepository
 from .JWTToken import AccessToken
 from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
@@ -71,7 +72,8 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
                 message=f"LTI launch user_id: {jwt_token.canvas_id}, type: {type(jwt_token.canvas_id).__name__} does not equal get token user_id: {json['user']['id']} , type: {type(json['user']['id']).__name__}")
 
         try:
-            user = UserModel.get_user_by_canvas_id(jwt_token.canvas_id, db)
+            user = UserRepository.get_user_by_canvas_id(
+                jwt_token.canvas_id, db)
         except NotFound:
             user = None
 

@@ -6,6 +6,8 @@ from fastapi.security import (
     SecurityScopes,
 )
 
+from Repositories.User import UserRepository
+
 from .JWTToken import AccessToken
 from Models.User import UserModel
 from database import get_db_connection
@@ -28,32 +30,32 @@ async def get_current_user(
 
     Returns the User mapped class
     """
+    token = AccessToken.decode_token(jwt_token.credentials)
+
     if security_scopes.scopes:
         scopes = security_scopes.scopes
 
-    token = AccessToken.decode_token(jwt_token.credentials)
+        if scopes and not token.roles:
+            # no roles in token, something went wrong whilst making the token.
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="No roles found in jwt token")
 
-    if scopes and not token.roles:
-        # no roles in token, something went wrong whilst making the token.
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="No roles found in jwt token")
+        has_required_role = False
 
-    has_required_role = False
+        for token_role in token.roles:
+            if token_role in scopes:
+                # user has one of the required roles so no need to check any further roles
+                has_required_role = True
+                break
 
-    for token_role in token.roles:
-        if token_role in scopes:
-            # user has one of the required roles so no need to check any further roles
-            has_required_role = True
-            break
-
-    if has_required_role == False:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
-                            detail="Not enough permissions")
+        if has_required_role == False:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                                detail="Not enough permissions")
 
     # validate access token against canvas
     canvas_user = token.validate_self()
 
-    user = UserModel.get_user_by_canvas_id(canvas_user['id'], db)
+    user = UserRepository.get_user_by_canvas_id(canvas_user['id'], db)
 
     return user
 

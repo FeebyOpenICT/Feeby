@@ -20,3 +20,12 @@ class UserInDB(User):
 
     class Config:
         orm_mode = True
+
+
+class UserPublicSearch(BaseModel):
+    fullname: str
+    canvas_email: str
+    id: int
+
+    class Config:
+        orm_mode = True

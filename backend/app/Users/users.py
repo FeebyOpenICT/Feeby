@@ -2,14 +2,31 @@ from fastapi import APIRouter, Security, Depends
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
 from Models.User import UserModel
-from Schemas.User import UserInDB
+from Repositories.User import UserRepository
+from Schemas.User import UserPublicSearch, UserInDB
 from Models.Role import Roles
 from database import get_db_connection
+from typing import List, Tuple
 
 router = APIRouter(
     prefix="/users",
     tags=["Users"]
 )
+
+
+@router.get('/search', response_model=List[UserPublicSearch])
+async def search_through_users(
+    query: str,
+    db: Session = Depends(get_db_connection),
+    current_active_user: UserModel = Depends(get_current_active_user)
+):
+    """
+    Searches through users and gets their email, fullname and internal id
+
+    Allowed roles: all
+    """
+    users = UserRepository.get_user_ids_by_name_or_email(query=query, db=db)
+    return users
 
 
 @router.get('/self', response_model=UserInDB)
@@ -52,7 +69,7 @@ async def get_user_by_id(
 
     Allowed roles: admin, instructor
     """
-    user = UserModel.get_user_by_id(user_id, db)
+    user = UserRepository.get_user_by_id(user_id, db)
     return user
 
 
@@ -73,5 +90,5 @@ async def get_user_by_canvas_id(
 
     Allowed roles: admin, instructor
     """
-    user = UserModel.get_user_by_canvas_id(user_id, db)
+    user = UserRepository.get_user_by_canvas_id(user_id, db)
     return user
