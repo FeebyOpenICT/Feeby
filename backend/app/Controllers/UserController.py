@@ -22,7 +22,9 @@ async def search_through_users(
     current_active_user: UserModel = Depends(get_current_active_user)
 ):
     """
-    Searches through users and gets their email, fullname and internal id
+    Get and or search through users
+
+    Gets the internal id, canvas_email and fullname
 
     Allowed roles: all
     """
