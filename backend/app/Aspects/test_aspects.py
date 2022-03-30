@@ -48,10 +48,10 @@ def test_empty_get_aspect(client):
 def test_patch_aspect(client):
     data = {
         "title": "test",
-        "rating_ids": [1]
+        "rating_ids": []
     }
     response = client.patch("/aspects/1", json=data)
-    assert response.status_code == 200
+    assert response.status_code == 422
     assert response.json()['title'] == "test"
-    assert response.json()['rating_ids'] == [1]
+    assert response.json()['rating_ids'] == []
 
