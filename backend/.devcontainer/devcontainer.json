@@ -1,8 +1,8 @@
 {  
   "name": "backend",
   "dockerComposeFile": [
-    "../docker-compose.yml",
-    "../docker-compose.devcontainer.yml"
+    "../../docker-compose.yml",
+    "../../docker-compose.devcontainer.yml"
   ],
   "workspaceFolder": "/workspace/backend",
   "service": "backend",
