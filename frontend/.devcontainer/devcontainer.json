@@ -8,5 +8,5 @@
   "service": "frontend",
   "extensions": [],
   "settings": {},
-  "features": {}
+  "remoteUser": "vscode"
 }

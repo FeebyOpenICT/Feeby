@@ -5,8 +5,8 @@ services:
     container_name: feeby-backend-devcontainer
     tty: true
     build: 
-      context: ./bakcend/.devcontainer
-      dockerfile: ./Dockerfile
+      context: ./backend
+      dockerfile: ./.devcontainer/Dockerfile
     command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
       - .:/workspace:cached
@@ -15,8 +15,8 @@ services:
     container_name: feeby-frontend-devcontainer
     tty: true
     build: 
-      context: ./frontend/.devcontainer
-      dockerfile: ./Dockerfile
+      context: ./frontend
+      dockerfile: ./.devcontainer/Dockerfile
     command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
       - .:/workspace:cached

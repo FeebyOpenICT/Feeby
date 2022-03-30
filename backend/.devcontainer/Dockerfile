@@ -1,10 +1,14 @@
-FROM python:3.9-slim as base
-
-# Install deps for psycopg2 and git
+#The base image for the container
+FROM python:3.9-slim-buster as development
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+# Install deps for psycopg2
 RUN apt-get update \
     && apt-get -y install libpq-dev gcc git
-
-ENV PYTHONUNBUFFERED=1
-WORKDIR /app
-COPY ./requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+# Copy python requirements to the docker container and install
+COPY requirements.txt .
+RUN python -m pip install -r requirements.txt
+#create a non root user to access the container
+RUN adduser --uid 5678 --disabled-password --gecos "" vscode

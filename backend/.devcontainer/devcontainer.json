@@ -9,5 +9,6 @@
   "extensions": [
     "ms-python.python"
   ],
-  "settings": {}
+  "settings": {},
+  "remoteUser": "vscode",
 }
