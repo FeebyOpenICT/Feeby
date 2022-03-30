@@ -7,10 +7,9 @@
 
 <script>
 import FooterCom from './FooterCom.vue'
-// import CardCom from './CardCom.vue'
 
 export default {
   name: 'HomePage',
-  components: { FooterCom, CardCom }
+  components: { FooterCom }
 }
 </script>
