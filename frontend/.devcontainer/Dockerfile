@@ -1,6 +1,4 @@
-FROM node:lts as development
-
-RUN adduser --uid 5678 --disabled-password --gecos "" vscode
+FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:dev-16-bullseye as development
 
 RUN apt-get update \
   && apt-get install git
