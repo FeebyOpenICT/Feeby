@@ -7,7 +7,7 @@
 
 <script>
 import FooterCom from './FooterCom.vue'
-import CardCom from './CardCom.vue'
+// import CardCom from './CardCom.vue'
 
 export default {
   name: 'HomePage',

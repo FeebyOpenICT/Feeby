@@ -10,7 +10,8 @@
                  class="formField"
                  id="title"
                  placeholder="Schrijf hier de titel van je post..."
-                 v-model="form.title">
+                 v-model="form.title"
+                 required>
           </v-textarea>
         </div>
         <div class="form-group">
@@ -19,7 +20,8 @@
                  class="formField"
                  id="Description"
                  placeholder="Schrijf hier de beschrijving van je post..."
-                 v-model="form.description">
+                 v-model="form.description"
+                 required>
         </v-textarea>
         </div>
           <div class="aspect-group">
