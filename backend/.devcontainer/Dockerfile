@@ -1,5 +1,6 @@
 #The base image for the container
 FROM python:3.9-slim-buster as development
+ENV PYTHONPATH=app
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
