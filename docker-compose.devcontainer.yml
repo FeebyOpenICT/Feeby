@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: feeby-backend-devcontainer
+    tty: true
+    build: 
+      context: ./bakcend/.devcontainer
+      dockerfile: ./Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - .:/workspace:cached
+
+  frontend:
+    container_name: feeby-frontend-devcontainer
+    tty: true
+    build: 
+      context: ./frontend/.devcontainer
+      dockerfile: ./Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - .:/workspace:cached
