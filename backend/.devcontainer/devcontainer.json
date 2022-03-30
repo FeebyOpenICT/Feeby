@@ -12,4 +12,7 @@
   ],
   "settings": {},
   "remoteUser": "vscode",
+  "features": {
+    "ssh-agent": "latest"
+  }
 }
