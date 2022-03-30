@@ -24,7 +24,8 @@ async def not_found_exception_handler(request: Request, exc: NotFound):
     return JSONResponse(
         content={
             "detail": f"Requested {exc.resource}: {exc.id} not found in database",
-            "resource": exc.resource
+            "resource": exc.resource,
+            "id": exc.id
         },
         status_code=exc.status_code
     )

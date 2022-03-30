@@ -38,8 +38,12 @@ def test_get_user_by_id(client, current_active_user):
 def test_get_user_by_id_not_found(client):
     response = client.get('/users/canvas/999999')
 
+    json = response.json()
     assert response.status_code == 404
-    assert response.json()['detail'] == "Requested user not found in database"
+    assert json['detail'] == "Requested user: 999999 not found in database"
+    assert json['resource'] == "user"
+    assert json['id'] == 999999
+    
 
 
 def test_get_user_by_canvas_id(client, db):
@@ -77,6 +81,8 @@ def test_get_user_by_canvas_id(client, db):
 def test_get_user_by_canvas_id_not_found(client):
     response = client.get('/users/canvas/999999')
 
+    json = response.json()
     assert response.status_code == 404
-    assert response.json()[
-        'detail'] == "Requested user not found in database"
+    assert json['detail'] == "Requested user: 999999 not found in database"
+    assert json['resource'] == "user"
+    assert json['id'] == 999999
