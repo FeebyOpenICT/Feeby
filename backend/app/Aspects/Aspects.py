@@ -92,13 +92,17 @@ async def patch_aspect(
     db_aspect = AspectModel.get_aspect_by_id(aspect_id, db)
 
     aspect_data = body.dict(exclude_unset=True)
-    if "rating_ids" in aspect_data and len(aspect_data["rating_ids"]) == 0:
-        aspect_data.pop("rating_ids")
+
+    if "rating_ids" in aspect_data:
+        if len(aspect_data["rating_ids"]) > 0:
+            ratings = [RatingModel.get_rating_by_id(rating_id=rating_id, db=db)
+                       for rating_id in aspect_data.pop("rating_ids")]
+            setattr(db_aspect, "ratings", ratings)
+        else:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No rating")
+
     for key, value in aspect_data.items():
         setattr(db_aspect, key, value)
-
-    ratings = [RatingModel.get_rating_by_id(rating_id=rating_id, db=db)
-               for rating_id in body.rating_ids]
 
     db_aspect.save_self(db)
 
