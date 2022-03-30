@@ -9,7 +9,6 @@ from Services.UserService import UserService
 from database import get_db_connection
 from typing import List
 
-
 router = APIRouter(
     prefix="/users",
     tags=["Users"]

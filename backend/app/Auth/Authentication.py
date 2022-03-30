@@ -52,17 +52,17 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
         json = r.json()
 
         """ json ^
-    {
-        "access_token": str,
-        "token_type": "Bearer",
-        "user": {
-            "id": int, 
-            "name": str
-        },
-        "refresh_token": str,
-        "expires_in": int
-    }
-    """
+        {
+            "access_token": str,
+            "token_type": "Bearer",
+            "user": {
+                "id": int, 
+                "name": str
+            },
+            "refresh_token": str,
+            "expires_in": int
+        }
+        """
 
         # check if user already exists in db
         jwt_token = AccessToken.decode_token(jwt)
@@ -71,11 +71,8 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
             raise OAuth2AuthenticationException(
                 message=f"LTI launch user_id: {jwt_token.canvas_id}, type: {type(jwt_token.canvas_id).__name__} does not equal get token user_id: {json['user']['id']} , type: {type(json['user']['id']).__name__}")
 
-        try:
-            user = UserRepository.get_user_by_canvas_id(
-                jwt_token.canvas_id, db)
-        except NotFound:
-            user = None
+        user = UserRepository.get_user_by_canvas_id(
+            jwt_token.canvas_id, db)
 
         if not user:
             # no user found > create new one and save in db
