@@ -3,7 +3,7 @@ from sqlalchemy import or_, func
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
 from Models.User import UserModel
-from Schemas.User import UserPublicSearch
+from Schemas.UserSchema import UserPublicSearch
 
 
 class UserRepository:
@@ -17,10 +17,6 @@ class UserRepository:
         Returns a python user mapped class from the database
         """
         user = db.query(UserModel).filter(UserModel.canvas_id == id).first()
-
-        if not user:
-            raise NotFound("user")
-
         return user
 
     @staticmethod
@@ -33,10 +29,6 @@ class UserRepository:
         Returns a python user mapped class from the database
         """
         user = db.query(UserModel).filter(UserModel.id == id).first()
-
-        if not UserModel:
-            raise NotFound(f"user")
-
         return user
 
     @staticmethod

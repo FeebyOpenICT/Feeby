@@ -11,8 +11,8 @@ from Exceptions.AuthenticationException import OAuth2AuthenticationException, oa
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
-from Repositories.User import UserRepository
-from Users import users
+from Repositories.UserRepository import UserRepository
+from Controllers import UserController
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Posts import Posts
 from Aspects import Aspects
@@ -118,7 +118,7 @@ def client(db):
 
     app.include_router(Authentication.router)
 
-    app.include_router(users.router)
+    app.include_router(UserController.router)
 
     app.include_router(Posts.router)
 

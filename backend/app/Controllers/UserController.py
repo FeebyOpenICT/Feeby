@@ -1,12 +1,14 @@
 from fastapi import APIRouter, Security, Depends
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
+from Exceptions.NotFound import NotFound
 from Models.User import UserModel
-from Repositories.User import UserRepository
-from Schemas.User import UserPublicSearch, UserInDB
+from Schemas.UserSchema import UserPublicSearch, UserInDB
 from Models.Role import Roles
+from Services.UserService import UserService
 from database import get_db_connection
-from typing import List, Tuple
+from typing import List
+
 
 router = APIRouter(
     prefix="/users",
@@ -14,9 +16,9 @@ router = APIRouter(
 )
 
 
-@router.get('/search', response_model=List[UserPublicSearch])
+@router.get('', response_model=List[UserPublicSearch])
 async def search_through_users(
-    query: str,
+    search: str = '',
     db: Session = Depends(get_db_connection),
     current_active_user: UserModel = Depends(get_current_active_user)
 ):
@@ -25,7 +27,7 @@ async def search_through_users(
 
     Allowed roles: all
     """
-    users = UserRepository.get_user_ids_by_name_or_email(query=query, db=db)
+    users = UserService.get_user_ids_by_name_or_email(query=search, db=db)
     return users
 
 
@@ -49,6 +51,7 @@ async def get_user_self(
 
     Allowed roles: admin, instructor, student, content_developer, teaching_assistant, observer, mentor
     """
+    # already throws unauthenticated if the user is not logged in so no further error handling necessary
     return current_active_user
 
 
@@ -69,7 +72,11 @@ async def get_user_by_id(
 
     Allowed roles: admin, instructor
     """
-    user = UserRepository.get_user_by_id(user_id, db)
+    user = UserService.get_user_by_id(user_id, db)
+
+    if not user:
+        raise NotFound("user", user_id)
+
     return user
 
 
@@ -90,5 +97,9 @@ async def get_user_by_canvas_id(
 
     Allowed roles: admin, instructor
     """
-    user = UserRepository.get_user_by_canvas_id(user_id, db)
+    user = UserService.get_user_by_canvas_id(user_id, db)
+
+    if not user:
+        raise NotFound("user", user_id)
+
     return user

@@ -3,7 +3,7 @@ from Models.User import UserModel
 from Models.Role import RoleModel, Roles
 from sqlalchemy.orm import Session
 
-from Repositories.User import UserRepository
+from Repositories.UserRepository import UserRepository
 
 
 def test_find_user_by_id(db: Session, current_active_user: UserModel):

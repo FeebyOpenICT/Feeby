@@ -6,7 +6,7 @@ from fastapi.security import (
     SecurityScopes,
 )
 
-from Repositories.User import UserRepository
+from Repositories.UserRepository import UserRepository
 
 from .JWTToken import AccessToken
 from Models.User import UserModel

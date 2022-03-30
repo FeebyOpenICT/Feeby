@@ -7,7 +7,7 @@ from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authent
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Auth import Authentication
 from LTI import lti
-from Users import users
+from Controllers import UserController
 from Posts import Posts
 from Aspects import Aspects
 from Ratings import Ratings
@@ -47,7 +47,7 @@ app.include_router(lti.router)
 
 app.include_router(Authentication.router)
 
-app.include_router(users.router)
+app.include_router(UserController.router)
 
 app.include_router(Posts.router)
 

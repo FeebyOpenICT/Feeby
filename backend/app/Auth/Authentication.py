@@ -7,7 +7,7 @@ import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
 from Exceptions.NotFound import NotFound
-from Repositories.User import UserRepository
+from Repositories.UserRepository import UserRepository
 from .JWTToken import AccessToken
 from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
