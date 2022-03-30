@@ -6,7 +6,10 @@
   ],
   "workspaceFolder": "/workspace/frontend",
   "service": "frontend",
-  "extensions": [],
+  "extensions": [
+    "octref.vetur",
+    "dbaeumer.vscode-eslint"
+  ],
   "settings": {},
   "remoteUser": "vscode"
 }
