@@ -50,7 +50,7 @@ def test_patch_aspect_without_ratings(client):
         "title": "test",
         "rating_ids": []
     }
-    response = client.patch("/aspects/1", json=data)
+    response = client.put("/aspects/1", json=data)
     assert response.status_code == 422
     assert response.json()['title'] == "test"
     assert response.json()['rating_ids'] == []
