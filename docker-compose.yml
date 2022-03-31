@@ -49,7 +49,7 @@ services:
       target: development
     volumes:
       - ./frontend:/usr/src/app
-      - node_modules
+      - /usr/src/app/node_modules
     labels:
       traefik.enable: true
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
