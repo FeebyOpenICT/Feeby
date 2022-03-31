@@ -3,6 +3,7 @@ from typing import List
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import Session, relationship
 from sqlalchemy.sql import func
+from Exceptions.NotFound import NotFound
 
 from Models.Rating import RatingModel
 from database import Base
@@ -49,3 +50,15 @@ class AspectModel(Base, SaveableModel):
         """
         db_aspects = db.query(AspectModel).order_by(AspectModel.title).all()
         return db_aspects
+
+    # static not class method because I want it to always return a aspect instance
+    @staticmethod
+    def get_aspect_by_id(id: int, db: Session):
+        """
+        Gets post object mapping from db
+        """
+        db_aspect = db.query(AspectModel).filter(AspectModel.id == id).first()
+        if not db_aspect:
+            raise NotFound(f"aspect")
+        return db_aspect
+
