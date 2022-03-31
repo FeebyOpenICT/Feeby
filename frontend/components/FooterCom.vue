@@ -2,6 +2,10 @@
   <v-footer
     class="footer"
     color="var(--blue)"
+    app
+    bottom
+    fixed
+    padless
   />
 </template>
 
@@ -14,7 +18,6 @@ export default {
 
 <style scoped>
 .footer{
-  padding: 0;
   height: 5vh;
 }
 </style>

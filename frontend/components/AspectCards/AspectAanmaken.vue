@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <form method="post" @submit.prevent="submitForm">
     <div id="productTextContainer" class="container">
       <h1 class="textBoxTitle">
         Titel
@@ -81,13 +81,18 @@
         Aspect Rating
       </h1>
       <v-hover />
-      <v-list class="aspectRatingsBox">
-        <v-list-item-group>
+      <v-list
+        class="aspectRatingsBox"
+      >
+        <v-list-item-group multiple>
           <v-list-item
             v-for="rating in cards"
             :key="rating.id"
           >
-            <v-list-item-content v-model="values.rating_ids">
+            <v-list-item-content
+              v-model="rating.id"
+              :value="values.rating_ids"
+            >
               <v-list-item-title v-text="rating.title" />
             </v-list-item-content>
           </v-list-item>
@@ -109,7 +114,10 @@
       </v-overlay-content>
       <br>
     </div>
-    <v-btn type="submit">
+    <v-btn
+      type="submit"
+      class="Submit"
+    >
       Submit
     </v-btn>
   </form>
@@ -117,6 +125,7 @@
 <script>
 import { axiosInstance } from '../../lib/axiosInstance'
 import AspectRatingAanmaken from './AspectRatingAanmaken'
+
 export default {
   name: 'AspectAanmaken',
   components: { AspectRatingAanmaken },
@@ -128,7 +137,7 @@ export default {
         short_description: '',
         description: '',
         external_url: '',
-        rating_ids: ''
+        rating_ids: []
       },
       overlay: false,
       absolute: true
@@ -153,6 +162,10 @@ export default {
         }).finally(() => {
           // Perform action in always
         })
+    },
+    varChange () {
+      this.values.rating_ids = this.cards.id
+      console.log(this.values.rating_ids)
     }
   }
 }
