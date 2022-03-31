@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session, relationship
 
 from .SaveableModel import SaveableModel
 from database import Base
-from .User import UserModel
+from .UserModel import UserModel
 
 
 class PostModel(Base, SaveableModel):

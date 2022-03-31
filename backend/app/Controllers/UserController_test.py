@@ -1,5 +1,5 @@
 import json
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Models.Role import RoleModel, Roles
 
 
@@ -43,7 +43,6 @@ def test_get_user_by_id_not_found(client):
     assert json['detail'] == "Requested user: 999999 not found in database"
     assert json['resource'] == "user"
     assert json['id'] == 999999
-    
 
 
 def test_get_user_by_canvas_id(client, db):

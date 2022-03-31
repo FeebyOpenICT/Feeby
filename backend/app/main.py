@@ -17,7 +17,7 @@ from Ratings import Ratings
 from Models.Aspect import AspectModel
 from Models.Rating import RatingModel
 from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Models.Role import RoleModel
 from Models.User_Role import User_Role_Model
 from Models.Post import PostModel

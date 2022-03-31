@@ -1,5 +1,5 @@
 import pytest
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Models.Role import RoleModel, Roles
 from sqlalchemy.orm import Session
 

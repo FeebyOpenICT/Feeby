@@ -2,7 +2,7 @@ from typing import List, Tuple
 from sqlalchemy import or_, func
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Schemas.UserSchema import UserPublicSearch
 
 

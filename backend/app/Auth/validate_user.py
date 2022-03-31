@@ -9,7 +9,7 @@ from fastapi.security import (
 from Repositories.UserRepository import UserRepository
 
 from .JWTToken import AccessToken
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from database import get_db_connection
 
 # automatically checks if there is a Bearer token in the Authorization header

@@ -33,7 +33,7 @@ from database import Base, get_db_connection
 from Models.Aspect import AspectModel
 from Models.Rating import RatingModel
 from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Models.Role import RoleModel, Roles
 from Models.User_Role import User_Role_Model
 from Models.Post import PostModel

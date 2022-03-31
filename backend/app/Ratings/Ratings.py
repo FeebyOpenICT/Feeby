@@ -1,4 +1,4 @@
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Models.Role import Roles
 from database import get_db_connection
 from Schemas.Rating import RatingInDB, CreateRating

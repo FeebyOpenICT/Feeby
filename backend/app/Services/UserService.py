@@ -1,6 +1,6 @@
 from typing import List
 from pytest import Session
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Repositories.UserRepository import UserRepository
 from Schemas.UserSchema import UserPublicSearch
 

@@ -3,11 +3,11 @@ from typing import List
 from Models.Post import PostModel
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
-from Schemas.Post import CreatePost
+from Schemas.PostSchema import CreatePost
 from database import get_db_connection
 from Models.Role import Roles
-from Models.User import UserModel
-from Schemas.Post import PostInDB
+from Models.UserModel import UserModel
+from Schemas.PostSchema import PostInDB
 
 router = APIRouter(
     prefix="/posts",

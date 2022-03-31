@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from Schemas.Aspect import CreateAspect, AspectInDB
 from database import get_db_connection
 from Models.Role import Roles
-from Models.User import UserModel
+from Models.UserModel import UserModel
 from Models.Rating import RatingModel
 
 router = APIRouter(
