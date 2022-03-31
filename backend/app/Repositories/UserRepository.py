@@ -33,6 +33,12 @@ class UserRepository:
 
     @staticmethod
     def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicSearch]:
+        """
+        Gets first 10 users by their name or email
+
+        only returns canvas_email, id and fullname
+        empty list if none
+        """
         users = db.query(UserModel).with_entities(
             UserModel.canvas_email,
             UserModel.id,
@@ -42,6 +48,8 @@ class UserRepository:
                 UserModel.canvas_email.ilike(f"%{query}%"),
                 UserModel.fullname.ilike(f"%{query}%")
             )
+        ).limit(
+            10
         ).all()
 
         return users
