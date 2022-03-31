@@ -81,23 +81,35 @@
         Aspect Rating
       </h1>
       <v-hover />
-      <v-list
+      <v-select
+        v-for="rating in cards"
+        :key="rating.id"
+        v-model="values.rating_ids"
+        :items="rating.title"
+        :menu-props="{ maxHeight: '400' }"
+        label="Select"
+        multiple
+        chips
+        hint="Wat zijn de Ratings van dit aspect?"
+        persistent-hint
+      />
+      <!-- <v-list
         class="aspectRatingsBox"
       >
-        <v-list-item-group multiple>
+        <v-list-item-group multiple mandatory>
           <v-list-item
             v-for="rating in cards"
             :key="rating.id"
           >
             <v-list-item-content
-              v-model="rating.id"
-              :value="values.rating_ids"
+              :input="values.rating_ids"
+              :value="rating.id"
             >
               <v-list-item-title v-text="rating.title" />
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
-      </v-list>
+      </v-list> -->
 
       <v-btn
         @click="overlay = !overlay"
@@ -159,8 +171,6 @@ export default {
         .catch((error) => {
           // error.response.status Check status code
           console.log(error)
-        }).finally(() => {
-          // Perform action in always
         })
     },
     varChange () {

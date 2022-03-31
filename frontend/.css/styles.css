@@ -72,7 +72,24 @@
 }
 
 .Submit {
+  position: relative;
+  left: 45%;
+  bottom: 5%;
+}
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 5vh;    /* Footer height */
+}
+
+#footer {
   position: absolute;
-  right: 45%;
-  bottom: -60%;
+  bottom: 0;
+  width: 100%;
+  height: 5vh;            /* Footer height */
+  background-color: #0079cf;
 }

@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <HeaderCom />
-    <addButton />
-    <CardCom />
-    <FooterCom />
+  <div id="page-container">
+    <div id="content-wrap">
+      <HeaderCom />
+      <addButton />
+      <CardCom />
+    </div>
+    <footer id="footer" />
   </div>
 </template>
 
 <script>
-import FooterCom from '~/components/FooterCom.vue'
 import CardCom from '~/components/CardCom.vue'
 import HeaderCom from '~/components/HeaderCom.vue'
+import '~/.css/styles.css'
 export default {
   name: 'IndexPage',
-  components: { FooterCom, CardCom, HeaderCom }
+  components: { CardCom, HeaderCom }
 }
 </script>
