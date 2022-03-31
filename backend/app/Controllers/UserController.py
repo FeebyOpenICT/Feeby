@@ -34,23 +34,12 @@ async def search_through_users(
 
 @router.get('/self', response_model=UserInDB)
 async def get_user_self(
-    current_active_user: UserModel = Security(
-        get_current_active_user,
-        scopes=[
-        Roles.STUDENT['title'],
-        Roles.ADMIN['title'],
-        Roles.INSTRUCTOR['title'],
-        Roles.CONTENT_DEVELOPER['title'],
-        Roles.TEACHING_ASSISTANT['title'],
-        Roles.OBSERVER['title'],
-        Roles.MENTOR['title']
-        ]
-    )
+    current_active_user: UserModel = Depends(get_current_active_user)
 ):
     """
     Gets current active user
 
-    Allowed roles: admin, instructor, student, content_developer, teaching_assistant, observer, mentor
+    Allowed roles: all
     """
     # already throws unauthenticated if the user is not logged in so no further error handling necessary
     return current_active_user
