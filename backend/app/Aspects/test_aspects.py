@@ -47,12 +47,13 @@ def test_empty_get_aspect(client):
 
 
 def test_patch_aspect_without_ratings(client, db):
+    rating = RatingModel('sdjkfh', 'askdjfh', 'sdf')
     new_aspect_json = {
         "title": "test",
         "short_description": "testshort",
         "description": "testdesc",
         "external_url": "testurl",
-        "rating_ids": [1]
+        "rating_ids": [rating.id]
     }
     new_aspect = AspectModel(**new_aspect_json)
     new_aspect.save_self(db)
