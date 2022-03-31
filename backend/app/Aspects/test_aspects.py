@@ -53,7 +53,7 @@ def test_patch_aspect_without_ratings(client, db):
         "short_description": "testshort",
         "description": "testdesc",
         "external_url": "testurl",
-        "rating_ids": [rating.id]
+        "ratings": [rating.id]
     }
     new_aspect = AspectModel(**new_aspect_json)
     new_aspect.save_self(db)
