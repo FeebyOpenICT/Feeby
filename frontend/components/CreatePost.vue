@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div id="page-container">
     <HeaderCom />
     <PostTitle />
-    <div class="postPage">
-      <h1 class="pageTitle">Product inleveren</h1>
+    <div id="content-wrap" class="postPage">
+      <h1 class="pageTitle">
+        Product inleveren
+      </h1>
       <InputField />
       <UploadBox />
       <AspectCommunication />
-      <AspectKnowledge/>
+      <AspectKnowledge />
 
       <v-card
         v-for="post in posts"
@@ -15,21 +17,21 @@
         class="cardsList"
       >
         <div class="postContainer">
-        <v-card-title>{{post.title}}</v-card-title>
-      </div>
+          <v-card-title>{{ post.title }}</v-card-title>
+        </div>
       </v-card>
     </div>
-    <FooterCom />
+    <footer id="footer" />
   </div>
 </template>
 
 <script>
 import { axiosInstance } from '../lib/axiosInstance'
 import HeaderCom from './HeaderCom.vue'
-import FooterCom from './FooterCom.vue'
+import '~/.css/styles.css'
 export default {
   name: 'CreatePost',
-  components: { HeaderCom, FooterCom },
+  components: { HeaderCom },
   data () {
     return {
       posts: null

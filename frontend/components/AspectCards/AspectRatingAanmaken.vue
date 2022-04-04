@@ -61,9 +61,15 @@
       <v-btn
         id="submitButton"
         type="submit"
-        width="90%"
       >
         Opslaan
+      </v-btn>
+      <v-btn
+        id="submitButton"
+        type="submit"
+        @click="overlay= false"
+      >
+        Close
       </v-btn>
     </form>
   </v-card>
