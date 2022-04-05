@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Security, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException
 from typing import List
 from Exceptions.NotFound import NotFound
 from Services.PostService import PostService
-from Auth.validate_user import get_current_active_user
+from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
 from sqlalchemy.orm import Session
 from Schemas.PostSchema import CreatePost
 from Schemas.UserIdListSchema import UserIdList
@@ -24,16 +24,7 @@ class PostController:
         self,
         user_id: int,
         db: Session = Depends(get_db_connection),
-        current_active_user: UserModel = Security(
-            get_current_active_user,
-            scopes=[
-            Roles.STUDENT['title'],
-            Roles.ADMIN['title'],
-            Roles.INSTRUCTOR['title'],
-            Roles.CONTENT_DEVELOPER['title'],
-            Roles.TEACHING_ASSISTANT['title'],
-            ]
-        )
+        current_active_user: UserModel = Depends(get_current_active_user)
     ) -> None:
         self.user_id = user_id
         self.db = db
@@ -51,8 +42,6 @@ class PostController:
     async def get_posts(self):
         """
         Read post from user_id
-
-        Allowed roles: admin, instructor, student, content_developer, teaching_assistant
         """
         result = PostService.get_posts_from_user_by_id(
             user_id=self.user_id, db=self.db)
@@ -60,32 +49,24 @@ class PostController:
         return result
 
     @router.post('/users/{user_id}/posts', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
-    async def create_post(self, body: CreatePost):
+    async def create_post(self, body: CreatePost, current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
         """
-        Create post
-
-        Allowed roles: admin, instructor, student, content_developer, teaching_assistant
+        Create post 
         """
-        # TODO refactor to isSelf dependency
-        if self.user_id != self.current_active_user.id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-
         post = PostService.create_post_for_user_by_model(title=body.title, description=body.description,
-                                                         user=self.current_active_user, db=self.db)
+                                                         user=current_self_user, db=self.db)
         return post
 
     @router.post('/users/{user_id}/posts/{post_id}/grant-access', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
-    async def grant_access_to_post(self, post_id: int, body: UserIdList):
-        if self.user_id != self.current_active_user.id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-
+    async def grant_access_to_post(self, post_id: int, body: UserIdList, current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
+        """
+        Grants access to all users ids in post body
+        """
         if self.user_id in body.user_ids:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Can't grant access to self")
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
 
         post = PostService.grant_access_to_post(
-            post_id=post_id, user_id=self.user_id, user_ids=body.user_ids, db=self.db)
+            post_id=post_id, user_id=current_self_user.id, user_ids=body.user_ids, db=self.db)
 
         return post

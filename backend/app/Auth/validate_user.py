@@ -1,3 +1,5 @@
+from xmlrpc.client import Boolean
+from anyio import current_effective_deadline
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Security, status
 from fastapi.security import (
@@ -5,6 +7,7 @@ from fastapi.security import (
     HTTPAuthorizationCredentials,
     SecurityScopes,
 )
+from Models.RoleModel import Roles
 
 from Repositories.UserRepository import UserRepository
 
@@ -72,3 +75,15 @@ async def get_current_active_user(
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive User")
     return current_user
+
+
+async def get_current_active_user_that_is_self(
+    user_id: int,
+    current_active_user: UserModel = Security(
+        get_current_active_user, scopes=[])
+):
+    if user_id != current_active_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Not enough permissions")
+
+    return current_active_user
