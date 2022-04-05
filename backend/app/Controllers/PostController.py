@@ -1,6 +1,8 @@
+from unittest import result
 from fastapi import APIRouter, Depends, Security, status
 from typing import List
 from Models.PostModel import PostModel
+from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.PostSchema import CreatePost
@@ -34,8 +36,9 @@ async def get_posts(
 
     Allowed roles: admin, instructor, student, content_developer, teaching_assistant
     """
-    all_posts = PostModel.get_posts_by_user_id(current_active_user.id, db)
-    return all_posts
+    result = PostService.get_posts_from_user_by_id(
+        user_id=current_active_user.id, db=db)
+    return result
 
 
 @router.post('/', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
