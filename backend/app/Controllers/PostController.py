@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Security, status
 from typing import List
-from Models.Post import PostModel
+from Models.PostModel import PostModel
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.PostSchema import CreatePost

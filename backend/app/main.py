@@ -7,8 +7,7 @@ from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authent
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Auth import Authentication
 from LTI import lti
-from Controllers import UserController
-from Posts import Posts
+from Controllers import UserController, PostController
 from Aspects import Aspects
 from Ratings import Ratings
 
@@ -20,7 +19,7 @@ from Models.Aspect_Rating import Aspect_Rating_Model
 from Models.UserModel import UserModel
 from Models.Role import RoleModel
 from Models.User_Role import User_Role_Model
-from Models.Post import PostModel
+from Models.PostModel import PostModel
 
 
 # import database
@@ -49,7 +48,7 @@ app.include_router(Authentication.router)
 
 app.include_router(UserController.router)
 
-app.include_router(Posts.router)
+app.include_router(PostController.router)
 
 app.include_router(Aspects.router)
 

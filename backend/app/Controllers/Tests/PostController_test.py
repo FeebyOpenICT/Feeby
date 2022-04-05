@@ -1,4 +1,4 @@
-from Models.Post import PostModel
+from Models.PostModel import PostModel
 
 
 def test_post_create_post(client):

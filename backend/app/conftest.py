@@ -12,9 +12,8 @@ from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authent
 from Auth import Authentication
 from LTI import lti
 from Repositories.UserRepository import UserRepository
-from Controllers import UserController
+from Controllers import UserController, PostController
 from Exceptions.NotFound import NotFound, not_found_exception_handler
-from Posts import Posts
 from Aspects import Aspects
 from Ratings import Ratings
 ######
@@ -36,7 +35,7 @@ from Models.Aspect_Rating import Aspect_Rating_Model
 from Models.UserModel import UserModel
 from Models.Role import RoleModel, Roles
 from Models.User_Role import User_Role_Model
-from Models.Post import PostModel
+from Models.PostModel import PostModel
 ######
 
 
@@ -120,7 +119,7 @@ def client(db):
 
     app.include_router(UserController.router)
 
-    app.include_router(Posts.router)
+    app.include_router(PostController.router)
 
     app.include_router(Aspects.router)
 
