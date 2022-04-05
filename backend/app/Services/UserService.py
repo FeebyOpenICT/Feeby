@@ -13,7 +13,8 @@ class UserService:
 
         returns user model
         """
-        return UserRepository.get_user_by_id(id=id, db=db)
+        user = UserRepository.get_user_by_id(id=id, db=db)
+        return user
 
     @staticmethod
     def get_user_by_canvas_id(id: int, db: Session) -> UserModel:
