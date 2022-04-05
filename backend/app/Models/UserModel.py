@@ -4,10 +4,8 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
 from Models.SaveableModel import SaveableModel
-from .Role import RoleModel
+from .RoleModel import RoleModel
 from database import Base
-
-from Exceptions.NotFound import NotFound
 
 
 class UserModel(Base, SaveableModel):

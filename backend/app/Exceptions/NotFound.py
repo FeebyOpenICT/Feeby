@@ -19,7 +19,7 @@ class NotFound(Exception):
 
 async def not_found_exception_handler(request: Request, exc: NotFound):
     """
-    Return a json response with error and 
+    Return a json response with error details
     """
     return JSONResponse(
         content={

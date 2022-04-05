@@ -5,7 +5,7 @@ from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.Aspect import CreateAspect, AspectInDB, AspectUpdate
 from database import get_db_connection
-from Models.Role import Roles
+from Models.RoleModel import Roles
 from Models.UserModel import UserModel
 from Models.Rating import RatingModel
 
@@ -99,7 +99,8 @@ async def patch_aspect(
                        for rating_id in aspect_data.pop("rating_ids")]
             setattr(db_aspect, "ratings", ratings)
         else:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No rating")
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No rating")
 
     for key, value in aspect_data.items():
         setattr(db_aspect, key, value)

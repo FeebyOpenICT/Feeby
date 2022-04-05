@@ -1,6 +1,6 @@
 import json
 from Models.UserModel import UserModel
-from Models.Role import RoleModel, Roles
+from Models.RoleModel import RoleModel, Roles
 
 
 def test_get_user_self(client, db, current_active_user):

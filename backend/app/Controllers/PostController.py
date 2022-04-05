@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Security, status
+from fastapi import APIRouter, Depends, Security, status, HTTPException
 from typing import List
 from Exceptions.NotFound import NotFound
 from Services.PostService import PostService
@@ -6,7 +6,7 @@ from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.PostSchema import CreatePost, GrantAccessToPost
 from database import get_db_connection
-from Models.Role import Roles
+from Models.RoleModel import Roles
 from Models.UserModel import UserModel
 from Schemas.PostSchema import PostInDB
 from fastapi_utils.cbv import cbv
@@ -38,9 +38,7 @@ class PostController:
         self.db = db
         self.current_active_user = current_active_user
 
-        if user_id == current_active_user.id:
-            self.user = current_active_user
-        else:
+        if user_id != current_active_user.id:
             user = UserService.get_user_by_id(id=user_id, db=db)
 
             if user is None:
@@ -57,6 +55,7 @@ class PostController:
         """
         result = PostService.get_posts_from_user_by_id(
             user_id=self.user_id, db=self.db)
+
         return result
 
     @router.post('/users/{user_id}/posts', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
@@ -66,10 +65,14 @@ class PostController:
 
         Allowed roles: admin, instructor, student, content_developer, teaching_assistant
         """
+        if self.user_id != self.current_active_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
+
         post = PostService.create_post_for_user_by_model(title=body.title, description=body.description,
-                                                         user=self.user, db=self.db)
+                                                         user=self.current_active_user, db=self.db)
         return post
 
-    @router.patch('/users/{user_id}/posts/{post_id}/grant-access', status_code=status.HTTP_201_CREATED)
+    @router.post('/users/{user_id}/posts/{post_id}/grant-access', status_code=status.HTTP_201_CREATED)
     async def grant_access_to_post(self, post_id: int, body: GrantAccessToPost):
         return post_id

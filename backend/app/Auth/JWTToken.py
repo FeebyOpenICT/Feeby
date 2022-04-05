@@ -4,7 +4,7 @@ from fastapi import status, HTTPException
 import requests
 
 from config import JWT_ALGORITHM, JWT_SECRET, BASE_URL
-from Models.Role import Roles
+from Models.RoleModel import Roles
 
 
 class AccessToken:

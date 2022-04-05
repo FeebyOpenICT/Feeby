@@ -1,4 +1,4 @@
-from Models.Role import Roles, RoleModel
+from Models.RoleModel import Roles, RoleModel
 from sqlalchemy.orm import Session
 
 
