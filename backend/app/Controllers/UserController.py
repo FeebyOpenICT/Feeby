@@ -70,7 +70,7 @@ async def get_user_by_id(
     return user
 
 
-@router.get('/canvas/{user_id}', response_model=UserInDB)
+@router.get('/{user_id}/canvas', response_model=UserInDB)
 async def get_user_by_canvas_id(
     user_id: int,
     current_active_user: UserModel = Security(
