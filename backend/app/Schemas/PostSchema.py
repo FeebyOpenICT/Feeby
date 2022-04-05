@@ -20,7 +20,3 @@ class PostInDB(Post):
 
     class Config:
         orm_mode = True
-
-
-class GrantAccessToPost(BaseModel):
-    user_ids: List[int]
