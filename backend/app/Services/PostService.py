@@ -2,6 +2,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from Models.PostModel import PostModel
+from Models.UserModel import UserModel
 from Repositories.PostRepository import PostRepository
 
 
@@ -18,3 +19,9 @@ class PostService:
         result = PostRepository.get_posts_from_user_by_id(
             user_id=user_id, db=db)
         return result
+
+    @staticmethod
+    def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
+        post = PostRepository.create_post_for_user(
+            title=title, description=description, user=user, db=db)
+        return post

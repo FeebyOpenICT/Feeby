@@ -2,6 +2,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from Models.PostModel import PostModel
+from Models.UserModel import UserModel
 
 
 class PostRepository:
@@ -19,3 +20,18 @@ class PostRepository:
         """
         result = db.query(PostModel).filter(PostModel.user_id == user_id).all()
         return result
+
+    @staticmethod
+    def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
+        """
+        Create post for a user
+
+        user = UserModel < user you want to create the post for
+
+        Returns the newly created PostModel
+        """
+        post = PostModel(title=title, description=description, user=user)
+        db.add(post)
+        db.commit()
+        db.refresh(post)
+        return post

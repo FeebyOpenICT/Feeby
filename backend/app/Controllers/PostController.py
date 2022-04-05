@@ -1,7 +1,5 @@
-from unittest import result
 from fastapi import APIRouter, Depends, Security, status
 from typing import List
-from Models.PostModel import PostModel
 from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
@@ -61,10 +59,6 @@ async def post(
 
     Allowed roles: admin, instructor, student, content_developer, teaching_assistant
     """
-    post = PostModel(
-        title=body.title,
-        description=body.description,
-        user=current_active_user
-    )
-    post.save_self(db)
+    post = PostService.create_post_for_user(title=body.title, description=body.description,
+                                            user=current_active_user, db=db)
     return post
