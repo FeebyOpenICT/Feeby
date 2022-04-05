@@ -4,7 +4,7 @@ from Exceptions.NotFound import NotFound
 from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
-from Schemas.PostSchema import CreatePost
+from Schemas.PostSchema import CreatePost, GrantAccessToPost
 from database import get_db_connection
 from Models.Role import Roles
 from Models.UserModel import UserModel
@@ -69,3 +69,7 @@ class PostController:
         post = PostService.create_post_for_user_by_model(title=body.title, description=body.description,
                                                          user=self.user, db=self.db)
         return post
+
+    @router.patch('/users/{user_id}/posts/{post_id}/grant-access', status_code=status.HTTP_201_CREATED)
+    async def grant_access_to_post(self, post_id: int, body: GrantAccessToPost):
+        return post_id

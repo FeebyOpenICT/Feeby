@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -19,3 +20,7 @@ class PostInDB(Post):
 
     class Config:
         orm_mode = True
+
+
+class GrantAccessToPost(BaseModel):
+    user_ids: List[int]
