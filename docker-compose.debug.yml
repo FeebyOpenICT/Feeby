@@ -10,6 +10,7 @@ services:
       - 5678:5678
 
   db:
+    container_name: feeby-database-debug
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
