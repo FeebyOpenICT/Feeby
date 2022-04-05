@@ -1,4 +1,5 @@
 from typing import List
+from unittest import result
 from sqlalchemy.orm import Session
 
 from Models.PostModel import PostModel
@@ -35,3 +36,8 @@ class PostRepository:
         db.commit()
         db.refresh(post)
         return post
+
+    @staticmethod
+    def get_post_by_id(post_id: int, db: Session):
+        result = db.query(PostModel).filter(PostModel.id == post_id).first()
+        return result
