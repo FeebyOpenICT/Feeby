@@ -4,7 +4,8 @@ from Exceptions.NotFound import NotFound
 from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
-from Schemas.PostSchema import CreatePost, GrantAccessToPost
+from Schemas.PostSchema import CreatePost
+from Schemas.UserIdListSchema import UserIdList
 from database import get_db_connection
 from Models.RoleModel import Roles
 from Models.UserModel import UserModel
@@ -65,6 +66,7 @@ class PostController:
 
         Allowed roles: admin, instructor, student, content_developer, teaching_assistant
         """
+        # TODO refactor to isSelf dependency
         if self.user_id != self.current_active_user.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
@@ -73,6 +75,17 @@ class PostController:
                                                          user=self.current_active_user, db=self.db)
         return post
 
-    @router.post('/users/{user_id}/posts/{post_id}/grant-access', status_code=status.HTTP_201_CREATED)
-    async def grant_access_to_post(self, post_id: int, body: GrantAccessToPost):
-        return post_id
+    @router.post('/users/{user_id}/posts/{post_id}/grant-access', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
+    async def grant_access_to_post(self, post_id: int, body: UserIdList):
+        if self.user_id != self.current_active_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
+
+        if self.user_id in body.user_ids:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Can't grant access to self")
+
+        post = PostService.grant_access_to_post(
+            post_id=post_id, user_id=self.user_id, user_ids=body.user_ids, db=self.db)
+
+        return post

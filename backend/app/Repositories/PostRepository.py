@@ -1,6 +1,6 @@
-from typing import List
-from unittest import result
+from typing import List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy import and_
 
 from Models.PostModel import PostModel
 from Models.UserModel import UserModel
@@ -38,6 +38,19 @@ class PostRepository:
         return post
 
     @staticmethod
-    def get_post_by_id(post_id: int, db: Session):
-        result = db.query(PostModel).filter(PostModel.id == post_id).first()
+    def get_post_by_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
+        result = db.query(PostModel).filter(
+            and_(
+                PostModel.id == post_id,
+                PostModel.user_id == user_id
+            )
+        ).first()
         return result
+
+    @staticmethod
+    def add_users_with_access_to_post(post: PostModel, users: List[UserModel], db: Session) -> PostModel:
+        post.users_with_access = list(set(post.users_with_access + users))
+        db.add(post)
+        db.commit()
+        db.refresh(post)
+        return post

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
 
@@ -38,5 +38,33 @@ class PostService:
     def create_post_for_user_by_model(title: str, description: str, user: UserModel, db: Session) -> PostModel:
         post = PostRepository.create_post_for_user(
             title=title, description=description, user=user, db=db)
+
+        return post
+
+    @staticmethod
+    def get_post_by_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
+        post = PostRepository.get_post_by_id(
+            post_id=post_id, user_id=user_id, db=db)
+        return post
+
+    @staticmethod
+    def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> PostModel:
+        post: Optional[PostModel] = PostRepository.get_post_by_id(
+            post_id=post_id, user_id=user_id, db=db)
+
+        if post is None:
+            raise NotFound(resource="post", id=post_id)
+
+        users = []
+
+        for user_id in user_ids:
+            user = UserRepository.get_user_by_id(id=user_id, db=db)
+
+            if not user:
+                raise NotFound(resource="user", id=user_id)
+
+            users.append(user)
+
+        post = PostRepository.add_users_with_access_to_post(post, users, db)
 
         return post
