@@ -11,7 +11,7 @@
           v-model="ratings.title"
           class="textField"
           counter
-          :max-length="255"
+          maxlength="255"
           type="text"
           placeholder="Schrijf hier je titel van je aspect rating..."
         />
@@ -30,7 +30,7 @@
           v-model="ratings.description"
           class="textField"
           counter
-          :max-length="1000"
+          maxlength="1000"
           type="text"
           placeholder="Schrijf hier je beschrijving over dit aspect rating..."
         />
@@ -49,7 +49,7 @@
           v-model="ratings.short_description"
           class="textField"
           counter
-          :max-length="255"
+          maxlength="255"
           type="text"
           placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
         />
@@ -61,15 +61,9 @@
       <v-btn
         id="submitButton"
         type="submit"
+        class="Submit"
       >
         Opslaan
-      </v-btn>
-      <v-btn
-        id="submitButton"
-        type="submit"
-        @click="overlay= false"
-      >
-        Close
       </v-btn>
     </form>
   </v-card>
