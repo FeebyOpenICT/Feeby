@@ -133,15 +133,9 @@ import AspectRatingAanmaken from './AspectRatingAanmaken'
 export default {
   name: 'AspectAanmaken',
   components: { AspectRatingAanmaken },
-  filters: {
-    formatTitle (value) {
-      return value === value.rating_ids
-    }
-  },
   data () {
     return {
       cards: [],
-      selectedId: '',
       values: {
         title: '',
         short_description: '',
@@ -171,10 +165,6 @@ export default {
           // error.response.status Check status code
           console.log(error)
         })
-    },
-    varChange () {
-      this.values.rating_ids = this.cards.id
-      console.log(this.values.rating_ids)
     }
   }
 }
