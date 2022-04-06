@@ -1,16 +1,19 @@
+from os import access
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
 
 from Models.PostModel import PostModel
+from Models.UserAccessPostModel import UserAccessPostModel
 from Models.UserModel import UserModel
 from Repositories.PostRepository import PostRepository
+from Repositories.UserAccessPostRepository import UserAccessPostRepository
 from Repositories.UserRepository import UserRepository
 
 
 class PostService:
     @staticmethod
-    def get_posts_from_user_by_id(user_id: int, db: Session) -> List[PostModel]:
+    def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[PostModel]:
         """
         Gets all the posts from a user by their id
 
@@ -18,8 +21,12 @@ class PostService:
 
         Returns a list of python Post mapped class from the database
         """
-        result = PostRepository.get_posts_from_user_by_id(
-            user_id=user_id, db=db)
+        if user_id == current_user_id:
+            result = PostRepository.get_posts_from_user_by_id(
+                user_id=user_id, db=db)
+        else:
+            result = PostRepository.get_posts_with_access(
+                current_user_id=current_user_id, db=db)
         return result
 
     @staticmethod
@@ -48,7 +55,7 @@ class PostService:
         return post
 
     @staticmethod
-    def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> PostModel:
+    def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
         post: Optional[PostModel] = PostRepository.get_post_by_id(
             post_id=post_id, user_id=user_id, db=db)
 
@@ -65,6 +72,18 @@ class PostService:
 
             users.append(user)
 
-        post = PostRepository.add_users_with_access_to_post(post, users, db)
+        accessList = UserAccessPostRepository.grant_access_to_users_to_post(
+            post=post, users=users, db=db)
 
-        return post
+        return accessList
+
+    @staticmethod
+    def get_post_with_access(current_user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
+        """
+        Get post that the current_user_id has access to
+
+        returns None if the user does not have access to that post
+        """
+        result = PostRepository.get_post_with_access(
+            current_user_id=current_user_id, post_id=post_id, db=db)
+        return result

@@ -2,7 +2,6 @@
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel
-from Schemas.IdsInDBSchema import IdsInDBSchema
 from Schemas.Role import RoleInDB
 
 
@@ -18,7 +17,6 @@ class UserInDB(User):
     id: int
     time_created: datetime
     time_updated: datetime
-    access_to_posts: List[IdsInDBSchema]
 
     class Config:
         orm_mode = True

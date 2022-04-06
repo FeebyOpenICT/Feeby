@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
 from Models.PostModel import PostModel
+from Models.UserAccessPostModel import UserAccessPostModel
 from Models.UserModel import UserModel
 
 
@@ -48,9 +49,22 @@ class PostRepository:
         return result
 
     @staticmethod
-    def add_users_with_access_to_post(post: PostModel, users: List[UserModel], db: Session) -> PostModel:
-        post.users_with_access = list(set(post.users_with_access + users))
-        db.add(post)
-        db.commit()
-        db.refresh(post)
-        return post
+    def get_post_with_access(current_user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
+        result = db.query(PostModel).join(
+            UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
+        ).where(
+            and_(
+                UserAccessPostModel.user_id == current_user_id,
+                UserAccessPostModel.post_id == post_id
+            )
+        ).first()
+        return result
+
+    @staticmethod
+    def get_posts_with_access(current_user_id: int, db: Session) -> Optional[PostModel]:
+        result = db.query(PostModel).join(
+            UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
+        ).where(
+            UserAccessPostModel.user_id == current_user_id
+        ).all()
+        return result

@@ -2,8 +2,6 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Session, relationship
 
-from Models.UserAccessPostModel import UserAccessPostModel
-
 from .SaveableModel import SaveableModel
 from database import Base
 from .UserModel import UserModel
@@ -27,12 +25,6 @@ class PostModel(Base, SaveableModel):
 
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('UserModel')
-
-    users_with_access = relationship(
-        "UserModel",
-        secondary=UserAccessPostModel,
-        back_populates="access_to_posts"
-    )
 
     def __init__(self, title, description, user: UserModel) -> None:
         self.title = title

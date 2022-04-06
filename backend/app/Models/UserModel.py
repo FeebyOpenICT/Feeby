@@ -4,7 +4,6 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
 from Models.SaveableModel import SaveableModel
-from Models.UserAccessPostModel import UserAccessPostModel
 from .RoleModel import RoleModel
 from database import Base
 
@@ -28,12 +27,6 @@ class UserModel(Base, SaveableModel):
                           server_default=func.now(), onupdate=func.now())
 
     roles = relationship("RoleModel", secondary='user_role')
-
-    access_to_posts = relationship(
-        "PostModel",
-        secondary=UserAccessPostModel,
-        back_populates="users_with_access"
-    )
 
     def __init__(
         self,
