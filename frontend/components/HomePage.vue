@@ -1,10 +1,7 @@
 <template>
   <div>
     <HeaderCom />
-    <div class="testpage">
-      <h3>FEEBY</h3>
-      <p>hello</p>
-    </div>
+    <AspectRatingInzien />
     <FooterCom />
   </div>
 </template>
@@ -12,9 +9,10 @@
 <script>
 import HeaderCom from './HeaderCom.vue'
 import FooterCom from './FooterCom.vue'
+import AspectRatingInzien from './AspectCards/AspectRatingInzien.vue'
 export default {
   name: 'HomePage',
-  components: { HeaderCom, FooterCom }
+  components: { HeaderCom, FooterCom, AspectRatingInzien }
 }
 </script>
 
