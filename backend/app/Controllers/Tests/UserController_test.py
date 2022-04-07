@@ -36,7 +36,7 @@ def test_get_user_by_id(client, current_active_user):
 
 
 def test_get_user_by_id_not_found(client):
-    response = client.get('/users/canvas/999999')
+    response = client.get('/users/999999/canvas')
 
     json = response.json()
     assert response.status_code == 404
@@ -62,7 +62,7 @@ def test_get_user_by_canvas_id(client, db):
     new_user = UserModel(**new_user_json)
     new_user = new_user.save_self(db)
 
-    response = client.get(f"/users/canvas/{new_user_json['canvas_id']}")
+    response = client.get(f"/users/{new_user_json['canvas_id']}/canvas")
 
     assert response.status_code == 200
     assert response.json()['id'] == new_user.id
@@ -78,7 +78,7 @@ def test_get_user_by_canvas_id(client, db):
 
 
 def test_get_user_by_canvas_id_not_found(client):
-    response = client.get('/users/canvas/999999')
+    response = client.get('/users/999999/canvas')
 
     json = response.json()
     assert response.status_code == 404
