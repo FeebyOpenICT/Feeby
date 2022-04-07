@@ -6,14 +6,14 @@ def test_post_create_post(client):
         "title": "test",
         "description": "testdesc"
     }
-    response = client.post("/posts/", json=data)
+    response = client.post("/users/1/posts", json=data)
     assert response.status_code == 201
     assert response.json()['title'] == "test"
     assert response.json()['description'] == "testdesc"
 
 
 def test_get_empty_posts(client):
-    response = client.get("/posts/self")
+    response = client.get("/users/1/posts")
     assert response.status_code == 200
     assert response.json() == []
 
@@ -26,7 +26,7 @@ def test_get_posts_self(client, db, current_active_user):
 
     print("ignore me")
 
-    response = client.get('/posts/self')
+    response = client.get('/users/1/posts')
 
     assert response.status_code == 200
     assert len(response.json()) == 2
