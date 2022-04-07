@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Exceptions.NotFound import NotFound, not_found_exception_handler
+from Exceptions.DuplicateKey import DuplicateKey, duplicate_key_exception_handler
 from Auth import Authentication
 from LTI import lti
 from Controllers import UserController, PostController
@@ -42,6 +43,8 @@ app.add_exception_handler(
     LTILaunchException, lti_launch_authentication_exception_handler)
 
 app.add_exception_handler(NotFound, not_found_exception_handler)
+
+app.add_exception_handler(DuplicateKey, duplicate_key_exception_handler)
 
 app.include_router(lti.router)
 

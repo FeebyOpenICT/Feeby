@@ -1,14 +1,14 @@
-from os import access
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from Exceptions.DuplicateKey import DuplicateKey
 from Exceptions.NotFound import NotFound
-
 from Models.PostModel import PostModel
 from Models.UserAccessPostModel import UserAccessPostModel
 from Models.UserModel import UserModel
 from Repositories.PostRepository import PostRepository
 from Repositories.UserAccessPostRepository import UserAccessPostRepository
 from Repositories.UserRepository import UserRepository
+from sqlalchemy.exc import IntegrityError
 
 
 class PostService:
@@ -71,9 +71,13 @@ class PostService:
                 raise NotFound(resource="user", id=user_id)
 
             users.append(user)
+        try:
+            accessList = UserAccessPostRepository.grant_access_to_users_to_post(
+                post=post, users=users, db=db)
 
-        accessList = UserAccessPostRepository.grant_access_to_users_to_post(
-            post=post, users=users, db=db)
+        except IntegrityError as error:
+            raise DuplicateKey(resource="User Access Post",
+                               id=error.params['user_id'])
 
         return accessList
 
