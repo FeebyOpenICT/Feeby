@@ -1,4 +1,5 @@
 from Models.PostModel import PostModel
+from sqlalchemy.orm import Session
 
 
 def test_post_create_post(client):
@@ -36,3 +37,13 @@ def test_get_posts_self(client, db, current_active_user):
 
     assert response.json()[1]['title'] == post2.title
     assert response.json()[1]['description'] == post2.description
+
+
+def test_get_posts_from_user_that_doesnt_exist(client, db: Session):
+    response = client.get('/users/2/posts')
+
+    json = response.json()
+    assert response.status_code == 404
+    assert json['detail'] == 'Requested user: 2 not found in database'
+    assert json['id'] == 2
+    assert json['resource'] == 'user'
