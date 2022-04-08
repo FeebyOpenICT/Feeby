@@ -7,7 +7,7 @@
       tile
       outlined
       elevation="2"
-      margin="15"
+      border
     >
       <h1
         class="AspectRatingH1"
@@ -69,4 +69,9 @@ export default {
   padding: 15px;
 }
 
+.v-card{
+  margin: 15px;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
 </style>
