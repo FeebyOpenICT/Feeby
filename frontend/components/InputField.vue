@@ -8,9 +8,8 @@
     </v-hover>
       <v-textarea class="textField"
                   id="postDescription"
-                  counter
-                  :rules="rules"
                   :value="value"
+
                   type="text"
                   placeholder="Schrijf hier je toelichting over je product..."
       />
@@ -23,7 +22,7 @@
 <script type="text/javascript">
 export default {
   data: () => ({
-    rules: [v => v.length <= 1000 || 'Characterlimiet overscheden'],
+    rules: [v => v.length <= 25 || 'Characterlimiet overscheden'],
     value: ''
   })
 }

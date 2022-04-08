@@ -8,6 +8,8 @@
           <h2><strong>Titel</strong></h2>
           <v-textarea type="text"
                  class="formField"
+                 counter
+                 maxlength="2000"
                  id="title"
                  placeholder="Schrijf hier de titel van je post..."
                  v-model="form.title"
@@ -18,15 +20,17 @@
           <h2><strong>Toelichting</strong></h2>
           <v-textarea type="text"
                  class="formField"
+                 counter
+                 maxlength="2000"
                  id="Description"
                  placeholder="Schrijf hier de beschrijving van je post..."
                  v-model="form.description"
                  required>
         </v-textarea>
         </div>
-          <div class="aspect-group">
-          <AspectKnowledge v-model="form.aspects" />
-          </div>
+<!--          <div class="aspect-group">-->
+<!--          <AspectKnowledge v-model="form.aspects" />-->
+<!--          </div>-->
         <div class="form-buttons">
           <button class="btn btn-primary">Submit</button>
         </div>
@@ -57,7 +61,22 @@ export default {
       axiosInstance
         .post('api/v1/posts', this.form)
         .then(response => (this.form = response.data))
-        .catch(error => console.log(error))
+        .catch(function (error) {
+          if (error.response) {
+            // De post request is gemaakt en de server gaf in de terminal een status code aan
+
+            console.log(error.response.data)
+            console.log('render error', error.response.status)
+            console.log('je bent momenteel niet ingelogd', error.response.headers)
+          } else if (error.request) {
+            // Request is verzonden, echter geen reactie terug
+            console.log('Er is iets fout gegaan', error.request)
+          } else {
+            // Iets in de request heeft voor een error gezorgd
+            console.log('Er is iets mis gegaan met het versturen van de data', error.message)
+          }
+          console.log(error.config)
+        })
     }
   }
 }
