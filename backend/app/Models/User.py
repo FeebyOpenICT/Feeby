@@ -80,7 +80,7 @@ class UserModel(Base, SaveableModel):
         """
         user = db.query(UserModel).filter(UserModel.id == id).first()
 
-        if not UserModel:
+        if not user:
             raise NotFound(f"user")
 
         return user

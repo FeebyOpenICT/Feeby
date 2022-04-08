@@ -1,6 +1,7 @@
 import pytest
 
 from Models.Rating import RatingModel
+from Models.Aspect import AspectModel
 
 
 def test_create_aspect(client, db):
@@ -43,3 +44,26 @@ def test_empty_get_aspect(client):
     response = client.get("/aspects/")
     assert response.status_code == 200
     assert response.json() == []
+
+
+def test_patch_aspect_without_ratings(client, db):
+    rating = RatingModel('sdjkfh', 'askdjfh', 'sdf')
+    rating.save_self(db)
+    new_aspect_json = {
+        "title": "test",
+        "short_description": "testshort",
+        "description": "testdesc",
+        "external_url": "testurl",
+        "ratings": [rating]
+    }
+    new_aspect = AspectModel(**new_aspect_json)
+    new_aspect.save_self(db)
+
+    data = {
+        "title": "test2",
+        "rating_ids": []
+    }
+
+    response = client.patch("/aspects/1", json=data)
+    assert response.status_code == 422
+
