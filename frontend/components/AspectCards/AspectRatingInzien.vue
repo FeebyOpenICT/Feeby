@@ -3,13 +3,20 @@
     <v-card
       class="mx-auto"
       max-width="400"
+      max-height="500"
       tile
+      outlined
+      elevation="2"
+      margin="15"
     >
-      <v-list>
-        <v-list-item-group
-          multiple
-          color="#0079CF"
-        >
+      <h1
+        class="AspectRatingH1"
+        align="center"
+      >
+        Aspect Rating Lijst
+      </h1>
+      <v-list class="overflow-auto" max-height="500">
+        <v-list-item-group color="#0079CF">
           <v-list-item
             v-for="rating in ratings"
             :key="rating.id"
@@ -53,5 +60,13 @@ export default {
 
 <style scoped>
 @import '.css/styles.css';
+
+.AspectRatingH1 {
+  font-size: 20px;
+  background-color: #0079CF;
+  color: white;
+  margin-bottom: 0;
+  padding: 15px;
+}
 
 </style>
