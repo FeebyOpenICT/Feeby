@@ -18,10 +18,10 @@
             <v-list-item-content>
               <v-list-item-title v-text="rating.title" />
               <v-list-item-subtitle v-text="rating.short_description" />
-              <v-list-item-icon>
-                <v-icon>{{ icons.mdiPencil }}</v-icon>
-              </v-list-item-icon>
             </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon>{{ icons.mdiPencil }}</v-icon>
+            </v-list-item-icon>
           </v-list-item>
         </v-list-item-group>
       </v-list>
