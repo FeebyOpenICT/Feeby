@@ -1,5 +1,5 @@
 from Models.UserModel import UserModel
-from Models.RoleModel import Roles
+from Schemas.RolesSchema import RolesEnum
 from database import get_db_connection
 from Schemas.Rating import RatingInDB, CreateRating
 from Models.Rating import RatingModel
@@ -19,11 +19,11 @@ async def get_ratings(
         current_active_user: UserModel = Security(
             get_current_active_user,
             scopes=[
-                Roles.STUDENT['title'],
-                Roles.ADMIN['title'],
-                Roles.INSTRUCTOR['title'],
-                Roles.CONTENT_DEVELOPER['title'],
-                Roles.TEACHING_ASSISTANT['title'],
+                RolesEnum.STUDENT,
+                RolesEnum.ADMIN,
+                RolesEnum.INSTRUCTOR,
+                RolesEnum.CONTENT_DEVELOPER,
+                RolesEnum.TEACHING_ASSISTANT,
             ]
         ),
         db: Session = Depends(get_db_connection)
@@ -43,8 +43,8 @@ async def create_aspect(
         current_active_user: UserModel = Security(
             get_current_active_user,
             scopes=[
-                Roles.ADMIN['title'],
-                Roles.INSTRUCTOR['title'],
+                RolesEnum.ADMIN,
+                RolesEnum.INSTRUCTOR,
             ]
         ),
         db: Session = Depends(get_db_connection)

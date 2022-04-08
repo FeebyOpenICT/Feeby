@@ -1,6 +1,8 @@
 import pytest
 from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel, Roles
+from Models.RoleModel import RoleModel
+from Repositories.RoleRepository import RoleRepository
+from Schemas.RolesSchema import RolesEnum
 from sqlalchemy.orm import Session
 
 from Repositories.UserRepository import UserRepository
@@ -29,7 +31,7 @@ def test_initiate_user_without_roles():
 
 def test_initiate_user_with_positional_args(db: Session):
     user = UserModel("name", "email", 2, False, [
-        RoleModel.get_role(Roles.ADMIN, db)])
+        RoleRepository.get_role(RolesEnum.ADMIN, db)])
     user.save_self(db)
 
     assert isinstance(user.id, int)
@@ -37,7 +39,7 @@ def test_initiate_user_with_positional_args(db: Session):
     assert user.fullname == "name"
     assert user.canvas_id == 2
     assert user.disabled == False
-    assert user.roles == [RoleModel.get_role(Roles.ADMIN, db)]
+    assert user.roles == [RoleRepository.get_role(RolesEnum.ADMIN, db)]
 
 
 def test_initiate_user_with_missing_values():
@@ -65,7 +67,7 @@ def test_find_user_by_canvas_id(db: Session, current_active_user: UserModel):
 
 def test_user_save_self(db: Session):
     test_user = UserModel("test", "ljksd", 999, False, roles=[
-        RoleModel.get_role(Roles.ADMIN, db)])
+        RoleRepository.get_role(RolesEnum.ADMIN, db)])
     test_user.save_self(db)
 
     test_found_user = UserRepository.get_user_by_canvas_id(999, db)

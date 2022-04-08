@@ -7,13 +7,15 @@ import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
 from Exceptions.NotFound import NotFound
+from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
 from .JWTToken import AccessToken
 from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel, Roles
+from Models.RoleModel import RoleModel
+from Schemas.RolesSchema import RolesEnum
 
 router = APIRouter(
     prefix="/auth",
@@ -83,8 +85,8 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
             roles = []
 
             for role in jwt_token.roles:
-                role = getattr(Roles, role.upper())
-                roles.append(RoleModel.get_role(role, db))
+                role = getattr(RolesEnum, role.upper())
+                roles.append(RoleRepository.get_role(role, db))
 
             user = UserModel(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
                              canvas_id=jwt_token.canvas_id, roles=roles, disabled=False)

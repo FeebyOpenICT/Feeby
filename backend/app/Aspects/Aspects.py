@@ -5,7 +5,7 @@ from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.Aspect import CreateAspect, AspectInDB, AspectUpdate
 from database import get_db_connection
-from Models.RoleModel import Roles
+from Schemas.RolesSchema import RolesEnum
 from Models.UserModel import UserModel
 from Models.Rating import RatingModel
 
@@ -20,11 +20,11 @@ async def get_aspects(
         current_active_user: UserModel = Security(
             get_current_active_user,
             scopes=[
-                Roles.STUDENT['title'],
-                Roles.ADMIN['title'],
-                Roles.INSTRUCTOR['title'],
-                Roles.CONTENT_DEVELOPER['title'],
-                Roles.TEACHING_ASSISTANT['title'],
+                RolesEnum.STUDENT,
+                RolesEnum.ADMIN,
+                RolesEnum.INSTRUCTOR,
+                RolesEnum.CONTENT_DEVELOPER,
+                RolesEnum.TEACHING_ASSISTANT,
             ]
         ),
         db: Session = Depends(get_db_connection)
@@ -44,8 +44,8 @@ async def aspect(
         current_active_user: UserModel = Security(
             get_current_active_user,
             scopes=[
-                Roles.ADMIN['title'],
-                Roles.INSTRUCTOR['title'],
+                RolesEnum.ADMIN,
+                RolesEnum.INSTRUCTOR,
             ]
         ),
         db: Session = Depends(get_db_connection)
@@ -78,8 +78,8 @@ async def patch_aspect(
         current_active_user: UserModel = Security(
             get_current_active_user,
             scopes=[
-                Roles.ADMIN['title'],
-                Roles.INSTRUCTOR['title'],
+                RolesEnum.ADMIN,
+                RolesEnum.INSTRUCTOR,
             ]
         ),
         db: Session = Depends(get_db_connection)

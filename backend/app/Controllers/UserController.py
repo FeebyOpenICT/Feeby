@@ -4,7 +4,7 @@ from Auth.validate_user import get_current_active_user
 from Exceptions.NotFound import NotFound
 from Models.UserModel import UserModel
 from Schemas.UserSchema import UserPublicSearch, UserInDB
-from Models.RoleModel import Roles
+from Schemas.RolesSchema import RolesEnum
 from Services.UserService import UserService
 from database import get_db_connection
 from typing import List
@@ -51,8 +51,8 @@ async def get_user_by_id(
     current_active_user: UserModel = Security(
         get_current_active_user,
         scopes=[
-        Roles.ADMIN['title'],
-        Roles.INSTRUCTOR['title'],
+        RolesEnum.ADMIN,
+        RolesEnum.INSTRUCTOR,
         ]
     ),
     db: Session = Depends(get_db_connection)
@@ -76,8 +76,8 @@ async def get_user_by_canvas_id(
     current_active_user: UserModel = Security(
         get_current_active_user,
         scopes=[
-        Roles.ADMIN['title'],
-        Roles.INSTRUCTOR['title'],
+        RolesEnum.ADMIN,
+        RolesEnum.INSTRUCTOR,
         ]
     ),
     db: Session = Depends(get_db_connection)

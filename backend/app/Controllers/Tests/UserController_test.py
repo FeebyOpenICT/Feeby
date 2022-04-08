@@ -1,6 +1,7 @@
-import json
+
 from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel, Roles
+from Schemas.RolesSchema import RolesEnum
+from Repositories.RoleRepository import RoleRepository
 
 
 def test_get_user_self(client, db, current_active_user):
@@ -15,7 +16,6 @@ def test_get_user_self(client, db, current_active_user):
 
     for res_role, query_role in zip(response.json()['roles'], current_active_user.roles):
         assert res_role['title'] == query_role.title
-        assert res_role['description'] == query_role.description
         assert res_role['id'] == query_role.id
 
 
@@ -31,7 +31,6 @@ def test_get_user_by_id(client, current_active_user):
 
     for res_role, query_role in zip(response.json()['roles'], current_active_user.roles):
         assert res_role['title'] == query_role.title
-        assert res_role['description'] == query_role.description
         assert res_role['id'] == query_role.id
 
 
@@ -53,9 +52,9 @@ def test_get_user_by_canvas_id(client, db):
         "canvas_email": "testmeemail@hu.nl",
         "disabled": False,
         "roles": [
-            RoleModel.get_role(Roles.ADMIN, db),
-            RoleModel.get_role(Roles.CONTENT_DEVELOPER, db),
-            RoleModel.get_role(Roles.INSTRUCTOR, db),
+            RoleRepository.get_role(RolesEnum.ADMIN, db),
+            RoleRepository.get_role(RolesEnum.CONTENT_DEVELOPER, db),
+            RoleRepository.get_role(RolesEnum.INSTRUCTOR, db),
         ]
     }
 
@@ -73,7 +72,6 @@ def test_get_user_by_canvas_id(client, db):
 
     for res_role, query_role in zip(response.json()['roles'], new_user.roles):
         assert res_role['title'] == query_role.title
-        assert res_role['description'] == query_role.description
         assert res_role['id'] == query_role.id
 
 

@@ -11,6 +11,7 @@ from Exceptions.AuthenticationException import OAuth2AuthenticationException, oa
 from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
+from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
 from Controllers import UserController, PostController
 from Exceptions.NotFound import NotFound, not_found_exception_handler
@@ -33,7 +34,8 @@ from Models.Aspect import AspectModel
 from Models.Rating import RatingModel
 from Models.Aspect_Rating import Aspect_Rating_Model
 from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel, Roles
+from Models.RoleModel import RoleModel
+from Schemas.RolesSchema import RolesEnum
 from Models.UserRoleModel import UserRoleModel
 from Models.PostModel import PostModel
 ######
@@ -67,13 +69,13 @@ def db() -> Session:
         1,
         False,
         [
-            RoleModel.get_role(Roles.ADMIN, db),
-            # Roles.CONTENT_DEVELOPER,
-            # Roles.INSTRUCTOR,
-            # Roles.MENTOR,
-            # Roles.OBSERVER,
-            # Roles.STUDENT,
-            # Roles.TEACHING_ASSISTANT
+            RoleRepository.get_role(RolesEnum.ADMIN, db),
+            # RolesEnum.CONTENT_DEVELOPER,
+            # RolesEnum.INSTRUCTOR,
+            # RolesEnum.MENTOR,
+            # RolesEnum.OBSERVER,
+            # RolesEnum.STUDENT,
+            # RolesEnum.TEACHING_ASSISTANT
         ]
     )
 

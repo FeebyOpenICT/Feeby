@@ -7,7 +7,7 @@ from fastapi.security import (
     HTTPAuthorizationCredentials,
     SecurityScopes,
 )
-from Models.RoleModel import Roles
+from Schemas.RolesSchema import RolesEnum
 
 from Repositories.UserRepository import UserRepository
 
