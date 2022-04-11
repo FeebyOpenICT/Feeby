@@ -1,5 +1,5 @@
-from typing import List, Tuple
-from sqlalchemy import or_, func
+from typing import List
+from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
 from Models.UserModel import UserModel
@@ -45,8 +45,10 @@ class UserRepository:
             UserModel.fullname
         ).filter(
             or_(
-                UserModel.canvas_email.ilike(f"%{query}%"),
-                UserModel.fullname.ilike(f"%{query}%")
+                and_(UserModel.canvas_email.ilike(
+                    f"%{query}%"), UserModel.disabled == False),
+                and_(UserModel.fullname.ilike(
+                    f"%{query}%"), UserModel.disabled == False)
             )
         ).limit(
             10
