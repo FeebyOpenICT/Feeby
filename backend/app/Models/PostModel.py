@@ -30,5 +30,4 @@ class PostModel(Base, SaveableModel):
         self.title = title
         self.description = description
         self.user = user
-        self.users_with_access = []
         super().__init__()

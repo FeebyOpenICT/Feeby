@@ -44,7 +44,6 @@ class UserModel(Base, SaveableModel):
         if len(roles) == 0:
             raise ValueError("roles may not be empty")
         self.roles = roles
-        self.access_to_posts = []
         super().__init__(**kwargs)
 
     def __repr__(self) -> str:
