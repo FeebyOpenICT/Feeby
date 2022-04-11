@@ -2,9 +2,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
-from Models.PostModel import PostModel
-from Models.UserAccessPostModel import UserAccessPostModel
-from Models.UserModel import UserModel
+from Models import PostModel, UserAccessPostModel, UserModel
 
 
 class PostRepository:

@@ -51,8 +51,3 @@ def test_get_posts_from_user_that_doesnt_exist(client, db: Session):
     assert json['detail'] == 'Requested user: 2 not found in database'
     assert json['id'] == 2
     assert json['resource'] == 'user'
-
-
-# def test_get_post_from_user_without_access(client, db: Session):
-#     user1 = UserModel(
-#         fullname="Julia", canvas_email="julia@student.hu.nl", canvas_id=69, disabled=False, roles=[RoleRepository.get_role(role=RolesEnum.ADMIN)])
