@@ -59,10 +59,11 @@ class PostRepository:
         return result
 
     @staticmethod
-    def get_posts_with_access(current_user_id: int, db: Session) -> Optional[PostModel]:
+    def get_posts_with_access(current_user_id: int, user_id: int, db: Session) -> Optional[PostModel]:
         result = db.query(PostModel).join(
             UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
         ).where(
-            UserAccessPostModel.user_id == current_user_id
+            UserAccessPostModel.user_id == current_user_id,
+            PostModel.user_id == user_id
         ).all()
         return result

@@ -26,7 +26,7 @@ class PostService:
                 user_id=user_id, db=db)
         else:
             result = PostRepository.get_posts_with_access(
-                current_user_id=current_user_id, db=db)
+                current_user_id=current_user_id, user_id=user_id, db=db)
         return result
 
     @staticmethod
