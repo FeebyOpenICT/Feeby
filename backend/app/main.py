@@ -2,26 +2,16 @@ import uvicorn
 from fastapi import FastAPI
 
 # import all routers and exception handlers
-from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
-from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
-from Exceptions.NotFound import NotFound, not_found_exception_handler
-from Exceptions.DuplicateKey import DuplicateKey, duplicate_key_exception_handler
+from Exceptions import *
 from Auth import Authentication
 from LTI import lti
-from Controllers import UserController, PostController
+from Controllers import UserRouter, PostRouter
 from Aspects import Aspects
 from Ratings import Ratings
 
 
 # import all models that need to be initiated
-from Models.Aspect import AspectModel
-from Models.Rating import RatingModel
-from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel
-from Models.UserRoleModel import UserRoleModel
-from Models.PostModel import PostModel
-from Models.UserAccessPostModel import UserAccessPostModel
+from Models import *
 
 
 # import database
@@ -50,9 +40,9 @@ app.include_router(lti.router)
 
 app.include_router(Authentication.router)
 
-app.include_router(UserController.router)
+app.include_router(UserRouter)
 
-app.include_router(PostController.router)
+app.include_router(PostRouter)
 
 app.include_router(Aspects.router)
 

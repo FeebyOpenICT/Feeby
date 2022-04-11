@@ -3,7 +3,7 @@ from sqlalchemy import null
 from sqlalchemy.orm import Session
 from Models import PostModel, UserAccessPostModel, UserModel
 from Repositories import PostRepository, RoleRepository
-from Schemas import RolesSchema
+from Schemas import RolesEnum
 
 
 def test_get_posts_from_user_by_id(db: Session, current_active_user: UserModel):
@@ -66,7 +66,7 @@ def test_get_post_with_access(db: Session, current_active_user: UserModel):
 
     # create user
     user2 = UserModel("lisa", "lasdhf", 23, False, [
-                      RoleRepository.get_role(RolesSchema.RolesEnum.STUDENT, db)])
+                      RoleRepository.get_role(RolesEnum.STUDENT, db)])
     db.add(user2)
     db.commit()
 
@@ -93,7 +93,7 @@ def test_get_post_without_access(db: Session, current_active_user: UserModel):
 
     # create user
     user2 = UserModel("lisa", "lasdhf", 23, False, [
-                      RoleRepository.get_role(RolesSchema.RolesEnum.STUDENT, db)])
+                      RoleRepository.get_role(RolesEnum.STUDENT, db)])
     db.add(user2)
     db.commit()
 
@@ -111,9 +111,9 @@ def test_get_post_without_access(db: Session, current_active_user: UserModel):
 def test_get_posts_with_access(db: Session, current_active_user: UserModel):
     # create users
     user2 = UserModel("lisa", "lasdhf", 23, False, [
-                      RoleRepository.get_role(RolesSchema.RolesEnum.STUDENT, db)])
+                      RoleRepository.get_role(RolesEnum.STUDENT, db)])
     user3 = UserModel("asdf", "lasdasdfasdfhf", 24, False, [
-                      RoleRepository.get_role(RolesSchema.RolesEnum.TEACHING_ASSISTANT, db)])
+                      RoleRepository.get_role(RolesEnum.TEACHING_ASSISTANT, db)])
     db.add_all([user2, user3])
     db.commit()
 

@@ -4,7 +4,7 @@ from Auth.validate_user import get_current_active_user
 from Exceptions.NotFound import NotFound
 from Models.UserModel import UserModel
 from Schemas.UserSchema import UserPublicSearch, UserInDB
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from Services.UserService import UserService
 from database import get_db_connection
 from typing import List

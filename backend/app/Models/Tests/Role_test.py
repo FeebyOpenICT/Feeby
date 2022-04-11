@@ -1,6 +1,6 @@
 from Models.RoleModel import RoleModel
 from Repositories.RoleRepository import RoleRepository
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from sqlalchemy.orm import Session
 
 

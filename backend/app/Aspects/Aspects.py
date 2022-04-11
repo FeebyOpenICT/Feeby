@@ -5,7 +5,7 @@ from Auth.validate_user import get_current_active_user
 from sqlalchemy.orm import Session
 from Schemas.Aspect import CreateAspect, AspectInDB, AspectUpdate
 from database import get_db_connection
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from Models.UserModel import UserModel
 from Models.Rating import RatingModel
 

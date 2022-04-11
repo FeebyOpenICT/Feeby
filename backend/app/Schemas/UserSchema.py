@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel
-from Schemas.Role import RoleInDB
+from Schemas.RoleSchema import RoleInDB
 
 
 class User(BaseModel):

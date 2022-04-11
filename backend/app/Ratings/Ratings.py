@@ -1,5 +1,5 @@
 from Models.UserModel import UserModel
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from database import get_db_connection
 from Schemas.Rating import RatingInDB, CreateRating
 from Models.Rating import RatingModel

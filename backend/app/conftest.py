@@ -13,7 +13,7 @@ from Auth import Authentication
 from LTI import lti
 from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
-from Controllers import UserController, PostController
+from Controllers import UserRouter, PostRouter
 from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Aspects import Aspects
 from Ratings import Ratings
@@ -35,7 +35,7 @@ from Models.Rating import RatingModel
 from Models.Aspect_Rating import Aspect_Rating_Model
 from Models.UserModel import UserModel
 from Models.RoleModel import RoleModel
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from Models.UserRoleModel import UserRoleModel
 from Models.PostModel import PostModel
 ######
@@ -119,9 +119,9 @@ def client(db):
 
     app.include_router(Authentication.router)
 
-    app.include_router(UserController.router)
+    app.include_router(UserRouter)
 
-    app.include_router(PostController.router)
+    app.include_router(PostRouter)
 
     app.include_router(Aspects.router)
 

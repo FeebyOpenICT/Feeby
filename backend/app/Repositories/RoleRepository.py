@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from Models.RoleModel import RoleModel
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 
 
 class RoleRepository:

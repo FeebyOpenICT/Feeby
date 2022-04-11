@@ -15,7 +15,7 @@ from database import get_db_connection
 from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 from Models.UserModel import UserModel
 from Models.RoleModel import RoleModel
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 
 router = APIRouter(
     prefix="/auth",

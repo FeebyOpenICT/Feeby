@@ -1,6 +1,6 @@
 
 from Models.UserModel import UserModel
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from Repositories.RoleRepository import RoleRepository
 
 

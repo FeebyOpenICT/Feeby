@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from Schemas.PostSchema import CreatePost
 from Schemas.UserIdListSchema import UserIdList
 from database import get_db_connection
-from Schemas.RolesSchema import RolesEnum
+from Schemas.RolesEnum import RolesEnum
 from Models.UserModel import UserModel
 from Schemas.PostSchema import PostInDB
 from fastapi_utils.cbv import cbv
