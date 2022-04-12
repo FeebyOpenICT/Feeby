@@ -1,4 +1,4 @@
-from .AuthenticationException import *
-from .DuplicateKey import *
-from .LTILaunchException import *
-from .NotFound import *
+from .AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
+from .DuplicateKey import DuplicateKey, duplicate_key_exception_handler
+from .LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
+from .NotFound import NotFound, not_found_exception_handler

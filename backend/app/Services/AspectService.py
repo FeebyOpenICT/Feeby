@@ -3,7 +3,8 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from Exceptions import NotFound
 from Models import AspectModel, RatingModel
-from Services import RatingService
+# circular import fix
+from Services.RatingService import RatingService
 from Repositories import AspectRepository
 from Schemas import UpdateAspect
 
@@ -32,7 +33,7 @@ class AspectService:
         ratings: List[RatingModel] = []
 
         for id in rating_ids:
-            rating = RatingService.get_rating_by_id(id=id, db=db)
+            rating = RatingService.get_rating_by_id(db=db, id=id)
 
             if rating is None:
                 raise NotFound(resource="rating", id=id)
