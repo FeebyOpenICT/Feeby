@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 class AspectRepository:
     @staticmethod
-    def get_all_aspects(db: Session):
+    def get_all_aspects(db: Session) -> List[AspectModel]:
         """
         Gets aspect object mappings from db
 
@@ -16,7 +16,7 @@ class AspectRepository:
         return db_aspects
 
     @staticmethod
-    def get_aspect_by_id(id: int, db: Session):
+    def get_aspect_by_id(id: int, db: Session) -> AspectModel:
         """
         Gets post object mapping from db
         """
@@ -50,7 +50,7 @@ class AspectRepository:
     def update_aspect(
         aspect: AspectModel,
         db: Session
-    ):
+    ) -> AspectModel:
         db.add(aspect)
         db.commit()
         db.refresh(aspect)

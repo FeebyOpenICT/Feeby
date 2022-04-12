@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 # necessary for discovery
@@ -7,14 +7,11 @@ import pytest
 
 ######
 # import all routers and exception handlers
-from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
-from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
-from Repositories.RoleRepository import RoleRepository
-from Repositories.UserRepository import UserRepository
+from Repositories import RoleRepository, UserRepository
 from Controllers import UserRouter, PostRouter, AspectRouter
-from Exceptions.NotFound import NotFound, not_found_exception_handler
+from Exceptions import *
 from Ratings import Ratings
 ######
 
@@ -24,19 +21,13 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import drop_database, database_exists
 
 from Auth.validate_user import get_current_active_user
+from Schemas import RolesEnum
 
 from database import Base, get_db_connection
 
 ######
 # import all models that need to be initiated
-from Models.AspectModel import AspectModel
-from Models.Rating import RatingModel
-from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel
-from Schemas.RolesEnum import RolesEnum
-from Models.UserRoleModel import UserRoleModel
-from Models.PostModel import PostModel
+from Models import *
 ######
 
 

@@ -10,7 +10,8 @@ def test_create_aspect_with_positional_arguments(db: Session):
     rating.save_self(db)
 
     aspect = AspectModel('title', 'short_desc', 'desc', 'ext_url', [rating])
-    aspect.save_self(db)
+    db.add(aspect)
+    db.commit()
 
     assert aspect.id == 1
     assert aspect.title == 'title'

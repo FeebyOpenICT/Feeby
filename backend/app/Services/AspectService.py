@@ -1,7 +1,9 @@
+from typing import List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from Exceptions import NotFound
 from Models import UserModel
+from Models.AspectModel import AspectModel
 from Models.Rating import RatingModel
 
 from Repositories import AspectRepository
@@ -11,7 +13,7 @@ from Schemas import CreateAspect, UpdateAspect
 class AspectService:
     def get_all_aspects(
         db: Session
-    ):
+    ) -> List[AspectModel]:
         """
         Get all Aspects
         """
@@ -21,7 +23,7 @@ class AspectService:
     def create_aspect(
             body: CreateAspect,
             db: Session
-    ):
+    ) -> AspectModel:
         """
         Create aspect
         """
@@ -39,11 +41,11 @@ class AspectService:
 
         return aspect
 
-    async def patch_aspect(
+    def patch_aspect(
             aspect_id: int,
             body: UpdateAspect,
             db: Session
-    ):
+    ) -> AspectModel:
         """
         Update aspect
         """
