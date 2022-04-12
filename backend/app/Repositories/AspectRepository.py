@@ -1,5 +1,4 @@
-from tkinter import E
-from typing import List
+from typing import List, Optional
 from Models import AspectModel, RatingModel
 from sqlalchemy.orm import Session
 
@@ -16,7 +15,7 @@ class AspectRepository:
         return db_aspects
 
     @staticmethod
-    def get_aspect_by_id(id: int, db: Session) -> AspectModel:
+    def get_aspect_by_id(id: int, db: Session) -> Optional[AspectModel]:
         """
         Gets post object mapping from db
         """

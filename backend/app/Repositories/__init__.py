@@ -3,3 +3,4 @@ from .RoleRepository import *
 from .UserAccessPostRepository import *
 from .UserRepository import *
 from .AspectRepository import *
+from .RatingRepository import *

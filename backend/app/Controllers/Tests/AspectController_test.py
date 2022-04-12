@@ -1,10 +1,12 @@
-from Models.Rating import RatingModel
-from Models.AspectModel import AspectModel
+from Models import RatingModel, AspectModel
+from sqlalchemy.orm import Session
 
 
-def test_create_aspect(client, db):
+def test_create_aspect(client, db: Session):
     rating = RatingModel('sdjkfh', 'askdjfh', 'sdf')
-    rating.save_self(db)
+
+    db.add(rating)
+    db.commit()
 
     data = {
         "title": "test",
@@ -44,9 +46,12 @@ def test_empty_get_aspect(client):
     assert response.json() == []
 
 
-def test_patch_aspect_without_ratings(client, db):
+def test_patch_aspect_without_ratings(client, db: Session):
     rating = RatingModel('sdjkfh', 'askdjfh', 'sdf')
-    rating.save_self(db)
+
+    db.add(rating)
+    db.commit()
+
     new_aspect_json = {
         "title": "test",
         "short_description": "testshort",
@@ -55,6 +60,7 @@ def test_patch_aspect_without_ratings(client, db):
         "ratings": [rating]
     }
     new_aspect = AspectModel(**new_aspect_json)
+
     db.add(new_aspect)
     db.commit()
 

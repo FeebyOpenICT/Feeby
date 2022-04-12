@@ -2,9 +2,7 @@ from typing import List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from Exceptions import NotFound
-from Models import UserModel
-from Models.AspectModel import AspectModel
-from Models.Rating import RatingModel
+from Models import AspectModel, RatingModel
 
 from Repositories import AspectRepository
 from Schemas import CreateAspect, UpdateAspect

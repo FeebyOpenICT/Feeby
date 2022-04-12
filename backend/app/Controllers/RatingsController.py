@@ -1,12 +1,11 @@
-from Models.UserModel import UserModel
-from Schemas.RolesEnum import RolesEnum
+from Models import UserModel
+from Schemas import RolesEnum, RatingInDB, CreateRating
 from database import get_db_connection
-from Schemas.Rating import RatingInDB, CreateRating
-from Models.Rating import RatingModel
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
 from typing import List
 from fastapi import APIRouter, Depends, Security, status
+from Services import RatingService
 
 router = APIRouter(
     prefix="/ratings",
@@ -15,7 +14,7 @@ router = APIRouter(
 
 
 @router.get('/', response_model=List[RatingInDB])
-async def get_ratings(
+async def get_all_aspect_ratings(
         current_active_user: UserModel = Depends(get_current_active_user),
         db: Session = Depends(get_db_connection)
 ):
@@ -24,12 +23,12 @@ async def get_ratings(
 
     Allowed roles: admin, instructor, content_developer, teaching_assistant, student
     """
-    all_aspect_ratings = RatingModel.get_all_aspect_ratings(db)
+    all_aspect_ratings = RatingService.get_all_aspect_ratings(db=db)
     return all_aspect_ratings
 
 
 @router.post('/', response_model=RatingInDB, status_code=status.HTTP_201_CREATED)
-async def create_aspect(
+async def create_rating(
         body: CreateRating,
         current_active_user: UserModel = Security(
             get_current_active_user,
@@ -45,10 +44,10 @@ async def create_aspect(
 
     Allowed roles: admin, instructor
     """
-    aspect_rating = RatingModel(
+    rating = RatingService.create_rating(
         title=body.title,
         short_description=body.short_description,
         description=body.description,
+        db=db
     )
-    aspect_rating.save_self(db)
-    return aspect_rating
+    return rating

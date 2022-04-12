@@ -1,4 +1,4 @@
-from Models.Rating import RatingModel
+from Models import RatingModel
 from sqlalchemy.orm import Session
 
 
