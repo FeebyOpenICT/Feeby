@@ -10,9 +10,8 @@ import pytest
 from Auth import Authentication
 from LTI import lti
 from Repositories import RoleRepository, UserRepository
-from Controllers import UserRouter, PostRouter, AspectRouter
+from Controllers import *
 from Exceptions import *
-from Ratings import Ratings
 ######
 
 # Import the SQLAlchemy parts
@@ -115,7 +114,7 @@ def client(db):
 
     app.include_router(AspectRouter)
 
-    app.include_router(Ratings.router)
+    app.include_router(RatingsRouter)
 
     app.dependency_overrides[get_db_connection] = override_get_db
 
