@@ -16,16 +16,7 @@ router = APIRouter(
 
 @router.get('/', response_model=List[RatingInDB])
 async def get_ratings(
-        current_active_user: UserModel = Security(
-            get_current_active_user,
-            scopes=[
-                RolesEnum.STUDENT,
-                RolesEnum.ADMIN,
-                RolesEnum.INSTRUCTOR,
-                RolesEnum.CONTENT_DEVELOPER,
-                RolesEnum.TEACHING_ASSISTANT,
-            ]
-        ),
+        current_active_user: UserModel = Depends(get_current_active_user),
         db: Session = Depends(get_db_connection)
 ):
     """
