@@ -1,13 +1,8 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from Exceptions.DuplicateKey import DuplicateKey
-from Exceptions.NotFound import NotFound
-from Models.PostModel import PostModel
-from Models.UserAccessPostModel import UserAccessPostModel
-from Models.UserModel import UserModel
-from Repositories.PostRepository import PostRepository
-from Repositories.UserAccessPostRepository import UserAccessPostRepository
-from Repositories.UserRepository import UserRepository
+from Exceptions import DuplicateKey, NotFound
+from Models import PostModel, UserAccessPostModel, UserModel
+from Repositories import PostRepository, UserAccessPostRepository, UserRepository
 from sqlalchemy.exc import IntegrityError
 
 
