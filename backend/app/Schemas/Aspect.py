@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, validator
 from datetime import datetime
 from .Rating import RatingInDB
@@ -29,3 +29,19 @@ class AspectInDB(Aspect):
 
     class Config:
         orm_mode = True
+
+
+class AspectUpdate(BaseModel):
+    title: Optional[str] = None
+    short_description: Optional[str] = None
+    description: Optional[str] = None
+    external_url: Optional[str] = None
+    rating_ids: Optional[List[int]] = None
+
+    @validator('rating_ids', pre=True, always=True)
+    def validate_ids_length(cls, value):
+        if not value:
+            return value
+        if len(value) == 0:
+            raise ValueError("empty rating not allowed")
+        return value

@@ -1,18 +1,24 @@
-.textField {
+.container {
+  margin: 0 auto;
+}
+
+.form-group {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  min-height: 75px;
+  max-width: 80vw;
   padding: 15px;
   opacity: 100%;
   border-color: #0079cf;
   border-width: 2px;
   border-style: solid;
-  margin: 25px 15px;
+  margin: 15px auto;
 }
-
+.form-buttons {
+  margin: 0 auto;
+}
 .pageTitle {
   font-size: 32px;
   font-weight: bold;
-  margin-top: 15px;
+  margin: 15px auto;
 }
 
 .textBoxTitle {
@@ -22,8 +28,6 @@
 #aspectCheck {
   background-color: #0079cf;
 }
-
-#productTextContainer {}
 
 .underlineContent {
   display: inline-block;

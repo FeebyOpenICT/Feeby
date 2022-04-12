@@ -5,7 +5,7 @@
   <div class="checkBoxContainer" id="knowledge">
     <div id="aspectCheck">
       <v-checkbox type="button" class="selectBox" @click="isHidden = !isHidden"></v-checkbox>
-      <p class="aspect">Juiste kennis opdoen</p>
+      <p class="aspect" style="color: white;"><strong>Juiste kennis opdoen</strong></p>
     </div>
       <v-textarea class="textField"
         id="aspectDescription"
