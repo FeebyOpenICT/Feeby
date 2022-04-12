@@ -1,7 +1,7 @@
 from Models.User import UserModel
 from Models.Role import Roles
 from database import get_db_connection
-from Schemas.Rating import RatingInDB, CreateRating
+from Schemas.Rating import RatingInDB, CreateRating, RatingUpdate
 from Models.Rating import RatingModel
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
@@ -61,3 +61,33 @@ async def create_aspect(
     )
     aspect_rating.save_self(db)
     return aspect_rating
+
+
+@router.patch('/{rating_id}', response_model=RatingInDB, status_code=status.HTTP_200_OK)
+async def patch_aspect(
+        rating_id: int,
+        body: RatingUpdate,
+        current_active_user: UserModel = Security(
+            get_current_active_user,
+            scopes=[
+                Roles.ADMIN['title'],
+                Roles.INSTRUCTOR['title'],
+            ]
+        ),
+        db: Session = Depends(get_db_connection)
+):
+    """
+    Update rating
+
+    Allowed roles: admin, instructor
+    """
+    db_rating = RatingModel.get_rating_by_id(rating_id, db)
+
+    rating_data = body.dict(exclude_unset=True)
+
+    for key, value in rating_data.items():
+        setattr(db_rating, key, value)
+
+    db_rating.save_self(db)
+
+    return db_rating

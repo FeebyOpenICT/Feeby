@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import List, Optional
 
 
 class Rating(BaseModel):
@@ -19,3 +20,9 @@ class RatingInDB(Rating):
 
     class Config:
         orm_mode = True
+
+
+class RatingUpdate(BaseModel):
+    title: Optional[str] = None
+    short_description: Optional[str] = None
+    description: Optional[str] = None
