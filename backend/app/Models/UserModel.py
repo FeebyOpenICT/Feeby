@@ -45,6 +45,3 @@ class UserModel(Base, SaveableModel):
             raise ValueError("roles may not be empty")
         self.roles = roles
         super().__init__(**kwargs)
-
-    def __repr__(self) -> str:
-        return f"<User id={self.id} canvas_email={self.canvas_email} roles={self.roles} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"

@@ -43,7 +43,8 @@ async def create_aspect(
 
     Allowed roles: admin, instructor
     """
-    aspect = AspectService.create_aspect(body=body, db=db)
+    aspect = AspectService.create_aspect(title=body.title, short_description=body.short_description,
+                                         description=body.description, external_url=body.external_url, rating_ids=body.rating_ids, db=db)
     return aspect
 
 

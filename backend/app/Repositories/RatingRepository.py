@@ -17,14 +17,14 @@ class RatingRepository:
         return db_aspect_ratings
 
     @staticmethod
-    def get_rating_by_id(rating_id: int, db: Session) -> Optional[RatingModel]:
+    def get_rating_by_id(id: int, db: Session) -> Optional[RatingModel]:
         """
         Get rating object mapping from db
 
         return rating mapped object class
         """
         rating = db.query(RatingModel).filter(
-            RatingModel.id == rating_id).first()
+            RatingModel.id == id).first()
 
         return rating
 
