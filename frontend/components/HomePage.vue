@@ -1,7 +1,8 @@
 <template>
   <div>
+    <HeaderCom />
     <addButton />
-      <FooterCom />
+    <FooterCom />
   </div>
 </template>
 
