@@ -32,7 +32,7 @@ async def get_aspects(
     """
     Read all Aspects
 
-    Allowed roles: admin, instructor
+    Allowed roles: admin, instructor, student, content-developer, teaching-assistant
     """
     all_aspects = AspectModel.get_all_aspects(db)
     return all_aspects
