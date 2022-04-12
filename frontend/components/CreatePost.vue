@@ -8,12 +8,6 @@
       <UploadBox />
       <AspectCommunication />
       <AspectKnowledge />
-
-      <v-card v-for="post in posts" :key="post.id" class="cardsList">
-        <div class="postContainer">
-          <v-card-title>{{ post.title }}</v-card-title>
-        </div>
-      </v-card>
     </div>
     <footer id="footer" />
   </div>
