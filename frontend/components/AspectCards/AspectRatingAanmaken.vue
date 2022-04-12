@@ -11,7 +11,7 @@
           v-model="ratings.title"
           class="textField"
           counter
-          :max-length="255"
+          maxlength="255"
           type="text"
           placeholder="Schrijf hier je titel van je aspect rating..."
         />
@@ -30,7 +30,7 @@
           v-model="ratings.description"
           class="textField"
           counter
-          :max-length="1000"
+          maxlength="1000"
           type="text"
           placeholder="Schrijf hier je beschrijving over dit aspect rating..."
         />
@@ -49,7 +49,7 @@
           v-model="ratings.short_description"
           class="textField"
           counter
-          :max-length="255"
+          maxlength="255"
           type="text"
           placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
         />
@@ -58,9 +58,10 @@
           max. 255 characters
         </div>
       </div>
-      <v-btn id="submitButton"
+      <v-btn
+        id="submitButton"
         type="submit"
-        width="90%"
+        class="Submit"
       >
         Opslaan
       </v-btn>

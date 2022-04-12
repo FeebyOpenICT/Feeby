@@ -8,7 +8,7 @@
       <div class="cardheader">
         <v-card-title>{{ card.title }}</v-card-title>
         <v-card-subtitle>
-          {{ card.time_created }}
+          {{ card.time_created | formatDate }}
         </v-card-subtitle>
       </div>
       <v-card-text id="body">
@@ -19,12 +19,18 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import '../style/style.css'
-import { axiosInstance } from '../lib/axiosInstance'
+import _ from 'lodash'
+import { DateTime } from 'luxon'
+import { axiosInstance } from '~/lib/axiosInstance'
 
 export default {
   name: 'CardCom',
+  filters: {
+    formatDate (value) {
+      return DateTime.fromISO(value).toFormat('dd-MM-yyyy')
+    }
+  },
   data () {
     return {
       cards: null
@@ -42,6 +48,7 @@ export default {
       .catch(error => console.log(error))
   }
 }
+
 </script>
 
 <style scoped>
