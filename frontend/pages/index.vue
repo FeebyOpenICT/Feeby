@@ -1,11 +1,11 @@
 <template>
-  <HomePage />
+  <AspectRatingUpdaten />
 </template>
 
 <script>
-import HomePage from '~/components/HomePage.vue'
+import AspectRatingUpdaten from '~/components/HomePage.vue'
 export default {
   name: 'IndexPage',
-  components: { HomePage }
+  components: { AspectRatingUpdaten }
 }
 </script>
