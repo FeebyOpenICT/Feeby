@@ -63,7 +63,7 @@ async def create_aspect(
     return aspect_rating
 
 
-@router.patch('/{rating_id}', response_model=List[RatingInDB], status_code=status.HTTP_200_OK)
+@router.patch('/{rating_id}', response_model=RatingInDB, status_code=status.HTTP_200_OK)
 async def patch_aspect(
         rating_id: int,
         body: RatingUpdate,
