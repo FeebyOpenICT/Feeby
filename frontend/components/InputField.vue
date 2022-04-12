@@ -14,9 +14,16 @@
       placeholder="Schrijf hier je toelichting over je product..."
     />
 
-    <div id="characterLimit">
-      max. 1000 characters
-    </div>
+    </v-hover>
+      <v-textarea class="textField"
+                  id="postDescription"
+                  :value="value"
+
+                  type="text"
+                  placeholder="Schrijf hier je toelichting over je product..."
+      />
+
+    <div id="characterLimit">max. 1000 characters</div>
   </div>
 </template>
 
@@ -24,13 +31,11 @@
 <script type="text/javascript">
 export default {
   data: () => ({
-    rules: [v => v.length <= 1000 || 'Characterlimiet overscheden'],
+    rules: [v => v.length <= 25 || 'Characterlimiet overscheden'],
     value: ''
   })
 }
-
 </script>
-
 <style>
 @import '.css/styles.css';
 #characterLimit{
