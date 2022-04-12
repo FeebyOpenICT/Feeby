@@ -31,7 +31,7 @@ class AspectInDB(Aspect):
         orm_mode = True
 
 
-class AspectUpdate(BaseModel):
+class UpdateAspect(BaseModel):
     title: Optional[str] = None
     short_description: Optional[str] = None
     description: Optional[str] = None

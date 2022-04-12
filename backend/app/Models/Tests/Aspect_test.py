@@ -1,6 +1,6 @@
 import pytest
 from sqlalchemy.orm import Session
-from Models.Aspect import AspectModel
+from Models.AspectModel import AspectModel
 
 from Models.Rating import RatingModel
 

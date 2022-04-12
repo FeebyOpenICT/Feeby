@@ -1,4 +1,4 @@
-from .Aspect import *
+from .AspectSchema import *
 from .RolesEnum import *
 from .UserSchema import *
 from .IdsInDBSchema import *

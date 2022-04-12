@@ -13,9 +13,8 @@ from Auth import Authentication
 from LTI import lti
 from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
-from Controllers import UserRouter, PostRouter
+from Controllers import UserRouter, PostRouter, AspectRouter
 from Exceptions.NotFound import NotFound, not_found_exception_handler
-from Aspects import Aspects
 from Ratings import Ratings
 ######
 
@@ -30,7 +29,7 @@ from database import Base, get_db_connection
 
 ######
 # import all models that need to be initiated
-from Models.Aspect import AspectModel
+from Models.AspectModel import AspectModel
 from Models.Rating import RatingModel
 from Models.Aspect_Rating import Aspect_Rating_Model
 from Models.UserModel import UserModel
@@ -123,7 +122,7 @@ def client(db):
 
     app.include_router(PostRouter)
 
-    app.include_router(Aspects.router)
+    app.include_router(AspectRouter)
 
     app.include_router(Ratings.router)
 

@@ -5,8 +5,7 @@ from fastapi import FastAPI
 from Exceptions import *
 from Auth import Authentication
 from LTI import lti
-from Controllers import UserRouter, PostRouter
-from Aspects import Aspects
+from Controllers import UserRouter, PostRouter, AspectRouter
 from Ratings import Ratings
 
 
@@ -44,7 +43,7 @@ app.include_router(UserRouter)
 
 app.include_router(PostRouter)
 
-app.include_router(Aspects.router)
+app.include_router(AspectRouter)
 
 app.include_router(Ratings.router)
 
