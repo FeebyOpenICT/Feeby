@@ -19,7 +19,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-
   backend:
     container_name: feeby-backend-dev
     depends_on:
@@ -39,7 +38,6 @@ services:
       traefik.http.middlewares.backendpathstrip.stripprefix.prefixes: /api/v1
       traefik.http.routers.backend.middlewares: backendpathstrip@docker
 
-
   frontend:
     container_name: feeby-frontend-dev
     depends_on:
@@ -47,6 +45,8 @@ services:
     build:
       context: ./frontend
       target: development
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
@@ -65,12 +65,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=hallo123
       - POSTGRES_USER=feeby
-      
-  
+
   redis:
     container_name: feeby-redis-dev
     image: redis
-
 
   adminer:
     container_name: feeby-adminer-dev
