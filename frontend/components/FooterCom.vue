@@ -1,20 +1,20 @@
 <template>
-  <div class="footer">
-    <v-app-bar color="#0079CF" />
-  </div>
+  <v-footer
+    class="footer"
+    color="var(--blue)"
+  />
 </template>
 
 <script>
+import '../style/style.css'
 export default {
   name: 'FooterCom'
 }
 </script>
 
 <style scoped>
-.footer {
-    width: 100vw;
-    bottom: 0;
-    position: relative;
-    padding: 0;
-  }
+.footer{
+  padding: 0;
+  height: 5vh;
+}
 </style>

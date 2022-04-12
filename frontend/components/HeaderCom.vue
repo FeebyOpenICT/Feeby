@@ -1,19 +1,19 @@
 <template>
   <v-card class="menu">
-    <v-app-bar color="#0079CF">
-      <v-app-bar-nav-icon @click="modal = true" />
-      <v-toolbar-title>FEEBY</v-toolbar-title>
+    <v-app-bar color="var(--blue)">
+      <v-app-bar-nav-icon class="iconbtn" @click="modal = true" />
+      <v-btn to="/" nuxt class="logobtn">
+        <v-toolbar-title>FEEBY</v-toolbar-title>
+      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
       v-model="modal"
-      absolute
+      class="modalmenu"
       temporary
-      width="40vw"
-      height="100vh"
     >
       <v-list-item>
-        <v-list-item-content>
+        <v-list-item-content color="var(--blue)">
           <v-list-item-title class="text-h6">
             FEEBY
           </v-list-item-title>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import '../style/style.css'
 export default {
   name: 'HeaderCom',
   data: () => ({
@@ -62,10 +63,40 @@ export default {
 
 <style scoped>
 .menu {
-    overflow: visible;
-    top: 0;
-    position: sticky;
-    z-index: 2;
-    border-radius: 0;
-  }
+  overflow: visible;
+  top: 0;
+  position: sticky;
+  border-radius: 0;
+  z-index: 2;
+}
+
+.modalmenu{
+  width: 40vw !important;
+  height: 100vh !important;
+  position: absolute;
+}
+
+.iconbtn{
+  color: white !important;
+}
+
+.logobtn{
+  background-color: var(--blue) !important;
+  box-shadow: none;
+  font-size: large;
+  color: white;
+  text-decoration: none;
+}
+
+.v-btn:hover::before {
+  opacity: 0;
+}
+
+.v-btn--active::before {
+  opacity: 0;
+}
+
+v-list-item-content {
+  background-color: var(--blue);
+}
 </style>
