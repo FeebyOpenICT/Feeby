@@ -1,7 +1,9 @@
 from typing import List, Optional
+from Exceptions import DuplicateKey, NotFound
 from Models import PostModel, UserAccessPostModel, UserModel
-from Repositories import PostRepository
+from Repositories import PostRepository, UserAccessPostRepository, UserRepository
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 
 def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[PostModel]:
