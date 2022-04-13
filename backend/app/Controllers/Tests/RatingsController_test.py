@@ -35,7 +35,7 @@ def test_create_rating(client):
         "description": "strinasdfkajshdgfg"
     }
 
-    response = client.post('/ratings/', json=rating)
+    response = client.post('/ratings', json=rating)
     json = response.json()
 
     assert response.status_code == 201
@@ -54,6 +54,6 @@ def test_create_faulty_rating(client):
         "description": "strinasdfkajshdgfg"
     }
 
-    response = client.post('/ratings/', json=rating)
+    response = client.post('/ratings', json=rating)
 
     assert response.status_code == 422

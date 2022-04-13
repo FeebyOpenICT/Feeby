@@ -1,14 +1,13 @@
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship, Session
+from sqlalchemy.orm import relationship
 
-from Models.SaveableModel import SaveableModel
 from .RoleModel import RoleModel
 from database import Base
 
 
-class UserModel(Base, SaveableModel):
+class UserModel(Base):
     """
     Mapped User class
 

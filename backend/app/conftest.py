@@ -68,7 +68,8 @@ def db() -> Session:
         ]
     )
 
-    user.save_self(db)
+    db.add(user)
+    db.commit()
 
     try:
         yield db

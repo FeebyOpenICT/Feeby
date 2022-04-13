@@ -26,10 +26,8 @@ def test_get_empty_posts(client):
 def test_get_posts_self(client, db, current_active_user):
     post1, post2 = PostModel("title1", "desc1", current_active_user), PostModel(
         "title2", "desc2", current_active_user)
-    post1.save_self(db)
-    post2.save_self(db)
-
-    print("ignore me")
+    db.add_all([post1, post2])
+    db.commit()
 
     response = client.get('/users/1/posts')
 

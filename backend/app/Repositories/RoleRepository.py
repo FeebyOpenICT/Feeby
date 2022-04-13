@@ -14,5 +14,6 @@ class RoleRepository:
             RoleModel.title == role).first()
         if not db_role:
             db_role = RoleModel(title=role)
-            db_role.save_self(db)
+            db.add(db_role)
+            db.commit()
         return db_role

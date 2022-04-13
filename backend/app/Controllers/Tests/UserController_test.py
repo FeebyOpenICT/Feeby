@@ -2,9 +2,10 @@
 from Models.UserModel import UserModel
 from Schemas.RolesEnum import RolesEnum
 from Repositories.RoleRepository import RoleRepository
+from sqlalchemy.orm import Session
 
 
-def test_get_user_self(client, db, current_active_user):
+def test_get_user_self(client, current_active_user):
     response = client.get("/users/self")
 
     assert response.status_code == 200
@@ -44,7 +45,7 @@ def test_get_user_by_id_not_found(client):
     assert json['id'] == 999999
 
 
-def test_get_user_by_canvas_id(client, db):
+def test_get_user_by_canvas_id(client, db: Session):
     # setup new user
     new_user_json = {
         "fullname": "testmename",
@@ -59,7 +60,8 @@ def test_get_user_by_canvas_id(client, db):
     }
 
     new_user = UserModel(**new_user_json)
-    new_user = new_user.save_self(db)
+    db.add(new_user)
+    db.commit()
 
     response = client.get(f"/users/{new_user_json['canvas_id']}/canvas")
 

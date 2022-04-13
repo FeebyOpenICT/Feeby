@@ -1,10 +1,9 @@
 from sqlalchemy import Column, Integer, String
 
-from .SaveableModel import SaveableModel
 from database import Base
 
 
-class RoleModel(Base, SaveableModel):
+class RoleModel(Base):
     """
     Mapped Role class
 
@@ -20,6 +19,3 @@ class RoleModel(Base, SaveableModel):
     def __init__(self, title: str) -> None:
         self.title = title
         super().__init__()
-
-    def __repr__(self) -> str:
-        return f"<Role title={self.title}>"

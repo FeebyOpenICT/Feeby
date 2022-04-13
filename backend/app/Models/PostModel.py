@@ -1,13 +1,12 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.orm import Session, relationship
+from sqlalchemy.orm import relationship
 
-from .SaveableModel import SaveableModel
 from database import Base
 from .UserModel import UserModel
 
 
-class PostModel(Base, SaveableModel):
+class PostModel(Base):
     """
     Mapped Post class
 

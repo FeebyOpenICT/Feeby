@@ -91,7 +91,8 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
             user = UserModel(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
                              canvas_id=jwt_token.canvas_id, roles=roles, disabled=False)
 
-            user.save_self(db)
+            db.add(user)
+            db.commit()
 
         jwt_token.access_token = json['access_token']
         jwt_token.refresh_token = json['refresh_token']
