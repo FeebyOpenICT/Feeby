@@ -72,5 +72,5 @@ def test_patch_rating(client, db):
         "title": "test2"
     }
 
-    response = client.patch("/rating/1", json=data)
+    response = client.patch("/ratings/1", json=data)
     assert response.status_code == 200
