@@ -6,7 +6,7 @@ from Models import RatingModel
 
 class RatingRepository:
     @staticmethod
-    def get_all_aspect_ratings(db: Session) -> List[RatingModel]:
+    def get_all_ratings(db: Session) -> List[RatingModel]:
         """
         Gets aspect rating object mappings from db
 

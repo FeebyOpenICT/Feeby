@@ -14,14 +14,13 @@ router = APIRouter(
 
 
 @router.get('/', response_model=List[RatingInDB])
-async def get_all_aspect_ratings(
+async def get_all_ratings(
         current_active_user: UserModel = Depends(get_current_active_user),
         db: Session = Depends(get_db_connection)
 ):
-    """
-    Read all Aspects Ratings
-
-    Allowed roles: admin, instructor, content_developer, teaching_assistant, student
+    """Get all ratings
+    Allowed roles:
+    - All
     """
     all_aspect_ratings = RatingService.get_all_aspect_ratings(db=db)
     return all_aspect_ratings
@@ -39,10 +38,10 @@ async def create_rating(
         ),
         db: Session = Depends(get_db_connection)
 ):
-    """
-    Create aspect rating
+    """Create rating
 
-    Allowed roles: admin, instructor
+    Allowed roles:
+    - All
     """
     rating = RatingService.create_rating(
         title=body.title,

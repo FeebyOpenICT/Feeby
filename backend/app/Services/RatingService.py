@@ -7,8 +7,8 @@ from Repositories import RatingRepository
 
 class RatingService:
     @staticmethod
-    def get_all_aspect_ratings(db: Session) -> List[RatingModel]:
-        all_ratings = RatingRepository.get_all_aspect_ratings(db=db)
+    def get_all_ratings(db: Session) -> List[RatingModel]:
+        all_ratings = RatingRepository.get_all_ratings(db=db)
         return all_ratings
 
     @staticmethod

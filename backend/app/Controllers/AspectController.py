@@ -19,8 +19,10 @@ async def get_all_aspects(
         current_active_user: UserModel = Depends(get_current_active_user),
         db: Session = Depends(get_db_connection)
 ):
-    """
-    Read all Aspects
+    """Get all aspects
+
+    Allowed roles:
+    - All
     """
     all_aspects = AspectService.get_all_aspects(db)
     return all_aspects
@@ -38,10 +40,11 @@ async def create_aspect(
             ]
         ),
 ):
-    """
-    Create aspect
+    """Create aspect
 
-    Allowed roles: admin, instructor
+    Allowed roles:
+    - Admin
+    - Instructor
     """
     aspect = AspectService.create_aspect(title=body.title, short_description=body.short_description,
                                          description=body.description, external_url=body.external_url, rating_ids=body.rating_ids, db=db)
@@ -61,10 +64,14 @@ async def patch_aspect(
         ),
         db: Session = Depends(get_db_connection)
 ):
-    """
-    Update aspect
+    """Patch aspect
 
-    Allowed roles: admin, instructor
+    Args:
+        aspect_id (int): id of aspect in as saved in database
+
+    Allowed roles:
+    - Admin
+    - Instructor
     """
     aspect = AspectService.patch_aspect(aspect_id=aspect_id, body=body, db=db)
     return aspect
