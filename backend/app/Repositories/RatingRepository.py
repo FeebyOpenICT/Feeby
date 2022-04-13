@@ -42,27 +42,6 @@ class RatingRepository:
             raise UnexpectedInstanceError
 
         db.add(rating)
-        db.commit(rating)
-
-        return rating
-
-    @staticmethod
-    def create_rating(db: Session, title: str, description: str, short_description: str) -> RatingModel:
-        """create rating in database
-
-        Args:
-            db (Session): database session
-            title (str): title of rating
-            description (str): description of rating
-            short_description (str): short description of rating, should fit inside tooltip
-
-        Returns:
-            RatingModel: newly created rating as saved in database
-        """
-        rating = RatingModel(
-            title=title, short_description=short_description, description=description)
-
-        db.add(rating)
         db.commit()
 
         return rating
