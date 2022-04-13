@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from Models import PostModel, UserAccessPostModel, UserModel
 from Repositories import PostRepository, RoleRepository
 from Schemas import RolesEnum
+from Services import PostService
 
 
 def test_get_posts_from_user_by_id(db: Session, current_active_user: UserModel):
@@ -26,7 +27,7 @@ def test_create_post_for_user(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
 
-    post = PostRepository.create_post_for_user(
+    post = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
 
     assert post.user == current_active_user
@@ -40,7 +41,7 @@ def test_get_post_by_id(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
 
-    postCreated = PostRepository.create_post_for_user(
+    postCreated = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
 
     post = PostRepository.get_post_by_id(
@@ -59,9 +60,9 @@ def test_get_post_with_access(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
 
-    postCreated = PostRepository.create_post_for_user(
+    postCreated = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
-    postCreated2 = PostRepository.create_post_for_user(
+    postCreated2 = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
 
     # create user
@@ -86,9 +87,9 @@ def test_get_post_without_access(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
 
-    postCreated = PostRepository.create_post_for_user(
+    postCreated = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
-    postCreated2 = PostRepository.create_post_for_user(
+    postCreated2 = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
 
     # create user
@@ -121,11 +122,11 @@ def test_get_posts_with_access(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
 
-    postCreated = PostRepository.create_post_for_user(
+    postCreated = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
-    postCreated2 = PostRepository.create_post_for_user(
+    postCreated2 = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
-    postCreated3 = PostRepository.create_post_for_user(
+    postCreated3 = PostService.create_post_for_user(
         title=title, description=description, user=user3, db=db)
 
     db.add_all([postCreated, postCreated2, postCreated3])

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
 from Models import PostModel, UserAccessPostModel, UserModel
+from Exceptions import UnexpectedInstanceError
 
 
 class PostRepository:
@@ -21,22 +22,13 @@ class PostRepository:
         return result
 
     @staticmethod
-    def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
-        """create post for user
+    def save(post: PostModel, db: Session) -> PostModel:
+        if not isinstance(post, PostModel):
+            raise UnexpectedInstanceError
 
-        Args:
-            title (str): title of post
-            description (str): description of post
-            user (UserModel): user that created the post
-            db (Session): database session
-
-        Returns:
-            PostModel: newly created post as saved in database
-        """
-        post = PostModel(title=title, description=description, user=user)
         db.add(post)
         db.commit()
-        db.refresh(post)
+
         return post
 
     @staticmethod

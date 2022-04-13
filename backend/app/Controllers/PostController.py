@@ -59,8 +59,8 @@ class PostController:
         Allowed roles:
         - All
         """
-        post = PostService.create_post_for_user_by_model(title=body.title, description=body.description,
-                                                         user=current_self_user, db=self.db)
+        post = PostService.create_post_for_user(title=body.title, description=body.description,
+                                                user=current_self_user, db=self.db)
         return post
 
     @router.post('/users/{user_id}/posts/{post_id}/grant-access', response_model=List[UserAccessPostInDB], status_code=status.HTTP_201_CREATED)

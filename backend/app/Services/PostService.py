@@ -1,7 +1,7 @@
 from typing import List, Optional
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from Exceptions import DuplicateKey, NotFound
+from Exceptions import DuplicateKey, NotFoundException
 from Models import PostModel, UserAccessPostModel, UserModel
 from Repositories import PostRepository, UserAccessPostRepository, UserRepository
 from sqlalchemy.exc import IntegrityError
@@ -29,33 +29,7 @@ class PostService:
         return result
 
     @staticmethod
-    def create_post_for_user_by_id(title: str, description: str, user_id: int, db: Session) -> PostModel:
-        """Create post for user by id
-
-        Args:
-            title (str): title of post  
-            description (str): description of post
-            user_id (int): id of user that the post will belong to
-            db (Session): database session
-
-        Raises:
-            NotFound: if user is not found
-
-        Returns:
-            PostModel: post as saved in database
-        """
-        user = UserRepository.get_user_by_id(id=user_id, db=db)
-
-        if user is None:
-            raise NotFound(resource="user", id=user_id)
-
-        post = PostRepository.create_post_for_user(
-            title=title, description=description, user=user, db=db)
-
-        return post
-
-    @staticmethod
-    def create_post_for_user_by_model(title: str, description: str, user: UserModel, db: Session) -> PostModel:
+    def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
         """Create post for user
 
         Args:
@@ -67,8 +41,8 @@ class PostService:
         Returns:
             PostModel: post as saved in database
         """
-        post = PostRepository.create_post_for_user(
-            title=title, description=description, user=user, db=db)
+        post = PostRepository.save(post=PostModel(
+            title=title, description=description, user=user), db=db)
 
         return post
 
@@ -98,7 +72,7 @@ class PostService:
             post_id=post_id, user_id=user_id, db=db)
 
         if post is None:
-            raise NotFound(resource="post", id=post_id)
+            raise NotFoundException(resource="post", id=post_id)
 
         users = []
 
@@ -106,7 +80,7 @@ class PostService:
             user = UserRepository.get_user_by_id(id=user_id, db=db)
 
             if not user:
-                raise NotFound(resource="user", id=user_id)
+                raise NotFoundException(resource="user", id=user_id)
 
             users.append(user)
 
