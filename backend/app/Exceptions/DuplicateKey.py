@@ -3,23 +3,31 @@ from fastapi.responses import JSONResponse
 
 
 class DuplicateKey(Exception):
-    """
-    Duplicate key in db
-
-    resource = resource name that tried to insert a duplicate key, will be formatted as such f"Cannot create {resource} by identifier: {id} identifier already found in database". example: "user"
-    id = identifier
-    status_code = HTML status code defaults to 422
+    """Duplicate key in database exception
     """
 
     def __init__(self, resource: str, id: int, status_code: int = status.HTTP_422_UNPROCESSABLE_ENTITY):
+        """DuplicateKey constructor
+
+        Args:
+            resource (str): resource string identifier; per example: "user" | "post" | "aspect"
+            id (int): id of resource in database
+            status_code (int, optional): HTTP status code. Defaults to status.HTTP_422_UNPROCESSABLE_ENTITY.
+        """
         self.resource = resource
         self.id = id
         self.status_code = status_code
 
 
 async def duplicate_key_exception_handler(request: Request, exc: DuplicateKey):
-    """
-    Return a json response with error details
+    """DuplicateKey exception handler for fastapi
+
+    Args:
+        request (Request): Fastapi request
+        exc (DuplicateKey): raised exception
+
+    Returns:
+        JSONResponse: JSON response detailing the occured exception
     """
     return JSONResponse(
         content={
