@@ -7,6 +7,7 @@ from fastapi.security import (
     HTTPAuthorizationCredentials,
     SecurityScopes,
 )
+from Exceptions import DisabledResourceException
 from Schemas.RolesEnum import RolesEnum
 
 from Repositories.UserRepository import UserRepository
@@ -73,7 +74,7 @@ async def get_current_active_user(
     raises unauthenticated exception if the user is disabled in the database
     """
     if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive User")
+        raise DisabledResourceException(id=current_user.id, resource="user")
     return current_user
 
 
