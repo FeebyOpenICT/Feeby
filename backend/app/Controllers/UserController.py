@@ -64,11 +64,7 @@ async def get_user_by_id(
     - Admin
     - Instructor
     """
-    user = UserService.get_user_by_id(user_id, db)
-
-    if not user:
-        raise NotFound("user", user_id)
-
+    user = UserService.get_user_by_id_or_fail(id=user_id, db=db)
     return user
 
 
@@ -90,9 +86,5 @@ async def get_user_by_canvas_id(
     - Admin
     - Instructor
     """
-    user = UserService.get_user_by_canvas_id(user_id, db)
-
-    if not user:
-        raise NotFound("user", user_id)
-
+    user = UserService.get_user_by_canvas_id_or_fail(user_id, db)
     return user

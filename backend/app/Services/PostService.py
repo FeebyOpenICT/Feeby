@@ -1,4 +1,5 @@
 from typing import List, Optional
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from Exceptions import DuplicateKey, NotFound
 from Models import PostModel, UserAccessPostModel, UserModel
@@ -89,22 +90,10 @@ class PostService:
 
     @staticmethod
     def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
-        """Grant access to post id owned by user id to user ids
+        if user_id in user_ids:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
 
-        Args:
-            post_id (int): id of post
-            user_id (int): id of owner of post
-            user_ids (List[int]): list of ids of users that should get access to posts
-            db (Session): database session
-
-        Raises:
-            NotFound: if post is not found by post_id owned by user_id
-            NotFound: if any user is not found in user_ids
-            DuplicateKey: if any user from user_ids already has access to post_id by user_id
-
-        Returns:
-            List[UserAccessPostModel]: list of newly created access models
-        """
         post: Optional[PostModel] = PostRepository.get_post_by_id(
             post_id=post_id, user_id=user_id, db=db)
 
@@ -120,10 +109,10 @@ class PostService:
                 raise NotFound(resource="user", id=user_id)
 
             users.append(user)
+
         try:
             accessList = UserAccessPostRepository.grant_access_to_users_to_post(
                 post=post, users=users, db=db)
-
         except IntegrityError as error:
             raise DuplicateKey(resource="User Access Post",
                                id=error.params['user_id'])
