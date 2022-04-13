@@ -4,6 +4,8 @@ from Schemas.RolesEnum import RolesEnum
 from Repositories.RoleRepository import RoleRepository
 from sqlalchemy.orm import Session
 
+from Services import RoleService
+
 
 def test_get_user_self(client, current_active_user):
     response = client.get("/users/self")
@@ -53,9 +55,9 @@ def test_get_user_by_canvas_id(client, db: Session):
         "canvas_email": "testmeemail@hu.nl",
         "disabled": False,
         "roles": [
-            RoleRepository.get_role(RolesEnum.ADMIN, db),
-            RoleRepository.get_role(RolesEnum.CONTENT_DEVELOPER, db),
-            RoleRepository.get_role(RolesEnum.INSTRUCTOR, db),
+            RoleService.get_or_create_role(RolesEnum.ADMIN, db),
+            RoleService.get_or_create_role(RolesEnum.CONTENT_DEVELOPER, db),
+            RoleService.get_or_create_role(RolesEnum.INSTRUCTOR, db),
         ]
     }
 

@@ -6,9 +6,8 @@ from sqlalchemy.orm import Session
 import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
-from Exceptions.NotFoundException import NotFoundException
-from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
+from Services import RoleService
 from .JWTToken import AccessToken
 from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
@@ -86,7 +85,7 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
 
             for role in jwt_token.roles:
                 role = getattr(RolesEnum, role.upper())
-                roles.append(RoleRepository.get_role(role, db))
+                roles.append(RoleService.get_or_create_role(role, db))
 
             user = UserModel(fullname=jwt_token.fullname, canvas_email=jwt_token.email,
                              canvas_id=jwt_token.canvas_id, roles=roles, disabled=False)

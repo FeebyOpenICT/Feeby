@@ -9,7 +9,8 @@ import pytest
 # import all routers and exception handlers
 from Auth import Authentication
 from LTI import lti
-from Repositories import RoleRepository, UserRepository
+from Services import RoleService
+from Repositories import UserRepository
 from Controllers import *
 from Exceptions import *
 ######
@@ -58,7 +59,7 @@ def db() -> Session:
         1,
         False,
         [
-            RoleRepository.get_role(RolesEnum.ADMIN, db),
+            RoleService.get_or_create_role(RolesEnum.ADMIN, db),
             # RolesEnum.CONTENT_DEVELOPER,
             # RolesEnum.INSTRUCTOR,
             # RolesEnum.MENTOR,

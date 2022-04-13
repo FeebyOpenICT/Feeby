@@ -3,6 +3,7 @@ from Models import UserModel
 from sqlalchemy.orm import Session
 from Repositories import RoleRepository, UserRepository
 from Schemas import UserPublicInDB, RolesEnum
+from Services import RoleService
 
 
 def test_get_user_by_id(current_active_user: UserModel, db: Session) -> UserModel:
@@ -23,9 +24,9 @@ def test_get_user_by_canvas_id(current_active_user: UserModel, db: Session) -> U
 
 def test_get_user_ids_by_name_or_email(db: Session) -> List[UserPublicInDB]:
     user1 = UserModel("alex not duncan", "alex.not.duncan", 22, False, [
-                      RoleRepository.get_role(RolesEnum.STUDENT, db)])
+                      RoleService.get_or_create_role(RolesEnum.STUDENT, db)])
     user2 = UserModel("tim", "tim.duncan", 323, False, [
-                      RoleRepository.get_role(RolesEnum.STUDENT, db)])
+                      RoleService.get_or_create_role(RolesEnum.STUDENT, db)])
 
     db.add_all([user1, user2])
     db.commit()
