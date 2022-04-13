@@ -1,11 +1,11 @@
 from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 from datetime import datetime
 
 
 class Post(BaseModel):
-    title: str
-    description: str
+    title: constr(max_length=255)
+    description:  constr(max_length=1000)
 
 
 class CreatePost(Post):

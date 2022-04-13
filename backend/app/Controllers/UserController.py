@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
 from Exceptions.NotFoundException import NotFoundException
 from Models.UserModel import UserModel
-from Schemas.UserSchema import UserPublicSearch, UserInDB
+from Schemas.UserSchema import UserPublicInDB, UserInDB
 from Schemas.RolesEnum import RolesEnum
 from Services.UserService import UserService
 from database import get_db_connection
@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get('', response_model=List[UserPublicSearch])
+@router.get('', response_model=List[UserPublicInDB])
 async def search_through_users(
     q: str = '',
     db: Session = Depends(get_db_connection),

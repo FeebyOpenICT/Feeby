@@ -4,7 +4,7 @@ from Exceptions import DisabledResourceException
 from Exceptions.NotFoundException import NotFoundException
 from Models.UserModel import UserModel
 from Repositories.UserRepository import UserRepository
-from Schemas.UserSchema import UserPublicSearch
+from Schemas.UserSchema import UserPublicInDB
 
 
 class UserService:
@@ -76,7 +76,7 @@ class UserService:
         return UserRepository.get_user_by_canvas_id(id=id, db=db)
 
     @staticmethod
-    def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicSearch]:
+    def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicInDB]:
         """Get users by searching through their names and emails
 
         Args:

@@ -2,7 +2,7 @@ from typing import List
 from Models import UserModel
 from sqlalchemy.orm import Session
 from Repositories import RoleRepository, UserRepository
-from Schemas import UserPublicSearch, RolesEnum
+from Schemas import UserPublicInDB, RolesEnum
 
 
 def test_get_user_by_id(current_active_user: UserModel, db: Session) -> UserModel:
@@ -21,7 +21,7 @@ def test_get_user_by_canvas_id(current_active_user: UserModel, db: Session) -> U
     assert user == current_active_user
 
 
-def test_get_user_ids_by_name_or_email(db: Session) -> List[UserPublicSearch]:
+def test_get_user_ids_by_name_or_email(db: Session) -> List[UserPublicInDB]:
     user1 = UserModel("alex not duncan", "alex.not.duncan", 22, False, [
                       RoleRepository.get_role(RolesEnum.STUDENT, db)])
     user2 = UserModel("tim", "tim.duncan", 323, False, [

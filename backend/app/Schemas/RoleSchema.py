@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 
 
 class Role(BaseModel):
-    title: str
+    title: constr(max_length=255)
 
 
 class RoleInDB(Role):

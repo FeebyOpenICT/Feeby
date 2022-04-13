@@ -3,7 +3,7 @@ from .RolesEnum import *
 from .UserSchema import *
 from .IdsInDBSchema import *
 from .PostSchema import *
-from .Rating import *
+from .RatingSchema import *
 from .RoleSchema import *
 from .UserAccessPostSchema import *
 from .UserIdListSchema import *

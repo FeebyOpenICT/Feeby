@@ -2,7 +2,7 @@ from typing import List, Optional
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 from Models.UserModel import UserModel
-from Schemas.UserSchema import UserPublicSearch
+from Schemas.UserSchema import UserPublicInDB
 
 
 class UserRepository:
@@ -35,7 +35,7 @@ class UserRepository:
         return user
 
     @staticmethod
-    def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicSearch]:
+    def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicInDB]:
         """Search through users saved in database and return first 10 hits
 
         Args:
