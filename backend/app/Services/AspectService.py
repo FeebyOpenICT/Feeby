@@ -5,7 +5,7 @@ from Exceptions import NotFoundException
 from Models import AspectModel, RatingModel
 # circular import fix
 from Services.RatingService import RatingService
-from Repositories import AspectRepository
+from Repositories import AspectRepository, RatingRepository
 from Schemas import UpdateAspect
 
 
@@ -23,6 +23,23 @@ class AspectService:
         """
         all_aspects = AspectRepository.get_all_aspects(db)
         return all_aspects
+
+    def get_aspect_by_id_or_fail(id: int, db: Session) -> AspectModel:
+        """Get aspect by id or raise NotFound
+
+        Args:
+            id (int): id of aspect
+            db (Session): database session
+
+        Returns:
+            AspectModel: aspect as saved in database
+        """
+        aspect = AspectRepository.get_aspect_by_id(id=id, db=db)
+
+        if not aspect:
+            raise NotFoundException(resource="aspect", id=id)
+
+        return aspect
 
     def create_aspect(
         title: str,
@@ -48,19 +65,9 @@ class AspectService:
         Returns:
             AspectModel: newly created aspect
         """
-        ratings: List[RatingModel] = []
-
-        for id in rating_ids:
-            rating = RatingService.get_rating_by_id(db=db, id=id)
-
-            if rating is None:
-                raise NotFoundException(resource="rating", id=id)
-
-            ratings.append(rating)
-
         aspect = AspectRepository.save(
             aspect=AspectModel(title=title, description=description,
-                               short_description=short_description, external_url=external_url, ratings=ratings),
+                               short_description=short_description, external_url=external_url, ratings=[RatingService.get_rating_by_id_or_fail(id=id, db=db) for id in rating_ids]),
             db=db
         )
 
@@ -85,21 +92,17 @@ class AspectService:
         Returns:
             AspectModel: updated aspect as saved in database
         """
-        aspect = AspectRepository.get_aspect_by_id(aspect_id, db)
-
-        if aspect is None:
-            raise NotFoundException(id=aspect_id, resource="aspect")
+        aspect = AspectService.get_aspect_by_id_or_fail(id=aspect_id, db=db)
 
         aspect_data = body.dict(exclude_unset=True)
 
         if "rating_ids" in aspect_data:
             if len(aspect_data["rating_ids"]) > 0:
-                ratings = [RatingModel.get_rating_by_id(rating_id=rating_id, db=db)
-                           for rating_id in aspect_data.pop("rating_ids")]
-                setattr(aspect, "ratings", ratings)
+                setattr(aspect, "ratings", [RatingService.get_rating_by_id_or_fail(id=rating_id, db=db)
+                                            for rating_id in aspect_data.pop("rating_ids")])
             else:
                 raise HTTPException(
-                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No rating")
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No ratings")
 
         for key, value in aspect_data.items():
             setattr(aspect, key, value)

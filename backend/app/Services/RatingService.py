@@ -1,6 +1,7 @@
 from typing import List, Optional
 from requests import Session
 from sqlalchemy.orm import Session
+from Exceptions import NotFoundException
 from Models import RatingModel
 from Repositories import RatingRepository
 
@@ -20,17 +21,21 @@ class RatingService:
         return all_ratings
 
     @staticmethod
-    def get_rating_by_id(db: Session, id: int) -> Optional[RatingModel]:
-        """Get rating by id
+    def get_rating_by_id_or_fail(db: Session, id: int) -> RatingModel:
+        """Get rating by id or raise NotFound
 
         Args:
             db (Session): database session
             id (int): id of rating
 
         Returns:
-            Optional[RatingModel]: rating as saved in database or None
+            RatingModel: rating as saved in database
         """
         rating = RatingRepository.get_rating_by_id(id=id, db=db)
+
+        if not rating:
+            raise NotFoundException(resource="rating", id=id)
+
         return rating
 
     @staticmethod
