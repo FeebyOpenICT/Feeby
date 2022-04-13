@@ -1,7 +1,6 @@
 from typing import List, Optional
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
-from Exceptions.NotFound import NotFound
 from Models.UserModel import UserModel
 from Schemas.UserSchema import UserPublicSearch
 

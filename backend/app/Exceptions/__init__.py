@@ -2,3 +2,4 @@ from .AuthenticationException import OAuth2AuthenticationException, oauth2_authe
 from .DuplicateKey import DuplicateKey, duplicate_key_exception_handler
 from .LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from .NotFound import NotFound, not_found_exception_handler
+from .DisabledResourceException import DisabledResourceException, disabled_resource_exception_handler

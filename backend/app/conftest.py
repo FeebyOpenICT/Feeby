@@ -105,6 +105,9 @@ def client(db):
 
     app.add_exception_handler(NotFound, not_found_exception_handler)
 
+    app.add_exception_handler(DisabledResourceException,
+                              disabled_resource_exception_handler)
+
     app.include_router(lti.router)
 
     app.include_router(Authentication.router)
