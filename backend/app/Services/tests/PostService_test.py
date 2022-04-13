@@ -1,5 +1,5 @@
 from typing import List, Optional
-from Exceptions import DuplicateKey, NotFound
+from Exceptions import DuplicateKey, NotFoundException
 from Models import PostModel, UserAccessPostModel, UserModel
 from Repositories import PostRepository, UserAccessPostRepository, UserRepository
 from sqlalchemy.orm import Session
@@ -27,7 +27,7 @@ def create_post_for_user_by_id(title: str, description: str, user_id: int, db: S
     user = UserRepository.get_user_by_id(id=user_id, db=db)
 
     if user is None:
-        raise NotFound(resource="user", id=user_id)
+        raise NotFoundException(resource="user", id=user_id)
 
     post = PostRepository.create_post_for_user(
         title=title, description=description, user=user, db=db)
@@ -35,7 +35,7 @@ def create_post_for_user_by_id(title: str, description: str, user_id: int, db: S
     return post
 
 
-def create_post_for_user_by_model(title: str, description: str, user: UserModel, db: Session) -> PostModel:
+def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
     post = PostRepository.create_post_for_user(
         title=title, description=description, user=user, db=db)
 
@@ -53,7 +53,7 @@ def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Se
         post_id=post_id, user_id=user_id, db=db)
 
     if post is None:
-        raise NotFound(resource="post", id=post_id)
+        raise NotFoundException(resource="post", id=post_id)
 
     users = []
 
@@ -61,7 +61,7 @@ def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Se
         user = UserRepository.get_user_by_id(id=user_id, db=db)
 
         if not user:
-            raise NotFound(resource="user", id=user_id)
+            raise NotFoundException(resource="user", id=user_id)
 
         users.append(user)
     try:
