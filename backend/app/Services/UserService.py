@@ -32,7 +32,7 @@ class UserService:
         Returns:
             UserModel: user
         """
-        user = UserService.get_user_by_id(id=id, db=db)
+        user = UserRepository.get_user_by_id(id=id, db=db)
 
         if not user:
             raise NotFound(resource="user", id=id)
@@ -58,7 +58,7 @@ class UserService:
         return user
 
     @staticmethod
-    def get_user_by_canvas_id(id: int, db: Session) -> UserModel:
+    def get_user_by_canvas_id(id: int, db: Session) -> Optional[UserModel]:
         """
         Calls User model to get user by their canvas_id
 
@@ -74,3 +74,24 @@ class UserService:
         returns list of users with their id, fullname and canvas_email
         """
         return UserRepository.get_user_ids_by_name_or_email(query=query, db=db)
+
+    @staticmethod
+    def get_user_by_canvas_id_or_fail(id: int, db: Session) -> UserModel:
+        """Get user by canvas id or throw not found if no user
+
+        Args:
+            id (int): user id
+            db (Session): database session
+
+        Raises:
+            NotFound: if user is not found
+
+        Returns:
+            UserModel: user
+        """
+        user = UserRepository.get_user_by_canvas_id(id=id, db=db)
+
+        if not user:
+            raise NotFound(resource="user", id=id)
+
+        return user

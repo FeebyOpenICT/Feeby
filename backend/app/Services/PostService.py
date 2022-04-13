@@ -1,4 +1,5 @@
 from typing import List, Optional
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from Exceptions.DuplicateKey import DuplicateKey
 from Exceptions.NotFound import NotFound
@@ -56,6 +57,10 @@ class PostService:
 
     @staticmethod
     def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
+        if user_id in user_ids:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
+
         post: Optional[PostModel] = PostRepository.get_post_by_id(
             post_id=post_id, user_id=user_id, db=db)
 

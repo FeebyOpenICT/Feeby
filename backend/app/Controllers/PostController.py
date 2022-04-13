@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import Depends, status, HTTPException
 from typing import List
-from Exceptions.NotFound import NotFound
 from Schemas.UserAccessPostSchema import UserAccessPostInDB
 from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
@@ -8,7 +7,6 @@ from sqlalchemy.orm import Session
 from Schemas.PostSchema import CreatePost
 from Schemas.UserIdListSchema import UserIdList
 from database import get_db_connection
-from Schemas.RolesEnum import RolesEnum
 from Models.UserModel import UserModel
 from Schemas.PostSchema import PostInDB
 from fastapi_utils.cbv import cbv
@@ -33,7 +31,7 @@ class PostController:
         self.current_active_user = current_active_user
 
         if user_id != current_active_user.id:
-            user = UserService.get_active_user_by_id(id=user_id, db=db)
+            user = UserService.get_active_user_by_id_or_fail(id=user_id, db=db)
             self.user = user
 
     @router.get('/users/{user_id}/posts',  response_model=List[PostInDB])
@@ -60,10 +58,6 @@ class PostController:
         """
         Grants access to all users ids in post body
         """
-        if self.user_id in body.user_ids:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
-
         accessList = PostService.grant_access_to_post(
             post_id=post_id, user_id=current_self_user.id, user_ids=body.user_ids, db=self.db)
 
