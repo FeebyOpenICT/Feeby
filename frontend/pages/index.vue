@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AspectRatingUpdaten from '~/components/HomePage.vue'
+import AspectRatingUpdaten from '~/components/AspectCards/AspectRatingUpdaten'
 export default {
   name: 'IndexPage',
   components: { AspectRatingUpdaten }

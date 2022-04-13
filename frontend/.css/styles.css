@@ -1,37 +1,50 @@
-
-.textField{
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.textField {
   min-height: 75px;
   padding: 15px;
   opacity: 100%;
-  border-color: #0079CF;
-  border-width: 2px;
-  border-style: solid;
   margin: 25px 15px;
+  border-style: solid;
+  border-color: lightgray;
 }
 
-.pageTitle{
+.pageTitle {
   font-size: 32px;
   font-weight: bold;
   margin-top: 15px;
 }
+
 .textBoxTitle {
-  font-size: 16px;
+  font-size: 18px;
 }
 
-#aspectCheck{
+#aspectCheck {
   background-color: #0079CF;
 
 }
-#productTextContainer{
+
+#productTextContainer {
   margin-bottom: 50px;
 }
-.underlineContent{
-  display:inline-block;
-  width:90%;
+
+.underlineContent {
+  display: inline-block;
+  width: 90%;
   border: 1px solid #0079CF;
 }
-.checkBoxContainer{
+
+.checkBoxContainer {
   max-width: 90%;
   margin: 0 auto;
+}
+
+#submitButton {
+  position: relative;
+  left: 45%;
+}
+
+.RatingUpdateCard {
+  min-width: 40%;
+  max-width: 90%;
+  margin: 5%;
+  padding: 15px;
 }

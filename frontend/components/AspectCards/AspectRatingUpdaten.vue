@@ -1,13 +1,14 @@
 <template>
   <v-container fluid>
-    <v-card>
+    <v-card class="RatingUpdateCard">
+      <h1 class="AspectRatingTitle">Aspect Rating Aanpassen</h1>
       <form @submit.prevent="submitForm">
         <div id="productTextContainer" class="container">
           <h2 class="textBoxTitle">
             Titel
           </h2>
           <v-hover />
-          <v-textarea
+          <v-text-field
             id="AspectRatingTitel"
             v-model="ratings.title"
             class="textField"
@@ -17,6 +18,27 @@
             :items="cards"
             item-text="title"
             placeholder="Schrijf hier je titel van je aspect rating..."
+          />
+
+          <div id="characterLimit">
+            max. 255 characters
+          </div>
+        </div>
+        <div id="productTextContainer" class="container">
+          <h2 class="textBoxTitle">
+            Korte Beschrijving
+          </h2>
+          <v-hover />
+          <v-textarea
+            id="AspectRatingKorteBeschrijving"
+            v-model="ratings.short_description"
+            class="textField"
+            counter
+            maxlength="255"
+            type="text"
+            :items="cards"
+            item-text="short_description"
+            placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
           />
 
           <div id="characterLimit">
@@ -42,27 +64,6 @@
 
           <div id="characterLimit">
             max. 1000 characters
-          </div>
-        </div>
-        <div id="productTextContainer" class="container">
-          <h2 class="textBoxTitle">
-            Korte Beschrijving
-          </h2>
-          <v-hover />
-          <v-textarea
-            id="AspectRatingKorteBeschrijving"
-            v-model="ratings.short_description"
-            class="textField"
-            counter
-            maxlength="255"
-            type="text"
-            :items="cards"
-            item-text="short_description"
-            placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
-          />
-
-          <div id="characterLimit">
-            max. 255 characters
           </div>
         </div>
         <v-btn
@@ -109,6 +110,17 @@ export default {
           // error.response.status Check status code
           console.log(error)
         })
+    },
+    updateForm () {
+      axiosInstance.patch('api/v1/ratings/', this.ratings)
+        .then((response) => {
+          // Perform Success Action
+          console.log(response)
+        })
+        .catch((error) => {
+          // error.response.status Check status code
+          console.log(error)
+        })
     }
   }
 }
@@ -116,4 +128,8 @@ export default {
 
 <style scoped>
 @import '.css/styles.css';
+.AspectRatingTitle {
+  position: relative;
+  margin: auto 40%;
+}
 </style>
