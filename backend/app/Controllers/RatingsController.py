@@ -13,20 +13,21 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[RatingInDB])
+@router.get('', response_model=List[RatingInDB])
 async def get_all_ratings(
         current_active_user: UserModel = Depends(get_current_active_user),
         db: Session = Depends(get_db_connection)
 ):
     """Get all ratings
+
     Allowed roles:
     - All
     """
-    all_aspect_ratings = RatingService.get_all_aspect_ratings(db=db)
-    return all_aspect_ratings
+    all_ratings = RatingService.get_all_ratings(db=db)
+    return all_ratings
 
 
-@router.post('/', response_model=RatingInDB, status_code=status.HTTP_201_CREATED)
+@router.post('', response_model=RatingInDB, status_code=status.HTTP_201_CREATED)
 async def create_rating(
         body: CreateRating,
         current_active_user: UserModel = Security(
