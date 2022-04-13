@@ -95,7 +95,7 @@ class PostService:
             post_id (int): id of post
             user_id (int): id of owner of post
             user_ids (List[int]): list of ids of users that should get access to posts
-            db (Session): _description_
+            db (Session): database session
 
         Raises:
             NotFound: if post is not found by post_id owned by user_id

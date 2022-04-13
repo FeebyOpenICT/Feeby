@@ -67,7 +67,7 @@ async def patch_aspect(
     """Patch aspect
 
     Args:
-        aspect_id (int): id of aspect in as saved in database
+        aspect_id (int): id of aspect as saved in database
 
     Allowed roles:
     - Admin
