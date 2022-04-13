@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlalchemy.orm import Session
 from Exceptions import UnexpectedInstanceError
 
@@ -26,7 +27,7 @@ class RoleRepository:
         return role
 
     @staticmethod
-    def get_role_by_title(role: RolesEnum, db: Session) -> RoleModel:
+    def get_role_by_title(role: RolesEnum, db: Session) -> Optional[RoleModel]:
         """Get role from database by role title from RolesEnum or create new one if it does not exist yet
 
         Args:
@@ -34,7 +35,7 @@ class RoleRepository:
             db (Session): database session
 
         Returns:
-            RoleModel: role as saved in database
+            Optional[RoleModel]: role as saved in database
         """
         db_role = db.query(RoleModel).filter(
             RoleModel.title == role).first()
