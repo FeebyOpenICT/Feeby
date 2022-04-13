@@ -40,7 +40,7 @@ class UserService:
         return user
 
     @staticmethod
-    def get_active_user_by_id(id: int, db: Session) -> UserModel:
+    def get_active_user_by_id_or_fail(id: int, db: Session) -> UserModel:
         """Get active user by id whilst checking if user exists and is active
 
         Args:
