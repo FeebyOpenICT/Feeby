@@ -2,6 +2,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from Models import RatingModel
+from Exceptions import UnexpectedInstanceError
 
 
 class RatingRepository:
@@ -32,6 +33,16 @@ class RatingRepository:
         """
         rating = db.query(RatingModel).filter(
             RatingModel.id == id).first()
+
+        return rating
+
+    @staticmethod
+    def save(rating: RatingModel, db: Session):
+        if not isinstance(rating, RatingModel):
+            raise UnexpectedInstanceError
+
+        db.add(rating)
+        db.commit(rating)
 
         return rating
 

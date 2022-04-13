@@ -46,6 +46,6 @@ class RatingService:
         Returns:
             RatingModel: newly created rating
         """
-        rating = RatingRepository.create_rating(
-            db=db, title=title, short_description=short_description, description=description)
+        rating = RatingRepository.save(rating=RatingModel(title=title, short_description=short_description, description=description),
+                                       db=db)
         return rating
