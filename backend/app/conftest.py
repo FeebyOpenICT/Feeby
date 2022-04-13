@@ -7,14 +7,12 @@ import pytest
 
 ######
 # import all routers and exception handlers
-from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
-from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
+from Exceptions import *
 from Auth import Authentication
 from LTI import lti
 from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
 from Controllers import UserRouter, PostRouter
-from Exceptions.NotFound import NotFound, not_found_exception_handler
 from Aspects import Aspects
 from Ratings import Ratings
 ######
@@ -114,6 +112,9 @@ def client(db):
         LTILaunchException, lti_launch_authentication_exception_handler)
 
     app.add_exception_handler(NotFound, not_found_exception_handler)
+
+    app.add_exception_handler(DisabledResourceException,
+                              disabled_resource_exception_handler)
 
     app.include_router(lti.router)
 

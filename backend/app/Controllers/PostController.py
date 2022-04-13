@@ -33,7 +33,7 @@ class PostController:
         self.current_active_user = current_active_user
 
         if user_id != current_active_user.id:
-            user = UserService.get_user_by_id(id=user_id, db=db)
+            user = UserService.get_active_user_by_id(id=user_id, db=db)
 
             if user is None:
                 raise NotFound("user", user_id)

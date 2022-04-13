@@ -1,5 +1,5 @@
-from typing import List
-from sqlalchemy import and_, or_
+from typing import List, Optional
+from sqlalchemy import and_, false, or_
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
 from Models.UserModel import UserModel
