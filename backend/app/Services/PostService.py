@@ -71,10 +71,10 @@ class PostService:
                 raise NotFound(resource="user", id=user_id)
 
             users.append(user)
+
         try:
             accessList = UserAccessPostRepository.grant_access_to_users_to_post(
                 post=post, users=users, db=db)
-
         except IntegrityError as error:
             raise DuplicateKey(resource="User Access Post",
                                id=error.params['user_id'])
