@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 import requests
 
 from Exceptions.AuthenticationException import OAuth2AuthenticationException
-from Exceptions.NotFound import NotFound
+from Exceptions.NotFoundException import NotFoundException
 from Repositories.RoleRepository import RoleRepository
 from Repositories.UserRepository import UserRepository
 from .JWTToken import AccessToken

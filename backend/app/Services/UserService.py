@@ -1,7 +1,7 @@
 from typing import List, Optional
 from pytest import Session
 from Exceptions import DisabledResourceException
-from Exceptions.NotFound import NotFound
+from Exceptions.NotFoundException import NotFoundException
 from Models.UserModel import UserModel
 from Repositories.UserRepository import UserRepository
 from Schemas.UserSchema import UserPublicSearch
@@ -39,7 +39,7 @@ class UserService:
         user = UserRepository.get_user_by_id(id=id, db=db)
 
         if not user:
-            raise NotFound(resource="user", id=id)
+            raise NotFoundException(resource="user", id=id)
 
         return user
 
@@ -105,6 +105,6 @@ class UserService:
         user = UserRepository.get_user_by_canvas_id(id=id, db=db)
 
         if not user:
-            raise NotFound(resource="user", id=id)
+            raise NotFoundException(resource="user", id=id)
 
         return user

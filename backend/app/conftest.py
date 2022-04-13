@@ -103,7 +103,7 @@ def client(db):
     app.add_exception_handler(
         LTILaunchException, lti_launch_authentication_exception_handler)
 
-    app.add_exception_handler(NotFound, not_found_exception_handler)
+    app.add_exception_handler(NotFoundException, not_found_exception_handler)
 
     app.add_exception_handler(DisabledResourceException,
                               disabled_resource_exception_handler)

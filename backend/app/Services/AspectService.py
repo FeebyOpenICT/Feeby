@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from Exceptions import NotFound
+from Exceptions import NotFoundException
 from Models import AspectModel, RatingModel
 # circular import fix
 from Services.RatingService import RatingService
@@ -54,7 +54,7 @@ class AspectService:
             rating = RatingService.get_rating_by_id(db=db, id=id)
 
             if rating is None:
-                raise NotFound(resource="rating", id=id)
+                raise NotFoundException(resource="rating", id=id)
 
             ratings.append(rating)
 
@@ -91,7 +91,7 @@ class AspectService:
         aspect = AspectRepository.get_aspect_by_id(aspect_id, db)
 
         if aspect is None:
-            raise NotFound(id=aspect_id, resource="aspect")
+            raise NotFoundException(id=aspect_id, resource="aspect")
 
         aspect_data = body.dict(exclude_unset=True)
 

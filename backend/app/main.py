@@ -30,7 +30,7 @@ app.add_exception_handler(OAuth2AuthenticationException,
 app.add_exception_handler(
     LTILaunchException, lti_launch_authentication_exception_handler)
 
-app.add_exception_handler(NotFound, not_found_exception_handler)
+app.add_exception_handler(NotFoundException, not_found_exception_handler)
 
 app.add_exception_handler(DuplicateKey, duplicate_key_exception_handler)
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Security, Depends
 from sqlalchemy.orm import Session
 from Auth.validate_user import get_current_active_user
-from Exceptions.NotFound import NotFound
+from Exceptions.NotFoundException import NotFoundException
 from Models.UserModel import UserModel
 from Schemas.UserSchema import UserPublicSearch, UserInDB
 from Schemas.RolesEnum import RolesEnum
