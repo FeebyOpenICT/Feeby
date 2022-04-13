@@ -1,6 +1,7 @@
 from typing import List, Optional
 from pytest import Session
 from Exceptions import DisabledResourceException
+from Exceptions.NotFound import NotFound
 from Models.UserModel import UserModel
 from Repositories.UserRepository import UserRepository
 from Schemas.UserSchema import UserPublicSearch
@@ -19,7 +20,7 @@ class UserService:
 
     @staticmethod
     def get_active_user_by_id(id: int, db: Session) -> Optional[UserModel]:
-        """Get active user by id
+        """Get active user by id whilst checking if user exists and is active
 
         Args:
             id (int): id of user as saved in database
@@ -30,7 +31,9 @@ class UserService:
         """
         user = UserRepository.get_user_by_id(id=id, db=db)
 
-        if user.disabled == True:
+        if user == None:
+            raise NotFound(resource="user", id=id)
+        elif user.disabled == True:
             raise DisabledResourceException(id=id, resource="user")
 
         return user

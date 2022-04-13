@@ -34,10 +34,6 @@ class PostController:
 
         if user_id != current_active_user.id:
             user = UserService.get_active_user_by_id(id=user_id, db=db)
-
-            if user is None:
-                raise NotFound("user", user_id)
-
             self.user = user
 
     @router.get('/users/{user_id}/posts',  response_model=List[PostInDB])
