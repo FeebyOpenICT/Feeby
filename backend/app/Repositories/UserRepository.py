@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 from Exceptions.NotFound import NotFound
@@ -8,36 +8,43 @@ from Schemas.UserSchema import UserPublicSearch
 
 class UserRepository:
     @staticmethod
-    def get_user_by_canvas_id(id: int, db: Session) -> UserModel:
-        """
-        Gets the user by their canvas id
+    def get_user_by_canvas_id(id: int, db: Session) -> Optional[UserModel]:
+        """Get user by their canvas id
 
-        id = integer equal to the the canvas id
+        Args:
+            id (int): canvas id as saved in database
+            db (Session): database session
 
-        Returns a python user mapped class from the database
+        Returns:
+            Optional[UserModel]: user from database or None
         """
         user = db.query(UserModel).filter(UserModel.canvas_id == id).first()
         return user
 
     @staticmethod
-    def get_user_by_id(id: int, db: Session) -> UserModel:
-        """
-        Gets the user by their id
+    def get_user_by_id(id: int, db: Session) -> Optional[UserModel]:
+        """Get user by their id
 
-        id = integer equal to the the id
+        Args:
+            id (int): id as saved in database
+            db (Session): database session
 
-        Returns a python user mapped class from the database
+        Returns:
+            Optional[UserModel]: user from database or None
         """
         user = db.query(UserModel).filter(UserModel.id == id).first()
         return user
 
     @staticmethod
     def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicSearch]:
-        """
-        Gets first 10 users by their name or email
+        """Search through users saved in database and return first 10 hits
 
-        only returns canvas_email, id and fullname
-        empty list if none
+        Args:
+            query (str): string that will search through email and fullname columns
+            db (Session): database session
+
+        Returns:
+            List[UserPublicSearch]: list of details that are open to the public
         """
         users = db.query(UserModel).with_entities(
             UserModel.canvas_email,

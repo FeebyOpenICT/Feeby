@@ -6,29 +6,32 @@ from Models import PostModel, UserAccessPostModel, UserModel
 
 
 class PostRepository:
-    """
-    Repository class to do with posts
-    """
     @staticmethod
     def get_posts_from_user_by_id(user_id: int, db: Session) -> List[PostModel]:
-        """
-        Gets all the posts from a user by their id
+        """Get all posts from a user
 
-        user_id = integer equal to the the user id
+        Args:
+            user_id (int): user id to get all posts from
+            db (Session): database session
 
-        Returns a list of python Post mapped class from the database
+        Returns:
+            List[PostModel]: list of all posts in database made by the user
         """
         result = db.query(PostModel).filter(PostModel.user_id == user_id).all()
         return result
 
     @staticmethod
     def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
-        """
-        Create post for a user
+        """create post for user
 
-        user = UserModel < user you want to create the post for
+        Args:
+            title (str): title of post
+            description (str): description of post
+            user (UserModel): user that created the post
+            db (Session): database session
 
-        Returns the newly created PostModel
+        Returns:
+            PostModel: newly created post as saved in database
         """
         post = PostModel(title=title, description=description, user=user)
         db.add(post)
@@ -59,7 +62,17 @@ class PostRepository:
         return result
 
     @staticmethod
-    def get_posts_with_access(current_user_id: int, user_id: int, db: Session) -> Optional[PostModel]:
+    def get_posts_with_access(current_user_id: int, user_id: int, db: Session) -> List[PostModel]:
+        """get posts from user that current user has access to
+
+        Args:
+            current_user_id (int): id of current user that is requesting the posts from the user that they have access to
+            user_id (int): owner of all the posts
+            db (Session): database session
+
+        Returns:
+            List[PostModel]: list off all posts that current user has access to that belong to user
+        """
         result = db.query(PostModel).join(
             UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
         ).where(

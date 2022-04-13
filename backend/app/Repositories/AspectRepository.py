@@ -6,18 +6,27 @@ from sqlalchemy.orm import Session
 class AspectRepository:
     @staticmethod
     def get_all_aspects(db: Session) -> List[AspectModel]:
-        """
-        Gets aspect object mappings from db
+        """get all aspects from database
 
-        returns a list of aspect mapped classes, returns an empty list if none are found
+        Args:
+            db (Session): database session
+
+        Returns:
+            List[AspectModel]: list of aspects from database
         """
         db_aspects = db.query(AspectModel).order_by(AspectModel.title).all()
         return db_aspects
 
     @staticmethod
     def get_aspect_by_id(id: int, db: Session) -> Optional[AspectModel]:
-        """
-        Gets post object mapping from db
+        """Get aspect from database by id
+
+        Args:
+            id (int): id of aspect in database
+            db (Session): database session
+
+        Returns:
+            Optional[AspectModel]: returns either aspect from database or None
         """
         db_aspect = db.query(AspectModel).filter(AspectModel.id == id).first()
 
@@ -32,6 +41,19 @@ class AspectRepository:
         ratings: List[RatingModel],
         db: Session
     ) -> AspectModel:
+        """Create aspect in db
+
+        Args:
+            title (str): title of aspect
+            short_description (str): short description of aspect, should fit inside tooltip
+            description (str): description of aspect
+            external_url (str): external url pointing to extra explanation of aspect
+            ratings (List[RatingModel]): list of ratings from database
+            db (Session): database session
+
+        Returns:
+            AspectModel: newly created aspect from database
+        """
         aspect = AspectModel(
             title=title,
             short_description=short_description,
@@ -50,6 +72,15 @@ class AspectRepository:
         aspect: AspectModel,
         db: Session
     ) -> AspectModel:
+        """update aspect in database
+
+        Args:
+            aspect (AspectModel): aspect model with updated attributes that needs to be saved in database
+            db (Session): database session 
+
+        Returns:
+            AspectModel: aspect as newly updated in database
+        """
         db.add(aspect)
         db.commit()
         db.refresh(aspect)
