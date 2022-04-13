@@ -13,8 +13,13 @@ class AspectService:
     def get_all_aspects(
         db: Session
     ) -> List[AspectModel]:
-        """
-        Get all Aspects
+        """Get all aspects
+
+        Args:
+            db (Session): database session
+
+        Returns:
+            List[AspectModel]: list of aspects
         """
         all_aspects = AspectRepository.get_all_aspects(db)
         return all_aspects
@@ -27,8 +32,21 @@ class AspectService:
         rating_ids: List[int],
         db: Session
     ) -> AspectModel:
-        """
-        Create aspect
+        """Create aspect whilst also verifying ratings
+
+        Args:
+            title (str): title of aspect
+            short_description (str): short description of aspect, should fit within tooltip
+            description (str): description of aspect
+            external_url (str): external url pointing to extra info about aspect
+            rating_ids (List[int]): list of int ids of ratings that are saved in the database
+            db (Session): database session
+
+        Raises:
+            NotFound: if rating is not found it will raise a not found error on that rating
+
+        Returns:
+            AspectModel: newly created aspect
         """
         ratings: List[RatingModel] = []
 
@@ -56,8 +74,19 @@ class AspectService:
             body: UpdateAspect,
             db: Session
     ) -> AspectModel:
-        """
-        Update aspect
+        """patch aspect whilst verifying if aspect exists and if new rating ids exist
+
+        Args:
+            aspect_id (int): id of aspect as saved in database
+            body (UpdateAspect): new attributes of aspect, all optional see Schema
+            db (Session): database session
+
+        Raises:
+            NotFound: if aspect or ratings are not found
+            HTTPException: if ratings are empty list
+
+        Returns:
+            AspectModel: updated aspect as saved in database
         """
         aspect = AspectRepository.get_aspect_by_id(aspect_id, db)
 
