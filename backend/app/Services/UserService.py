@@ -19,7 +19,28 @@ class UserService:
         return user
 
     @staticmethod
-    def get_active_user_by_id(id: int, db: Session) -> Optional[UserModel]:
+    def get_user_by_id_or_fail(id: int, db: Session) -> UserModel:
+        """Get user by id, if not found raise error
+
+        Args:
+            id (int): id of user as saved in database
+            db (Session): database session
+
+        Raises:
+            NotFound: if user is not found
+
+        Returns:
+            UserModel: user
+        """
+        user = UserService.get_user_by_id(id=id, db=db)
+
+        if not user:
+            raise NotFound(resource="user", id=id)
+
+        return user
+
+    @staticmethod
+    def get_active_user_by_id(id: int, db: Session) -> UserModel:
         """Get active user by id whilst checking if user exists and is active
 
         Args:
@@ -27,13 +48,11 @@ class UserService:
             db (Session): database session
 
         Returns:
-            Optional[UserModel]: returns user or None if user is not found or is disabled
+            UserModel: returns active user
         """
-        user = UserRepository.get_user_by_id(id=id, db=db)
+        user = UserService.get_user_by_id_or_fail(id=id, db=db)
 
-        if user == None:
-            raise NotFound(resource="user", id=id)
-        elif user.disabled == True:
+        if user.disabled == True:
             raise DisabledResourceException(id=id, resource="user")
 
         return user
