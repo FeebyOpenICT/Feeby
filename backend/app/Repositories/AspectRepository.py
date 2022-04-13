@@ -1,4 +1,5 @@
 from typing import List, Optional
+from Exceptions import UnexpectedInstanceError
 from Models import AspectModel, RatingModel
 from sqlalchemy.orm import Session
 
@@ -33,55 +34,23 @@ class AspectRepository:
         return db_aspect
 
     @staticmethod
-    def create_aspect(
-        title: str,
-        short_description: str,
-        description: str,
-        external_url: str,
-        ratings: List[RatingModel],
+    def save(
+        aspect: AspectModel,
         db: Session
     ) -> AspectModel:
         """Create aspect in db
 
         Args:
-            title (str): title of aspect
-            short_description (str): short description of aspect, should fit inside tooltip
-            description (str): description of aspect
-            external_url (str): external url pointing to extra explanation of aspect
-            ratings (List[RatingModel]): list of ratings from database
+            aspect (AspectModel): aspect
             db (Session): database session
 
         Returns:
             AspectModel: newly created aspect from database
         """
-        aspect = AspectModel(
-            title=title,
-            short_description=short_description,
-            description=description,
-            external_url=external_url,
-            ratings=ratings
-        )
+        if not isinstance(aspect, AspectModel):
+            raise UnexpectedInstanceError
 
         db.add(aspect)
         db.commit()
 
-        return aspect
-
-    @staticmethod
-    def update_aspect(
-        aspect: AspectModel,
-        db: Session
-    ) -> AspectModel:
-        """update aspect in database
-
-        Args:
-            aspect (AspectModel): aspect model with updated attributes that needs to be saved in database
-            db (Session): database session 
-
-        Returns:
-            AspectModel: aspect as newly updated in database
-        """
-        db.add(aspect)
-        db.commit()
-        db.refresh(aspect)
         return aspect

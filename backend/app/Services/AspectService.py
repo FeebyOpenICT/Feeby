@@ -58,12 +58,9 @@ class AspectService:
 
             ratings.append(rating)
 
-        aspect = AspectRepository.create_aspect(
-            title=title,
-            short_description=short_description,
-            description=description,
-            external_url=external_url,
-            ratings=ratings,
+        aspect = AspectRepository.save(
+            aspect=AspectModel(title=title, description=description,
+                               short_description=short_description, external_url=external_url, ratings=ratings),
             db=db
         )
 
@@ -107,6 +104,6 @@ class AspectService:
         for key, value in aspect_data.items():
             setattr(aspect, key, value)
 
-        aspect = AspectRepository.update_aspect(aspect=aspect, db=db)
+        aspect = AspectRepository.save(aspect=aspect, db=db)
 
         return aspect

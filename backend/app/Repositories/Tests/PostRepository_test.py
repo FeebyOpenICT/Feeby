@@ -44,7 +44,7 @@ def test_get_post_by_id(db: Session, current_active_user: UserModel):
     postCreated = PostService.create_post_for_user(
         title=title, description=description, user=current_active_user, db=db)
 
-    post = PostRepository.get_post_by_id(
+    post = PostRepository.get_post_by_id_by_user_id(
         post_id=postCreated.id, user_id=current_active_user.id, db=db)
 
     assert post.user == current_active_user

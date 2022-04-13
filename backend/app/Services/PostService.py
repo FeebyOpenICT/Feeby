@@ -58,17 +58,34 @@ class PostService:
         Returns:
             Optional[PostModel]: post as saved in database or None
         """
-        post = PostRepository.get_post_by_id(
+        post = PostRepository.get_post_by_id_by_user_id(
             post_id=post_id, user_id=user_id, db=db)
         return post
 
     @staticmethod
     def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
+        """grant access to post whilst checking for errors
+
+        Args:
+            post_id (int): post to grant access to
+            user_id (int): id of the owner of the post
+            user_ids (List[int]): list of user ids to give access to
+            db (Session): database session
+
+        Raises:
+            HTTPException: if user_id is in user_ids
+            NotFoundException: if post is not found
+            NotFoundException: if any of the users in user_ids is not found
+            DuplicateKey: if access has already been given to one of the users
+
+        Returns:
+            List[UserAccessPostModel]: list of access to user 
+        """
         if user_id in user_ids:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
 
-        post: Optional[PostModel] = PostRepository.get_post_by_id(
+        post: Optional[PostModel] = PostRepository.get_post_by_id_by_user_id(
             post_id=post_id, user_id=user_id, db=db)
 
         if post is None:

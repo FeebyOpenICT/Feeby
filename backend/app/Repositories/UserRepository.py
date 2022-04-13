@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
+from Exceptions import UnexpectedInstanceError
 from Models.UserModel import UserModel
 from Schemas.UserSchema import UserPublicInDB
 
@@ -61,3 +62,25 @@ class UserRepository:
         ).all()
 
         return users
+
+    @staticmethod
+    def save(user: UserModel, db: Session) -> UserModel:
+        """Save user instance in database
+
+        Args:
+            user (UserModel): user model
+            db (Session): database session
+
+        Raises:
+            UnexpectedInstanceError: if user is not UserModel instance
+
+        Returns:
+            UserModel: user as saved in database
+        """
+        if not isinstance(user, UserModel):
+            raise UnexpectedInstanceError
+
+        db.add(user)
+        db.commit()
+
+        return user

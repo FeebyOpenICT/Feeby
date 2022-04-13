@@ -43,13 +43,13 @@ def create_post_for_user(title: str, description: str, user: UserModel, db: Sess
 
 
 def get_post_by_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
-    post = PostRepository.get_post_by_id(
+    post = PostRepository.get_post_by_id_by_user_id(
         post_id=post_id, user_id=user_id, db=db)
     return post
 
 
 def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
-    post: Optional[PostModel] = PostRepository.get_post_by_id(
+    post: Optional[PostModel] = PostRepository.get_post_by_id_by_user_id(
         post_id=post_id, user_id=user_id, db=db)
 
     if post is None:

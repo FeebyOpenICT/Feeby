@@ -23,6 +23,18 @@ class PostRepository:
 
     @staticmethod
     def save(post: PostModel, db: Session) -> PostModel:
+        """Save post instance in database
+
+        Args:
+            post (PostModel): post model
+            db (Session): database session
+
+        Raises:
+            UnexpectedInstanceError: if post is not PostModel instance
+
+        Returns:
+            PostModel: post as saved in database
+        """
         if not isinstance(post, PostModel):
             raise UnexpectedInstanceError
 
@@ -32,7 +44,17 @@ class PostRepository:
         return post
 
     @staticmethod
-    def get_post_by_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
+    def get_post_by_id_by_user_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
+        """get post by id
+
+        Args:
+            post_id (int): post id
+            user_id (int): id of owner of post
+            db (Session): database session
+
+        Returns:
+            Optional[PostModel]: post if found or None
+        """
         result = db.query(PostModel).filter(
             and_(
                 PostModel.id == post_id,
@@ -43,6 +65,16 @@ class PostRepository:
 
     @staticmethod
     def get_post_with_access(current_user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
+        """get post with access
+
+        Args:
+            current_user_id (int): current user id
+            post_id (int): id of post
+            db (Session): database session
+
+        Returns:
+            Optional[PostModel]: post or None if no access
+        """
         result = db.query(PostModel).join(
             UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
         ).where(

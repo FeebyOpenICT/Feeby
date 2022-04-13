@@ -53,24 +53,16 @@ def db() -> Session:
 
     db = TestingSessionLocal()
 
-    user = UserModel(
-        "Alex Duncan",
-        "alex.duncan@hu.nl",
-        1,
-        False,
-        [
-            RoleService.get_or_create_role(RolesEnum.ADMIN, db),
-            # RolesEnum.CONTENT_DEVELOPER,
-            # RolesEnum.INSTRUCTOR,
-            # RolesEnum.MENTOR,
-            # RolesEnum.OBSERVER,
-            # RolesEnum.STUDENT,
-            # RolesEnum.TEACHING_ASSISTANT
-        ]
+    UserRepository.save(
+        user=UserModel(
+            "Alex Duncan",
+            "alex.duncan@hu.nl",
+            1,
+            False,
+            [RoleService.get_or_create_role(RolesEnum.ADMIN, db)]
+        ),
+        db=db
     )
-
-    db.add(user)
-    db.commit()
 
     try:
         yield db
@@ -80,7 +72,7 @@ def db() -> Session:
 
 
 @pytest.fixture()
-def client(db):
+def client(db) -> TestClient:
     """
     Dependency overrides
     """

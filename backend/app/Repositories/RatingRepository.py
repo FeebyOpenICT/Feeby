@@ -37,7 +37,19 @@ class RatingRepository:
         return rating
 
     @staticmethod
-    def save(rating: RatingModel, db: Session):
+    def save(rating: RatingModel, db: Session) -> RatingModel:
+        """Save rating instance in database
+
+        Args:
+            rating (RatingModel): rating model
+            db (Session): database session
+
+        Raises:
+            UnexpectedInstanceError: if rating is not RatingModel instance
+
+        Returns:
+            RatingModel: rating as saved in database
+        """
         if not isinstance(rating, RatingModel):
             raise UnexpectedInstanceError
 
