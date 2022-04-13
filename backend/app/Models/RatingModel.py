@@ -4,10 +4,7 @@ from database import Base
 
 
 class RatingModel(Base):
-    """
-    Mapped Aspect class
-
-    Represents an aspect in the database
+    """RatingModel
     """
     __tablename__ = 'rating'
     __table_args__ = {'extend_existing': True}
@@ -21,6 +18,13 @@ class RatingModel(Base):
                           server_default=func.now(), onupdate=func.now())
 
     def __init__(self, title: str, short_description: str, description: str,) -> None:
+        """RatingModel constructor
+
+        Args:
+            title (str): title of the rating, per example; 1, "niet aanwezig", etc.
+            short_description (str): short description of rating, should fit inside of a tooltip
+            description (str): long description of rating
+        """
         self.title = title
         self.short_description = short_description
         self.description = description

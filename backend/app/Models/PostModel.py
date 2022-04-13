@@ -7,10 +7,7 @@ from .UserModel import UserModel
 
 
 class PostModel(Base):
-    """
-    Mapped Post class
-
-    Represents a post in the database
+    """PostModel
     """
     __tablename__ = 'post'
     __table_args__ = {'extend_existing': True}
@@ -25,7 +22,14 @@ class PostModel(Base):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('UserModel')
 
-    def __init__(self, title, description, user: UserModel) -> None:
+    def __init__(self, title: str, description: str, user: UserModel) -> None:
+        """PostModel constructor
+
+        Args:
+            title (str): title of the post
+            description (str): description of the post
+            user (UserModel): User that created the post
+        """
         self.title = title
         self.description = description
         self.user = user

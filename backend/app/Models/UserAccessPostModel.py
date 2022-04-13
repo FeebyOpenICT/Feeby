@@ -7,6 +7,8 @@ from sqlalchemy.orm import relationship
 
 
 class UserAccessPostModel(Base):
+    """UserAccessPostModel
+    """
     __tablename__ = 'user_access_post'
 
     user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
@@ -18,5 +20,11 @@ class UserAccessPostModel(Base):
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
     def __init__(self, user: UserModel, post: PostModel) -> None:
+        """UserAccessPostModel constructor
+
+        Args:
+            user (UserModel): user that has access to the post
+            post (PostModel): post the user will have access to
+        """
         self.user = user
         self.post = post

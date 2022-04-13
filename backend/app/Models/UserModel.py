@@ -8,10 +8,7 @@ from database import Base
 
 
 class UserModel(Base):
-    """
-    Mapped User class
-
-    Represents a user in the database
+    """UserModel
     """
     __tablename__ = 'user'
     __table_args__ = {'extend_existing': True}
@@ -36,6 +33,18 @@ class UserModel(Base):
         roles: List[RoleModel],
         **kwargs
     ) -> None:
+        """UserModel constructor
+
+        Args:
+            fullname (str): fullname of the user
+            canvas_email (str): canvas email of the user
+            canvas_id (int): canvas id of the user
+            disabled (bool): wether the user is still active within the system, for data warehousing purposes
+            roles (List[RoleModel]): list of roles the user has, must have atleast one role
+
+        Raises:
+            ValueError: if roles is empty it will raise a valueerror
+        """
         self.fullname = fullname
         self.canvas_email = canvas_email
         self.canvas_id = canvas_id

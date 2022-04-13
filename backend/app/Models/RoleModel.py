@@ -4,10 +4,7 @@ from database import Base
 
 
 class RoleModel(Base):
-    """
-    Mapped Role class
-
-    Represents a role in the database
+    """RoleModel
     """
     __tablename__ = 'role'
     __table_args__ = {'extend_existing': True}
@@ -17,5 +14,10 @@ class RoleModel(Base):
                         unique=True, index=True)
 
     def __init__(self, title: str) -> None:
+        """RoleModel constructor
+
+        Args:
+            title (str): title of the role
+        """
         self.title = title
         super().__init__()
