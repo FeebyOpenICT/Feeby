@@ -40,6 +40,7 @@ class UpdateAspect(BaseModel):
 
     @validator('rating_ids', pre=True, always=True)
     def validate_ids_length(cls, value):
-        if len(value) == 0:
-            raise ValueError("empty rating not allowed")
+        if isinstance(value, List):
+            if len(value) == 0:
+                raise ValueError("empty rating not allowed")
         return value
