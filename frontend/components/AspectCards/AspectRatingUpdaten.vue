@@ -1,13 +1,23 @@
 <template>
   <v-container fluid>
     <v-card class="RatingUpdateCard">
-      <h1 class="AspectRatingTitle">Aspect Rating Aanpassen</h1>
+      <h1 class="AspectRatingTitle">
+        Aspect Rating Aanpassen
+      </h1>
       <form @submit.prevent="submitForm">
         <div id="productTextContainer" class="container">
           <h2 class="textBoxTitle">
             Titel
           </h2>
-          <v-hover />
+          <v-divider />
+          <h3 class="textBoxOldTitle">
+            Oude Versie
+          </h3>
+          <p v-for="card in cards" :key="card.id">
+            test
+            {{ card.title }}
+          </p>
+          <v-divider />
           <v-text-field
             id="AspectRatingTitel"
             v-model="ratings.title"
@@ -15,20 +25,26 @@
             counter
             maxlength="255"
             type="text"
-            :items="cards"
-            item-text="title"
-            placeholder="Schrijf hier je titel van je aspect rating..."
+            placeholder="Vul De Nieuwe Titel Hierin..."
           />
 
           <div id="characterLimit">
             max. 255 characters
           </div>
         </div>
+        <v-divider />
         <div id="productTextContainer" class="container">
           <h2 class="textBoxTitle">
             Korte Beschrijving
           </h2>
-          <v-hover />
+          <v-divider />
+          <h3 class="textBoxOldTitle">
+            Oude Versie
+          </h3>
+          <p v-for="card in cards" :key="card.id">
+            {{ card.short_description }}
+          </p>
+          <v-divider />
           <v-textarea
             id="AspectRatingKorteBeschrijving"
             v-model="ratings.short_description"
@@ -36,20 +52,26 @@
             counter
             maxlength="255"
             type="text"
-            :items="cards"
-            item-text="short_description"
-            placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
+            placeholder="Vul De Nieuwe Korte Beschrijving Hierin..."
           />
 
           <div id="characterLimit">
             max. 255 characters
           </div>
         </div>
+        <v-divider />
         <div id="productTextContainer" class="container">
           <h2 class="textBoxTitle">
             Beschrijving
           </h2>
-          <v-hover />
+          <v-divider />
+          <h3 class="textBoxOldTitle">
+            Oude Versie
+          </h3>
+          <p v-for="card in cards" :key="card.id">
+            {{ card.description }}
+          </p>
+          <v-divider />
           <v-textarea
             id="AspectRatingBeschrijving"
             v-model="ratings.description"
@@ -57,9 +79,7 @@
             counter
             maxlength="1000"
             type="text"
-            :items="cards"
-            item-text="description"
-            placeholder="Schrijf hier je beschrijving over dit aspect rating..."
+            placeholder="Vul De Nieuwe Beschrijving Hierin..."
           />
 
           <div id="characterLimit">
@@ -130,6 +150,6 @@ export default {
 @import '.css/styles.css';
 .AspectRatingTitle {
   position: relative;
-  margin: auto 40%;
+  margin: 2% 40%;
 }
 </style>
