@@ -1,6 +1,7 @@
 from fastapi import Depends, status, HTTPException
 from typing import List
 from Schemas.UserAccessPostSchema import UserAccessPostInDB
+from Services import UserAccessPostService
 from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
 from sqlalchemy.orm import Session
@@ -74,7 +75,7 @@ class PostController:
         Allowed roles:
         - All
         """
-        accessList = PostService.grant_access_to_post(
+        accessList = UserAccessPostService.grant_access_to_post(
             post_id=post_id, user_id=current_self_user.id, user_ids=body.user_ids, db=self.db)
 
         return accessList

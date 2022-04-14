@@ -1,10 +1,8 @@
 from typing import List, Optional
-from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from Exceptions import DuplicateKey, NotFoundException
-from Models import PostModel, UserAccessPostModel, UserModel
-from Repositories import PostRepository, UserAccessPostRepository, UserRepository
-from sqlalchemy.exc import IntegrityError
+from Exceptions import NotFoundException
+from Models import PostModel, UserModel
+from Repositories import PostRepository
 
 
 class PostService:
@@ -63,52 +61,24 @@ class PostService:
         return post
 
     @staticmethod
-    def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
-        """grant access to post whilst checking for errors
+    def get_post_by_id_or_fail(post_id: int, user_id: int, db: Session) -> PostModel:
+        """Get post by id created by user id or fail
 
         Args:
-            post_id (int): post to grant access to
-            user_id (int): id of the owner of the post
-            user_ids (List[int]): list of user ids to give access to
+            post_id (int): id of post
+            user_id (int): id of owner a.k.a. creator of post
             db (Session): database session
 
-        Raises:
-            HTTPException: if user_id is in user_ids
-            NotFoundException: if post is not found
-            NotFoundException: if any of the users in user_ids is not found
-            DuplicateKey: if access has already been given to one of the users
-
         Returns:
-            List[UserAccessPostModel]: list of access to user 
+            PostModel: post as saved in database
         """
-        if user_id in user_ids:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
-
-        post: Optional[PostModel] = PostRepository.get_post_by_id_by_user_id(
+        post = PostRepository.get_post_by_id_by_user_id(
             post_id=post_id, user_id=user_id, db=db)
 
-        if post is None:
+        if not post:
             raise NotFoundException(resource="post", id=post_id)
 
-        users = []
-
-        for user_id in user_ids:
-            user = UserRepository.get_user_by_id(id=user_id, db=db)
-
-            if not user:
-                raise NotFoundException(resource="user", id=user_id)
-
-            users.append(user)
-
-        try:
-            accessList = UserAccessPostRepository.grant_access_to_users_to_post(
-                post=post, users=users, db=db)
-        except IntegrityError as error:
-            raise DuplicateKey(resource="User Access Post",
-                               id=error.params['user_id'])
-
-        return accessList
+        return post
 
     @staticmethod
     def get_post_with_access(current_user_id: int, user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
