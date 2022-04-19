@@ -1,11 +1,20 @@
 <template>
-  <AspectRatingUpdaten />
+  <div id="page-container">
+    <div id="content-wrap">
+      <HeaderCom />
+      <addButton />
+      <CardCom />
+    </div>
+    <footer id="footer" />
+  </div>
 </template>
 
 <script>
-import AspectRatingUpdaten from '~/components/AspectCards/AspectRatingUpdaten'
+import CardCom from '~/components/CardCom.vue'
+import HeaderCom from '~/components/HeaderCom.vue'
+import '~/.css/styles.css'
 export default {
   name: 'IndexPage',
-  components: { AspectRatingUpdaten }
+  components: { CardCom, HeaderCom }
 }
 </script>
