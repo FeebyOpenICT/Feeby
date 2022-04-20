@@ -1,5 +1,3 @@
-from xmlrpc.client import Boolean
-from anyio import current_effective_deadline
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Security, status
 from fastapi.security import (
@@ -8,7 +6,6 @@ from fastapi.security import (
     SecurityScopes,
 )
 from Exceptions import DisabledResourceException
-from Schemas.RolesEnum import RolesEnum
 
 from Repositories.UserRepository import UserRepository
 

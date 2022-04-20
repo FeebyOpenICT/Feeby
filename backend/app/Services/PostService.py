@@ -81,12 +81,11 @@ class PostService:
         return post
 
     @staticmethod
-    def get_post_with_access(current_user_id: int, user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
+    def get_post_with_access(current_user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
         """Get post from user_id by post_id with access as current_user_id
 
         Args:
             current_user_id (int): id of the current user trying to access post of user_id
-            user_id (int): id of owner of the post
             post_id (int): id of the post
             db (Session): database session
 
