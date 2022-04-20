@@ -7,7 +7,7 @@ services:
       - frontend
       - backend
       - adminer
-    container_name: feeby-traefik-dev
+    container_name: feeby-traefik
     command:
       - --api.insecure=true
       - --providers.docker
@@ -55,6 +55,7 @@ services:
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
+
 
   db:
     container_name: feeby-database-dev

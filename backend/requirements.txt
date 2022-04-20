@@ -34,3 +34,4 @@ urllib3==1.26.8
 uvicorn==0.17.4
 wrapt==1.14.0
 sqlalchemy_utils==0.38.2
+fastapi-utils

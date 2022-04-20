@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session, relationship
 
 from .SaveableModel import SaveableModel
 from database import Base
-from .User import UserModel
+from .UserModel import UserModel
 
 
 class PostModel(Base, SaveableModel):
@@ -31,13 +31,3 @@ class PostModel(Base, SaveableModel):
         self.description = description
         self.user = user
         super().__init__()
-
-    # static not class method because I want it to always return a Post instance
-    @staticmethod
-    def get_posts_by_user_id(user_id: int, db: Session):
-        """
-        Gets post object mapping from db
-        """
-        db_posts = db.query(PostModel).filter(
-            PostModel.user_id == user_id).all()
-        return db_posts

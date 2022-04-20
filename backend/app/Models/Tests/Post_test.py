@@ -2,7 +2,7 @@ import pytest
 
 from sqlalchemy.orm import Session
 
-from Models.Post import PostModel
+from Models.PostModel import PostModel
 
 
 def test_initiate_post_without_user():

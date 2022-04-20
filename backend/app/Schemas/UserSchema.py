@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel
-from Schemas.Role import RoleInDB
+from Schemas.RoleSchema import RoleInDB
 
 
 class User(BaseModel):
@@ -17,6 +17,15 @@ class UserInDB(User):
     id: int
     time_created: datetime
     time_updated: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class UserPublicSearch(BaseModel):
+    fullname: str
+    canvas_email: str
+    id: int
 
     class Config:
         orm_mode = True

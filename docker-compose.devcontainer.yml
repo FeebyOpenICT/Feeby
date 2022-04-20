@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: feeby-backend-devcontainer
+    tty: true
+    build: 
+      context: ./backend
+      dockerfile: ./.devcontainer/Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - .:/workspace:cached
+    labels:
+      traefik.http.services.backend.loadbalancer.server.port: 8000
+
+  frontend:
+    container_name: feeby-frontend-devcontainer
+    tty: true
+    build: 
+      context: ./frontend
+      dockerfile: ./.devcontainer/Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - .:/workspace:cached

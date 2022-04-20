@@ -4,7 +4,7 @@ from fastapi import status, HTTPException
 import requests
 
 from config import JWT_ALGORITHM, JWT_SECRET, BASE_URL
-from Models.Role import Roles
+from Schemas.RolesEnum import RolesEnum
 
 
 class AccessToken:
@@ -117,19 +117,19 @@ class AccessToken:
         roles: List[str] = []
 
         if "urn:lti:instrole:ims/lis/Administrator" in canvas_ext_roles or "urn:lti:sysrole:ims/lis/SysAdmin" in canvas_ext_roles:
-            roles.append(Roles.ADMIN['title'])
+            roles.append(RolesEnum.ADMIN)
         if "urn:lti:role:ims/lis/Instructor" in canvas_ext_roles:
-            roles.append(Roles.INSTRUCTOR['title'])
+            roles.append(RolesEnum.INSTRUCTOR)
         if "urn:lti:role:ims/lis/ContentDeveloper" in canvas_ext_roles:
-            roles.append(Roles.CONTENT_DEVELOPER['title'])
+            roles.append(RolesEnum.CONTENT_DEVELOPER)
         if "urn:lti:role:ims/lis/TeachingAssistant" in canvas_ext_roles:
-            roles.append(Roles.TEACHING_ASSISTANT['title'])
+            roles.append(RolesEnum.TEACHING_ASSISTANT)
         if "urn:lti:role:ims/lis/Learner" in canvas_ext_roles:
-            roles.append(Roles.STUDENT['title'])
+            roles.append(RolesEnum.STUDENT)
         if "urn:lti:role:ims/lis/Learner/NonCreditLearner" in canvas_ext_roles:
-            roles.append(Roles.OBSERVER['title'])
+            roles.append(RolesEnum.OBSERVER)
         if "urn:lti:role:ims/lis/Mentor" in canvas_ext_roles:
-            roles.append(Roles.MENTOR['title'])
+            roles.append(RolesEnum.MENTOR)
 
         return roles
 

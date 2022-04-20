@@ -4,10 +4,8 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, Session
 
 from Models.SaveableModel import SaveableModel
-from .Role import RoleModel
+from .RoleModel import RoleModel
 from database import Base
-
-from Exceptions.NotFound import NotFound
 
 
 class UserModel(Base, SaveableModel):
@@ -50,37 +48,3 @@ class UserModel(Base, SaveableModel):
 
     def __repr__(self) -> str:
         return f"<User id={self.id} canvas_email={self.canvas_email} roles={self.roles} fullname={self.fullname} canvas_id={self.canvas_id} disabled={self.disabled}>"
-
-    # static not class method because I want it to always return a User instance
-    @staticmethod
-    def get_user_by_canvas_id(id: int, db: Session):
-        """
-        Gets the user by their canvas id
-
-        id = integer equal to the the canvas id
-
-        Returns a python user mapped class from the database
-        """
-        user = db.query(UserModel).filter(UserModel.canvas_id == id).first()
-
-        if not user:
-            raise NotFound("user")
-
-        return user
-
-    # static not class method because I want it to always return a User instance
-    @staticmethod
-    def get_user_by_id(id: int, db: Session):
-        """
-        Gets the user by their id
-
-        id = integer equal to the the id
-
-        Returns a python user mapped class from the database
-        """
-        user = db.query(UserModel).filter(UserModel.id == id).first()
-
-        if not user:
-            raise NotFound(f"user")
-
-        return user

@@ -7,13 +7,12 @@ import pytest
 
 ######
 # import all routers and exception handlers
-from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
-from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
+from Exceptions import *
 from Auth import Authentication
 from LTI import lti
-from Users import users
-from Exceptions.NotFound import NotFound, not_found_exception_handler
-from Posts import Posts
+from Repositories.RoleRepository import RoleRepository
+from Repositories.UserRepository import UserRepository
+from Controllers import UserRouter, PostRouter
 from Aspects import Aspects
 from Ratings import Ratings
 ######
@@ -32,10 +31,11 @@ from database import Base, get_db_connection
 from Models.Aspect import AspectModel
 from Models.Rating import RatingModel
 from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.User import UserModel
-from Models.Role import RoleModel, Roles
-from Models.User_Role import User_Role_Model
-from Models.Post import PostModel
+from Models.UserModel import UserModel
+from Models.RoleModel import RoleModel
+from Schemas.RolesEnum import RolesEnum
+from Models.UserRoleModel import UserRoleModel
+from Models.PostModel import PostModel
 ######
 
 
@@ -67,13 +67,13 @@ def db() -> Session:
         1,
         False,
         [
-            RoleModel.get_role(Roles.ADMIN, db),
-            # Roles.CONTENT_DEVELOPER,
-            # Roles.INSTRUCTOR,
-            # Roles.MENTOR,
-            # Roles.OBSERVER,
-            # Roles.STUDENT,
-            # Roles.TEACHING_ASSISTANT
+            RoleRepository.get_role(RolesEnum.ADMIN, db),
+            # RolesEnum.CONTENT_DEVELOPER,
+            # RolesEnum.INSTRUCTOR,
+            # RolesEnum.MENTOR,
+            # RolesEnum.OBSERVER,
+            # RolesEnum.STUDENT,
+            # RolesEnum.TEACHING_ASSISTANT
         ]
     )
 
@@ -99,7 +99,7 @@ def client(db):
             db.close()
 
     def override_get_current_active_user():
-        user = UserModel.get_user_by_canvas_id(1, db)
+        user = UserRepository.get_user_by_canvas_id(1, db)
         return user
 
     # Cant import from main.py, will result in Postgres being used for some reason. Placing it in a seperate file and function also does not work
@@ -113,13 +113,16 @@ def client(db):
 
     app.add_exception_handler(NotFound, not_found_exception_handler)
 
+    app.add_exception_handler(DisabledResourceException,
+                              disabled_resource_exception_handler)
+
     app.include_router(lti.router)
 
     app.include_router(Authentication.router)
 
-    app.include_router(users.router)
+    app.include_router(UserRouter)
 
-    app.include_router(Posts.router)
+    app.include_router(PostRouter)
 
     app.include_router(Aspects.router)
 
@@ -134,5 +137,5 @@ def client(db):
 
 @pytest.fixture()
 def current_active_user(db) -> UserModel:
-    user = UserModel.get_user_by_canvas_id(1, db)
+    user = UserRepository.get_user_by_canvas_id(1, db)
     yield user
