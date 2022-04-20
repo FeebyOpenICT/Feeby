@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from Exceptions import NotFoundException
 from Models import RatingModel
 from Repositories import RatingRepository
+from Schemas import RatingUpdate
 
 
 class RatingService:
@@ -54,3 +55,33 @@ class RatingService:
         rating = RatingRepository.save(rating=RatingModel(title=title, short_description=short_description, description=description),
                                        db=db)
         return rating
+
+    @staticmethod
+    def patch_rating(
+            rating_id: int,
+            body: RatingUpdate,
+            db: Session
+    ) -> RatingModel:
+        """patch rating whilst verifying if rating exists
+
+        Args:
+            rating_id (int): id of aspect as saved in database
+            body (RatingUpdate): new attributes of aspect, all optional see Schema
+            db (Session): database session
+
+        Raises:
+            NotFound: if rating is not found
+
+        Returns:
+            RatingModel: updated aspect as saved in database
+        """
+        db_rating = RatingService.get_rating_by_id_or_fail(db=db, id=rating_id)
+
+        rating_data = body.dict(exclude_unset=True)
+
+        for key, value in rating_data.items():
+            setattr(db_rating, key, value)
+
+        db_rating.save_self(db)
+
+        return db_rating

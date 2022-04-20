@@ -59,14 +59,16 @@ def test_create_faulty_rating(client):
     assert response.status_code == 422
 
 
-def test_patch_rating(client, db):
+def test_patch_rating(client, db: Session):
     new_rating_json = {
         "title": "test",
         "short_description": "testshort",
         "description": "testdesc",
     }
-    new_aspect = RatingModel(**new_rating_json)
-    new_aspect.save_self(db)
+    new_rating = RatingModel(**new_rating_json)
+
+    db.add(new_rating)
+    db.commit()
 
     data = {
         "title": "test2"
