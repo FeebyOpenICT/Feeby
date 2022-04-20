@@ -82,6 +82,6 @@ class RatingService:
         for key, value in rating_data.items():
             setattr(db_rating, key, value)
 
-        db_rating.save_self(db)
+        db_rating = RatingRepository.save(rating=db_rating, db=db)
 
         return db_rating
