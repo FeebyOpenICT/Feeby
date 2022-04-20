@@ -1,36 +1,31 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
-
 from database import Base
-from .UserModel import UserModel
 
 
-class PostModel(Base):
-    """PostModel
+class RatingModel(Base):
+    """RatingModel
     """
-    __tablename__ = 'post'
+    __tablename__ = 'rating'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title: str = Column(String(length=255), nullable=False, index=True)
+    short_description: str = Column(String(length=255), nullable=False)
     description: str = Column(String(length=1000), nullable=False)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    user = relationship('UserModel')
-
-    def __init__(self, title: str, description: str, user: UserModel) -> None:
-        """PostModel constructor
+    def __init__(self, title: str, short_description: str, description: str,) -> None:
+        """RatingModel constructor
 
         Args:
-            title (str): title of the post
-            description (str): description of the post
-            user (UserModel): User that created the post
+            title (str): title of the rating, per example; 1, "niet aanwezig", etc.
+            short_description (str): short description of rating, should fit inside of a tooltip
+            description (str): long description of rating
         """
         self.title = title
+        self.short_description = short_description
         self.description = description
-        self.user = user
         super().__init__()

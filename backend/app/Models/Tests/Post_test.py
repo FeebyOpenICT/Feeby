@@ -12,7 +12,8 @@ def test_initiate_post_without_user():
 
 def test_create_post_with_positional_arguments(db: Session, current_active_user):
     post = PostModel('title', 'desc', current_active_user)
-    post.save_self(db)
+    db.add(post)
+    db.commit()
 
     assert post.title == 'title'
     assert post.description == 'desc'

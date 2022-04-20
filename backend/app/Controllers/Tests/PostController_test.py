@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from Models.UserModel import UserModel
 from Repositories.RoleRepository import RoleRepository
 from Schemas.RolesEnum import RolesEnum
+from Services import RoleService
 
 
 def test_post_create_post(client):
@@ -26,10 +27,8 @@ def test_get_empty_posts(client):
 def test_get_posts_self(client, db, current_active_user):
     post1, post2 = PostModel("title1", "desc1", current_active_user), PostModel(
         "title2", "desc2", current_active_user)
-    post1.save_self(db)
-    post2.save_self(db)
-
-    print("ignore me")
+    db.add_all([post1, post2])
+    db.commit()
 
     response = client.get('/users/1/posts')
 
@@ -55,7 +54,7 @@ def test_get_posts_from_user_that_doesnt_exist(client, db: Session):
 
 def test_grant_access_to_user(client, current_active_user, db: Session):
     extra_user = UserModel("Lisa Haring", "alakjhsdflkjha", 123, disabled=False, roles=[
-                           RoleRepository.get_role(role=RolesEnum.STUDENT, db=db)])
+                           RoleService.get_or_create_role(role=RolesEnum.STUDENT, db=db)])
 
     post1 = PostModel("title1", "alksjhdf1", current_active_user)
     post2 = PostModel("title2", "alksjhdf2", current_active_user)

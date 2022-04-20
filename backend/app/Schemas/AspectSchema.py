@@ -1,14 +1,14 @@
 from typing import List, Optional
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, constr, validator
 from datetime import datetime
-from .Rating import RatingInDB
+from .RatingSchema import RatingInDB
 
 
 class Aspect(BaseModel):
-    title: str
-    short_description: str
-    description: str
-    external_url: str
+    title: constr(max_length=255)
+    short_description: constr(max_length=255)
+    description: constr(max_length=1000)
+    external_url: constr(max_length=2000)
 
 
 class CreateAspect(Aspect):
@@ -31,17 +31,16 @@ class AspectInDB(Aspect):
         orm_mode = True
 
 
-class AspectUpdate(BaseModel):
-    title: Optional[str] = None
-    short_description: Optional[str] = None
-    description: Optional[str] = None
-    external_url: Optional[str] = None
+class UpdateAspect(BaseModel):
+    title: Optional[constr(max_length=255)] = None
+    short_description: Optional[constr(max_length=255)] = None
+    description: Optional[constr(max_length=1000)] = None
+    external_url: Optional[constr(max_length=2000)] = None
     rating_ids: Optional[List[int]] = None
 
     @validator('rating_ids', pre=True, always=True)
     def validate_ids_length(cls, value):
-        if not value:
-            return value
-        if len(value) == 0:
-            raise ValueError("empty rating not allowed")
+        if isinstance(value, List):
+            if len(value) == 0:
+                raise ValueError("empty rating not allowed")
         return value

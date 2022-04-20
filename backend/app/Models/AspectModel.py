@@ -1,20 +1,14 @@
-from pickletools import read_stringnl_noescape
 from typing import List
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.orm import Session, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from Exceptions.NotFound import NotFound
 
-from Models.Rating import RatingModel
+from Models.RatingModel import RatingModel
 from database import Base
-from .SaveableModel import SaveableModel
 
 
-class AspectModel(Base, SaveableModel):
-    """
-    Mapped Aspect class
-
-    Represents an aspect in the database
+class AspectModel(Base):
+    """AspectModel
     """
     __tablename__ = 'aspect'
     __table_args__ = {'extend_existing': True}
@@ -31,6 +25,18 @@ class AspectModel(Base, SaveableModel):
     ratings = relationship("RatingModel", secondary='aspect_rating')
 
     def __init__(self, title: str, short_description: str, description: str, external_url: str, ratings: List[RatingModel]) -> None:
+        """AspectModel consturctor
+
+        Args:
+            title (str): title of aspect
+            short_description (str): short description of aspect
+            description (str): description of aspect
+            external_url (str): external video url that can explain aspect further
+            ratings (List[RatingModel]): List of ratings from db. Must have atleast 1 rating
+
+        Raises:
+            ValueError: ratings list may not be empty
+        """
         self.title = title
         self.short_description = short_description
         self.description = description
@@ -39,26 +45,3 @@ class AspectModel(Base, SaveableModel):
             raise ValueError("ratings may not be empty")
         self.ratings = ratings
         super().__init__()
-
-    # static not class method because I want it to always return an Aspect instance
-    @staticmethod
-    def get_all_aspects(db: Session):
-        """
-        Gets aspect object mappings from db
-
-        returns a list of aspect mapped classes, returns an empty list if none are found
-        """
-        db_aspects = db.query(AspectModel).order_by(AspectModel.title).all()
-        return db_aspects
-
-    # static not class method because I want it to always return a aspect instance
-    @staticmethod
-    def get_aspect_by_id(id: int, db: Session):
-        """
-        Gets post object mapping from db
-        """
-        db_aspect = db.query(AspectModel).filter(AspectModel.id == id).first()
-        if not db_aspect:
-            raise NotFound(f"aspect")
-        return db_aspect
-

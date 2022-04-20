@@ -1,19 +1,23 @@
 from typing import List, Optional
 from pytest import Session
 from Exceptions import DisabledResourceException
-from Exceptions.NotFound import NotFound
+from Exceptions.NotFoundException import NotFoundException
 from Models.UserModel import UserModel
 from Repositories.UserRepository import UserRepository
-from Schemas.UserSchema import UserPublicSearch
+from Schemas.UserSchema import UserPublicInDB
 
 
 class UserService:
     @staticmethod
-    def get_user_by_id(id: int, db: Session) -> UserModel:
-        """
-        Calls User model to get user by id
+    def get_user_by_id(id: int, db: Session) -> Optional[UserModel]:
+        """Get user by id
 
-        returns user model
+        Args:
+            id (int): id of user
+            db (Session): database session
+
+        Returns:
+            Optional[UserModel]: user or None
         """
         user = UserRepository.get_user_by_id(id=id, db=db)
         return user
@@ -35,7 +39,7 @@ class UserService:
         user = UserRepository.get_user_by_id(id=id, db=db)
 
         if not user:
-            raise NotFound(resource="user", id=id)
+            raise NotFoundException(resource="user", id=id)
 
         return user
 
@@ -62,16 +66,25 @@ class UserService:
         """
         Calls User model to get user by their canvas_id
 
-        returns user model
+        Args:
+            id (int): canvas id of user
+            db (Session): database session
+
+        Returns:
+            Optional[UserModel]: user or None
         """
         return UserRepository.get_user_by_canvas_id(id=id, db=db)
 
     @staticmethod
-    def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicSearch]:
-        """
-        Calls UserRepository to get public user data by name or email
+    def get_user_ids_by_name_or_email(query: str, db: Session) -> List[UserPublicInDB]:
+        """Get users by searching through their names and emails
 
-        returns list of users with their id, fullname and canvas_email
+        Args:
+            query (str): string to search through name and emails with
+            db (Session): database session
+
+        Returns:
+            List[UserPublicSearch]: list of public data from users
         """
         return UserRepository.get_user_ids_by_name_or_email(query=query, db=db)
 
@@ -92,6 +105,6 @@ class UserService:
         user = UserRepository.get_user_by_canvas_id(id=id, db=db)
 
         if not user:
-            raise NotFound(resource="user", id=id)
+            raise NotFoundException(resource="user", id=id)
 
         return user

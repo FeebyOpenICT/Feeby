@@ -1,20 +1,25 @@
 from typing import List
-from Models.PostModel import PostModel
 from Models.UserAccessPostModel import UserAccessPostModel
-from Models.UserModel import UserModel
 from sqlalchemy.orm import Session
+from Exceptions import UnexpectedInstanceError
 
 
 class UserAccessPostRepository:
     @staticmethod
-    def grant_access_to_users_to_post(post: PostModel, users: List[UserModel], db: Session) -> List[UserAccessPostModel]:
-        accessList = []
+    def save(user_access_post_model: UserAccessPostModel, db: Session) -> UserAccessPostModel:
+        """save user access post model
 
-        for user in users:
-            access = UserAccessPostModel(post=post, user=user)
-            accessList.append(access)
+        Args:
+            user_access_post_model (UserAccessPostModel): user accesspost model
+            db (Session): database session
 
-        db.add_all(accessList)
+        Returns:
+            UserAccessPostModel: UserAccessPostModel as saved in database
+        """
+        if not isinstance(user_access_post_model, UserAccessPostModel):
+            raise UnexpectedInstanceError
+
+        db.add(user_access_post_model)
         db.commit()
 
-        return accessList
+        return user_access_post_model

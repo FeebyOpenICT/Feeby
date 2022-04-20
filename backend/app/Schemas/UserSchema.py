@@ -1,13 +1,16 @@
 
 from datetime import datetime
 from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 from Schemas.RoleSchema import RoleInDB
 
 
-class User(BaseModel):
-    fullname: str
-    canvas_email: str
+class UserPublic(BaseModel):
+    fullname: constr(max_length=255)
+    canvas_email: constr(max_length=255)
+
+
+class User(UserPublic):
     canvas_id: int
     disabled: bool
     roles: List[RoleInDB]
@@ -22,9 +25,7 @@ class UserInDB(User):
         orm_mode = True
 
 
-class UserPublicSearch(BaseModel):
-    fullname: str
-    canvas_email: str
+class UserPublicInDB(UserPublic):
     id: int
 
     class Config:

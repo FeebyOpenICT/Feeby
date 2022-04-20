@@ -6,6 +6,7 @@ from Schemas.RolesEnum import RolesEnum
 from sqlalchemy.orm import Session
 
 from Repositories.UserRepository import UserRepository
+from Services import RoleService
 
 
 def test_find_user_by_id(db: Session, current_active_user: UserModel):
@@ -31,15 +32,16 @@ def test_initiate_user_without_roles():
 
 def test_initiate_user_with_positional_args(db: Session):
     user = UserModel("name", "email", 2, False, [
-        RoleRepository.get_role(RolesEnum.ADMIN, db)])
-    user.save_self(db)
+        RoleService.get_or_create_role(RolesEnum.ADMIN, db)])
+    db.add(user)
+    db.commit()
 
     assert isinstance(user.id, int)
     assert user.canvas_email == "email"
     assert user.fullname == "name"
     assert user.canvas_id == 2
     assert user.disabled == False
-    assert user.roles == [RoleRepository.get_role(RolesEnum.ADMIN, db)]
+    assert user.roles == [RoleService.get_or_create_role(RolesEnum.ADMIN, db)]
 
 
 def test_initiate_user_with_missing_values():
@@ -67,8 +69,9 @@ def test_find_user_by_canvas_id(db: Session, current_active_user: UserModel):
 
 def test_user_save_self(db: Session):
     test_user = UserModel("test", "ljksd", 999, False, roles=[
-        RoleRepository.get_role(RolesEnum.ADMIN, db)])
-    test_user.save_self(db)
+        RoleService.get_or_create_role(RolesEnum.ADMIN, db)])
+    db.add(test_user)
+    db.commit()
 
     test_found_user = UserRepository.get_user_by_canvas_id(999, db)
 

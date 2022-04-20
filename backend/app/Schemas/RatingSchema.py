@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 from datetime import datetime
 
 
 class Rating(BaseModel):
-    title: str
-    short_description: str
-    description: str
+    title: constr(max_length=255)
+    short_description: constr(max_length=255)
+    description: constr(max_length=1000)
 
 
 class CreateRating(Rating):

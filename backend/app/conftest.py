@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 # necessary for discovery
@@ -7,14 +7,12 @@ import pytest
 
 ######
 # import all routers and exception handlers
-from Exceptions import *
 from Auth import Authentication
 from LTI import lti
-from Repositories.RoleRepository import RoleRepository
-from Repositories.UserRepository import UserRepository
-from Controllers import UserRouter, PostRouter
-from Aspects import Aspects
-from Ratings import Ratings
+from Services import RoleService
+from Repositories import UserRepository
+from Controllers import *
+from Exceptions import *
 ######
 
 # Import the SQLAlchemy parts
@@ -23,19 +21,13 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import drop_database, database_exists
 
 from Auth.validate_user import get_current_active_user
+from Schemas import RolesEnum
 
 from database import Base, get_db_connection
 
 ######
 # import all models that need to be initiated
-from Models.Aspect import AspectModel
-from Models.Rating import RatingModel
-from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.UserModel import UserModel
-from Models.RoleModel import RoleModel
-from Schemas.RolesEnum import RolesEnum
-from Models.UserRoleModel import UserRoleModel
-from Models.PostModel import PostModel
+from Models import *
 ######
 
 
@@ -61,23 +53,16 @@ def db() -> Session:
 
     db = TestingSessionLocal()
 
-    user = UserModel(
-        "Alex Duncan",
-        "alex.duncan@hu.nl",
-        1,
-        False,
-        [
-            RoleRepository.get_role(RolesEnum.ADMIN, db),
-            # RolesEnum.CONTENT_DEVELOPER,
-            # RolesEnum.INSTRUCTOR,
-            # RolesEnum.MENTOR,
-            # RolesEnum.OBSERVER,
-            # RolesEnum.STUDENT,
-            # RolesEnum.TEACHING_ASSISTANT
-        ]
+    UserRepository.save(
+        user=UserModel(
+            "Alex Duncan",
+            "alex.duncan@hu.nl",
+            1,
+            False,
+            [RoleService.get_or_create_role(RolesEnum.ADMIN, db)]
+        ),
+        db=db
     )
-
-    user.save_self(db)
 
     try:
         yield db
@@ -87,7 +72,7 @@ def db() -> Session:
 
 
 @pytest.fixture()
-def client(db):
+def client(db) -> TestClient:
     """
     Dependency overrides
     """
@@ -111,7 +96,7 @@ def client(db):
     app.add_exception_handler(
         LTILaunchException, lti_launch_authentication_exception_handler)
 
-    app.add_exception_handler(NotFound, not_found_exception_handler)
+    app.add_exception_handler(NotFoundException, not_found_exception_handler)
 
     app.add_exception_handler(DisabledResourceException,
                               disabled_resource_exception_handler)
@@ -124,9 +109,9 @@ def client(db):
 
     app.include_router(PostRouter)
 
-    app.include_router(Aspects.router)
+    app.include_router(AspectRouter)
 
-    app.include_router(Ratings.router)
+    app.include_router(RatingsRouter)
 
     app.dependency_overrides[get_db_connection] = override_get_db
 

@@ -22,9 +22,6 @@ class AccessToken:
         self.email = email
         self.roles = roles
 
-    def __repr__(self) -> str:
-        return f"canvas_id={self.canvas_id} access_token={self.access_token} refresh_token={self.refresh_token} scopes={self.roles}>"
-
     @property
     def encoded_token(self):
         """

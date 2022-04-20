@@ -1,14 +1,10 @@
 from sqlalchemy import Column, Integer, String
 
-from .SaveableModel import SaveableModel
 from database import Base
 
 
-class RoleModel(Base, SaveableModel):
-    """
-    Mapped Role class
-
-    Represents a role in the database
+class RoleModel(Base):
+    """RoleModel
     """
     __tablename__ = 'role'
     __table_args__ = {'extend_existing': True}
@@ -18,8 +14,10 @@ class RoleModel(Base, SaveableModel):
                         unique=True, index=True)
 
     def __init__(self, title: str) -> None:
+        """RoleModel constructor
+
+        Args:
+            title (str): title of the role
+        """
         self.title = title
         super().__init__()
-
-    def __repr__(self) -> str:
-        return f"<Role title={self.title}>"
