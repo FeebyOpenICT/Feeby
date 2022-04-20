@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 # necessary for discovery
@@ -7,15 +7,12 @@ import pytest
 
 ######
 # import all routers and exception handlers
-from Exceptions.AuthenticationException import OAuth2AuthenticationException, oauth2_authentication_exception_handler
-from Exceptions.LTILaunchException import LTILaunchException, lti_launch_authentication_exception_handler
 from Auth import Authentication
 from LTI import lti
-from Users import users
-from Exceptions.NotFound import NotFound, not_found_exception_handler
-from Posts import Posts
-from Aspects import Aspects
-from Ratings import Ratings
+from Services import RoleService
+from Repositories import UserRepository
+from Controllers import *
+from Exceptions import *
 ######
 
 # Import the SQLAlchemy parts
@@ -24,18 +21,13 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import drop_database, database_exists
 
 from Auth.validate_user import get_current_active_user
+from Schemas import RolesEnum
 
 from database import Base, get_db_connection
 
 ######
 # import all models that need to be initiated
-from Models.Aspect import AspectModel
-from Models.Rating import RatingModel
-from Models.Aspect_Rating import Aspect_Rating_Model
-from Models.User import UserModel
-from Models.Role import RoleModel, Roles
-from Models.User_Role import User_Role_Model
-from Models.Post import PostModel
+from Models import *
 ######
 
 
@@ -61,23 +53,16 @@ def db() -> Session:
 
     db = TestingSessionLocal()
 
-    user = UserModel(
-        "Alex Duncan",
-        "alex.duncan@hu.nl",
-        1,
-        False,
-        [
-            RoleModel.get_role(Roles.ADMIN, db),
-            # Roles.CONTENT_DEVELOPER,
-            # Roles.INSTRUCTOR,
-            # Roles.MENTOR,
-            # Roles.OBSERVER,
-            # Roles.STUDENT,
-            # Roles.TEACHING_ASSISTANT
-        ]
+    UserRepository.save(
+        user=UserModel(
+            "Alex Duncan",
+            "alex.duncan@hu.nl",
+            1,
+            False,
+            [RoleService.get_or_create_role(RolesEnum.ADMIN, db)]
+        ),
+        db=db
     )
-
-    user.save_self(db)
 
     try:
         yield db
@@ -87,7 +72,7 @@ def db() -> Session:
 
 
 @pytest.fixture()
-def client(db):
+def client(db) -> TestClient:
     """
     Dependency overrides
     """
@@ -99,7 +84,7 @@ def client(db):
             db.close()
 
     def override_get_current_active_user():
-        user = UserModel.get_user_by_canvas_id(1, db)
+        user = UserRepository.get_user_by_canvas_id(1, db)
         return user
 
     # Cant import from main.py, will result in Postgres being used for some reason. Placing it in a seperate file and function also does not work
@@ -111,19 +96,22 @@ def client(db):
     app.add_exception_handler(
         LTILaunchException, lti_launch_authentication_exception_handler)
 
-    app.add_exception_handler(NotFound, not_found_exception_handler)
+    app.add_exception_handler(NotFoundException, not_found_exception_handler)
+
+    app.add_exception_handler(DisabledResourceException,
+                              disabled_resource_exception_handler)
 
     app.include_router(lti.router)
 
     app.include_router(Authentication.router)
 
-    app.include_router(users.router)
+    app.include_router(UserRouter)
 
-    app.include_router(Posts.router)
+    app.include_router(PostRouter)
 
-    app.include_router(Aspects.router)
+    app.include_router(AspectRouter)
 
-    app.include_router(Ratings.router)
+    app.include_router(RatingsRouter)
 
     app.dependency_overrides[get_db_connection] = override_get_db
 
@@ -134,5 +122,5 @@ def client(db):
 
 @pytest.fixture()
 def current_active_user(db) -> UserModel:
-    user = UserModel.get_user_by_canvas_id(1, db)
+    user = UserRepository.get_user_by_canvas_id(1, db)
     yield user

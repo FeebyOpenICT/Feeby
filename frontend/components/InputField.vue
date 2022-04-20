@@ -1,9 +1,18 @@
 <template>
-  <div class="container" id="productTextContainer">
+  <div id="productTextContainer" class="container">
     <h1 class="textBoxTitle">
       Toelichting
     </h1>
-    <v-hover>
+    <v-hover />
+    <v-textarea
+      id="postDescription"
+      class="textField"
+      counter
+      :rules="rules"
+      :value="value"
+      type="text"
+      placeholder="Schrijf hier je toelichting over je product..."
+    />
 
     </v-hover>
       <v-textarea class="textField"
