@@ -76,3 +76,4 @@ def test_patch_rating(client, db: Session):
 
     response = client.patch("/ratings/1", json=data)
     assert response.status_code == 200
+    assert response.json()['title'] == data['title']
