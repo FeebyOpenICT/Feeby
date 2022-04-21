@@ -37,6 +37,8 @@ app.add_exception_handler(DuplicateKey, duplicate_key_exception_handler)
 app.add_exception_handler(DisabledResourceException,
                           disabled_resource_exception_handler)
 
+app.add_exception_handler(NoPermissions, no_permissions_exception_handler)
+
 app.include_router(lti.router)
 
 app.include_router(Authentication.router)
