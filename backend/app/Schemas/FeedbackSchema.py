@@ -8,7 +8,6 @@ class Feedback(BaseModel):
 
 
 class CreateFeedback(Feedback):
-    post_id: int
     reviewed_feedback_id: Optional[int]
     aspect_id: int
     rating_id: int

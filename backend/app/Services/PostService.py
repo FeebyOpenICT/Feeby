@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from Exceptions import NotFoundException
+from Exceptions.NoPermissions import NoPermissions
 from Models import PostModel, UserModel
 from Repositories import PostRepository
 
@@ -19,12 +20,12 @@ class PostService:
             List[PostModel]: list off all posts that current user has access to that belong to user
         """
         if user_id == current_user_id:
-            result = PostRepository.get_posts_from_user_by_id(
+            posts = PostRepository.get_posts_from_user_by_id(
                 user_id=user_id, db=db)
         else:
-            result = PostRepository.get_posts_with_access(
+            posts = PostRepository.get_posts_with_access(
                 current_user_id=current_user_id, user_id=user_id, db=db)
-        return result
+        return posts
 
     @staticmethod
     def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
@@ -92,6 +93,17 @@ class PostService:
         Returns:
             Optional[PostModel]: returns post if post exists and current user has access or None 
         """
-        result = PostRepository.get_post_with_access(
+        post = PostRepository.get_post_with_access(
             current_user_id=current_user_id, post_id=post_id, db=db)
-        return result
+        return post
+
+    @staticmethod
+    def get_post_with_access_or_fail(current_user_id: int, post_id: int, db: Session) -> PostModel:
+        post = PostRepository.get_post_with_access(
+            current_user_id=current_user_id, post_id=post_id, db=db
+        )
+
+        if not post:
+            raise NoPermissions(resource="post", id=post_id)
+
+        return post
