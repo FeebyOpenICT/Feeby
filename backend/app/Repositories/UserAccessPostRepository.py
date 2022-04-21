@@ -13,6 +13,9 @@ class UserAccessPostRepository:
             user_access_post_model (UserAccessPostModel): user accesspost model
             db (Session): database session
 
+        Raises:
+            UnexpectedInstance: if instance is not of UserAccessPostModel
+
         Returns:
             UserAccessPostModel: UserAccessPostModel as saved in database
         """

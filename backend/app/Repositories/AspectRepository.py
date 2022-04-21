@@ -44,6 +44,9 @@ class AspectRepository:
             aspect (AspectModel): aspect
             db (Session): database session
 
+        Raises:
+            UnexpectedInstance: if instance is not of AspectModel
+
         Returns:
             AspectModel: newly created aspect from database
         """

@@ -15,6 +15,9 @@ class RoleRepository:
             role (RoleModel): role
             db (Session): database session
 
+        Raises:
+            UnexpectedInstance: if instance is not of RoleModel
+
         Returns:
             RoleModel: newly created role as saved in database
         """
