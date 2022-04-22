@@ -50,6 +50,8 @@ class PostController:
 
         return result
 
+    # todo: add file here
+
     @router.post('/users/{user_id}/posts', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
     async def create_post(self, body: CreatePost, current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
         """Create post
