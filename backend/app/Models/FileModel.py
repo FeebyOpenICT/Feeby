@@ -13,6 +13,8 @@ class FileModel(Base):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
+    filename: str = Column(String(length=255), nullable=False, index=True)
+    content_type: str = Column(String(length=255), nullable=False, index=True)
     location: str = Column(String(length=255), nullable=False, index=True)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
@@ -21,13 +23,17 @@ class FileModel(Base):
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
     post = relationship('PostModel')
 
-    def __init__(self, location: str, post: PostModel) -> None:
+    def __init__(self, filename: str, content_type: str, location: str, post: PostModel) -> None:
         """FileModel constructor
 
         Args:
+            filename (str): name of the file
+            content_type (str): type of the file
             location (str): location of the file
             post (PostModel): the post which the file had been added to
         """
+        self.filename = filename
+        self.content_type = content_type
         self.location = location
         self.post = post
         super().__init__()
