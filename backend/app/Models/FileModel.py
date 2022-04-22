@@ -20,3 +20,14 @@ class FileModel(Base):
 
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
     post = relationship('PostModel')
+
+    def __init__(self, location: str, post: PostModel) -> None:
+        """FileModel constructor
+
+        Args:
+            location (str): location of the file
+            post (PostModel): the post which the file had been added to
+        """
+        self.location = location
+        self.post = post
+        super().__init__()
