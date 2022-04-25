@@ -38,7 +38,7 @@ class FeedbackController:
         self.current_active_user = current_active_user
         self.db = db
 
-    @router.post('/users/{user_id}/posts/{post_id}/feedback', response_model=FeedbackInDB)
-    async def create_feedback(self, body: List[CreateFeedback]):
-        # feedback = FeedbackService.create_multiple_feedback()
-        return 'WIP'
+    @router.post('/users/{user_id}/posts/{post_id}/feedback'
+                 )
+    async def create_feedback(self):
+        pass

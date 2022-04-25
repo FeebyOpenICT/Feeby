@@ -42,7 +42,6 @@ class FeedbackRepository(RepositoryBase):
             raise UnexpectedInstanceError
 
         db.add(feedback)
-        db.commit()
 
         return feedback
 
