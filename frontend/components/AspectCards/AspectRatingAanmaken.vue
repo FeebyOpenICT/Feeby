@@ -5,7 +5,6 @@
         <h2 class="textBoxTitle">
           Titel
         </h2>
-        <v-hover />
         <v-textarea
           id="AspectRatingTitel"
           v-model="ratings.title"
@@ -24,7 +23,6 @@
         <h2 class="textBoxTitle">
           Beschrijving
         </h2>
-        <v-hover />
         <v-textarea
           id="AspectRatingBeschrijving"
           v-model="ratings.description"
@@ -43,7 +41,6 @@
         <h2 class="textBoxTitle">
           Korte Beschrijving
         </h2>
-        <v-hover />
         <v-textarea
           id="AspectRatingKorteBeschrijving"
           v-model="ratings.short_description"

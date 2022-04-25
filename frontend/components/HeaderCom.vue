@@ -55,6 +55,19 @@
             <v-list-item-title>Aspect Aanmaken</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          to="/AdminPagina"
+          nuxt
+          link
+        >
+          <v-list-icon>
+            <v-icon>mdi-pencil</v-icon>
+          </v-list-icon>
+
+          <v-list-content>
+            <v-list-item-title>Aspect Inzien</v-list-item-title>
+          </v-list-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </v-card>

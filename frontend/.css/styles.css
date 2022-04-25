@@ -36,10 +36,6 @@
   font-size: 18px;
 }
 
-.textBoxOldTitle {
-  font-size: 15px;
-}
-
 #aspectCheck {
   background-color: #0079CF;
   font-size: 28px;
@@ -98,8 +94,8 @@
   border-radius: 15px;
 }
 
-.overlay {
-  position: fixed;
+.v-overlay__content {
+  z-index: 20;
 }
 
 .overlay__scrim {
