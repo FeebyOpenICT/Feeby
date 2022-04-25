@@ -8,8 +8,8 @@ class AspectRatingRepository(RepositoryBase):
     def get_by_id(aspect_id: int, rating_id: int, db: Session):
         result = db.query(AspectRatingModel).filter(
             and_(
-                AspectRatingModel == aspect_id,
-                AspectRatingModel == rating_id
+                AspectRatingModel.aspect_id == aspect_id,
+                AspectRatingModel.rating_id == rating_id
             )
         ).first()
         return result
