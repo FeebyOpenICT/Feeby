@@ -1,3 +1,7 @@
+from Models.RevisionModel import RevisionModel
+from Models.UserModel import UserModel
+from Models.RatingModel import RatingModel
+from Models.AspectModel import AspectModel
 from database import Base
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import relationship
@@ -22,3 +26,10 @@ class FeedbackModel(Base):
 
     reviewer_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     reviewer = relationship("UserModel")
+
+    def __init__(self, description: str, rating: RatingModel, aspect: AspectModel, revision: RevisionModel, reviewer: UserModel) -> None:
+        self.description = description
+        self.rating = rating
+        self.aspect = aspect
+        self.revision = revision
+        self.reviewer = reviewer

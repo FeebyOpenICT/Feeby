@@ -81,6 +81,5 @@ class UserRepository:
             raise UnexpectedInstanceError
 
         db.add(user)
-        db.commit()
 
         return user

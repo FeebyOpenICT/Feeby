@@ -39,7 +39,6 @@ class PostRepository:
             raise UnexpectedInstanceError
 
         db.add(post)
-        db.commit()
 
         return post
 

@@ -54,6 +54,5 @@ class AspectRepository:
             raise UnexpectedInstanceError
 
         db.add(aspect)
-        db.commit()
 
         return aspect

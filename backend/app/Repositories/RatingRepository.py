@@ -54,6 +54,5 @@ class RatingRepository:
             raise UnexpectedInstanceError
 
         db.add(rating)
-        db.commit()
 
         return rating
