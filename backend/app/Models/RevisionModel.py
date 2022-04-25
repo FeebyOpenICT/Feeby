@@ -13,7 +13,7 @@ class RevisionModel(Base):
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
-    post = relationship("PostModel")
+    post = relationship("PostModel", back_populates="revisions")
 
     def __init__(self, description: str, post: PostModel):
         self.description = description
