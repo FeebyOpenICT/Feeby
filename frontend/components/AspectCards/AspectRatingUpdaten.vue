@@ -4,7 +4,7 @@
       <h1 class="AspectRatingTitle">
         Aspect Rating Aanpassen
       </h1>
-      <form @submit.prevent="submitForm">
+      <form>
         <div id="productTextContainer" class="container">
           <h2 class="textBoxTitle">
             Titel

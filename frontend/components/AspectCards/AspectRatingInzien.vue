@@ -11,8 +11,8 @@
     <!-- Vuetify Data Table Component -->
     <v-data-table
       :headers="headers"
-      :items="ratings"
-      sort-by="title"
+      :items="desserts"
+      hide-default-footer
       class="elevation-1"
     >
       <template #top>
@@ -27,44 +27,10 @@
           />
           <v-spacer />
 
-          <!-- Aspect Rating Aanmaken Overlay -->
-          <!-- <v-dialog v-model="overlay" class="overlay"> -->
-          <!-- New Item Button -->
-          <!-- <template #activator="{ on, attrs }">
-              <v-btn
-                color="#0079CF"
-                text-color="white"
-                dark
-                class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                New Item
-              </v-btn>
-            </template> -->
-
-          <!-- Aspect Rating Aanmaken Card -->
-          <!-- <v-card>
-              <AspectRatingAanmaken />
-              <v-card-actions>
-                <v-spacer />
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="close"
-                >
-                  Close
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog> -->
-
           <!-- Dialog Update Pop-Up -->
           <v-overlay
-            v-model="dialog"
-            :absolute="absolute"
+            v-model="overlay"
             data-app
-            max-width="80%"
           >
             <!-- Update Items -->
             <v-card light class="RatingCard">
@@ -75,7 +41,7 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  @click="dialog = false"
+                  @click="overlay = false"
                 >
                   Cancel
                 </v-btn>
@@ -90,7 +56,7 @@
         <v-icon
           small
           class="mr-2"
-          @click="dialog = !dialog"
+          @click="overlay = !overlay"
         >
           mdi-pencil
         </v-icon>
@@ -108,14 +74,9 @@ export default {
   data () {
     return {
       overlay: false,
-      dialog: false,
       absolute: true,
       headers: [
-        {
-          text: 'Titel',
-          align: 'start',
-          value: 'title'
-        },
+        { text: 'Titel', value: 'title' },
         { text: 'Korte Beschrijving', value: 'short_description' },
         { text: 'Beschrijving', value: 'description' },
         { text: 'Acties', value: 'actions', sortable: false }
@@ -131,7 +92,79 @@ export default {
         title: '',
         short_description: '',
         description: ''
-      }
+      },
+      desserts: [
+        {
+          name: 'Frozen Yogurt',
+          calories: 159,
+          fat: 6.0,
+          carbs: 24,
+          protein: 4.0
+        },
+        {
+          name: 'Ice cream sandwich',
+          calories: 237,
+          fat: 9.0,
+          carbs: 37,
+          protein: 4.3
+        },
+        {
+          name: 'Eclair',
+          calories: 262,
+          fat: 16.0,
+          carbs: 23,
+          protein: 6.0
+        },
+        {
+          name: 'Cupcake',
+          calories: 305,
+          fat: 3.7,
+          carbs: 67,
+          protein: 4.3
+        },
+        {
+          name: 'Gingerbread',
+          calories: 356,
+          fat: 16.0,
+          carbs: 49,
+          protein: 3.9
+        },
+        {
+          name: 'Jelly bean',
+          calories: 375,
+          fat: 0.0,
+          carbs: 94,
+          protein: 0.0
+        },
+        {
+          name: 'Lollipop',
+          calories: 392,
+          fat: 0.2,
+          carbs: 98,
+          protein: 0
+        },
+        {
+          name: 'Honeycomb',
+          calories: 408,
+          fat: 3.2,
+          carbs: 87,
+          protein: 6.5
+        },
+        {
+          name: 'Donut',
+          calories: 452,
+          fat: 25.0,
+          carbs: 51,
+          protein: 4.9
+        },
+        {
+          name: 'KitKat',
+          calories: 518,
+          fat: 26.0,
+          carbs: 65,
+          protein: 7
+        }
+      ]
     }
   },
   computed: {
@@ -178,9 +211,13 @@ export default {
   padding: 15px;
 }
 
-.v-card{
+.v-card {
   margin: 15px;
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
+}
+
+.v-icon {
+  z-index: auto;
 }
 </style>
