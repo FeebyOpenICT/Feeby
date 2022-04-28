@@ -79,7 +79,6 @@
 
 <script>
 import { axiosInstance } from '../../lib/axiosInstance'
-import dataService from '../../lib/dataService'
 export default {
   name: 'AspectRatingAanmaken',
   data () {
@@ -101,16 +100,6 @@ export default {
         .catch((error) => {
           // error.response.status Check status code
           console.log(error)
-        })
-    },
-    updateRating () {
-      dataService.update(this.ratings.id, this.ratings)
-        .then((response) => {
-          console.log(response.data)
-          this.message = 'The Rating was updated successfully!'
-        })
-        .catch((e) => {
-          console.log(e)
         })
     }
   }
