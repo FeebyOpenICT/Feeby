@@ -98,9 +98,6 @@
   border-radius: 15px;
 }
 
-.overlay {
-  position: fixed;
-}
 
 .overlay__scrim {
   width: 100%;
