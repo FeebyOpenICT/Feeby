@@ -7,7 +7,6 @@
         <h1 class="textBoxTitle">
           Titel
         </h1>
-        <!-- <v-hover /> -->
         <v-text-field
           id="aspectTitel"
           v-model="values.title"
@@ -28,7 +27,6 @@
         <h1 class="textBoxTitle">
           Korte Beschrijving
         </h1>
-        <!-- <v-hover /> -->
         <v-textarea
           id="aspectKorteBeschrijving"
           v-model="values.short_description"
@@ -49,7 +47,6 @@
         <h1 class="textBoxTitle">
           Beschrijving
         </h1>
-        <!-- <v-hover /> -->
         <v-textarea
           id="aspectBeschrijving"
           v-model="values.description"
@@ -70,7 +67,6 @@
         <h1 class="textBoxTitle">
           Link
         </h1>
-        <!-- <v-hover /> -->
         <v-text-field
           id="aspectLink"
           v-model="values.external_url"
@@ -91,7 +87,6 @@
         <h1 class="textBoxTitle">
           Aspect Rating
         </h1>
-        <!-- <v-hover /> -->
         <v-select
           v-model="values.rating_ids"
           :items="cards"

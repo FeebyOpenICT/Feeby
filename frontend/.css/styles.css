@@ -36,10 +36,6 @@
   font-size: 18px;
 }
 
-.textBoxOldTitle {
-  font-size: 15px;
-}
-
 #aspectCheck {
   background-color: #0079CF;
   font-size: 28px;
@@ -66,8 +62,6 @@
   border: 1px solid #0079CF;
 }
 
-.checkBoxContainer {}
-
 #textFieldContainer {
   max-height: 25%;
 }
@@ -91,13 +85,19 @@
   width: 50vw;
   height: auto;
   margin: 5px auto;
-  max-height: 100%;
-  min-height: 75%;
-  max-width: 90%;
-  min-width: 30%;
+  max-height: 800px;
+  min-height: 400px;
+  max-width: 600px;
+  min-width: 300px;
   border-radius: 15px;
+  position: relative;
+  top: 500px;
+  overflow: auto;
 }
 
+.v-overlay__content {
+  z-index: 20;
+}
 
 .overlay__scrim {
   width: 100%;

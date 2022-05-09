@@ -4,19 +4,11 @@
       <h1 class="AspectRatingTitle">
         Aspect Rating Aanpassen
       </h1>
-      <form @submit.prevent="submitForm">
+      <form>
         <div id="productTextContainer" class="container">
           <h2 class="textBoxTitle">
             Titel
           </h2>
-          <v-divider />
-          <h3 class="textBoxOldTitle">
-            Oude Versie
-          </h3>
-          <p v-for="card in cards" :key="card.id">
-            test
-            {{ card.title }}
-          </p>
           <v-divider />
           <v-text-field
             id="AspectRatingTitel"
@@ -38,13 +30,6 @@
             Korte Beschrijving
           </h2>
           <v-divider />
-          <h3 class="textBoxOldTitle">
-            Oude Versie
-          </h3>
-          <p v-for="card in cards" :key="card.id">
-            {{ card.short_description }}
-          </p>
-          <v-divider />
           <v-textarea
             id="AspectRatingKorteBeschrijving"
             v-model="ratings.short_description"
@@ -65,13 +50,6 @@
             Beschrijving
           </h2>
           <v-divider />
-          <h3 class="textBoxOldTitle">
-            Oude Versie
-          </h3>
-          <p v-for="card in cards" :key="card.id">
-            {{ card.description }}
-          </p>
-          <v-divider />
           <v-textarea
             id="AspectRatingBeschrijving"
             v-model="ratings.description"
@@ -90,6 +68,7 @@
           id="submitButton"
           type="submit"
           class="Submit"
+          @click="updateRating"
         >
           Opslaan
         </v-btn>
@@ -104,7 +83,6 @@ export default {
   name: 'AspectRatingAanmaken',
   data () {
     return {
-      cards: null,
       ratings: {
         title: '',
         short_description: '',
@@ -112,25 +90,7 @@ export default {
       }
     }
   },
-  mounted () {
-    axiosInstance
-      .get('api/v1/ratings/')
-      .then(response => (this.cards = response.data))
-      .catch(error => console.log(error))
-      .then(console.log(this.cards))
-  },
   methods: {
-    submitForm () {
-      axiosInstance.post('api/v1/ratings/', this.ratings)
-        .then((response) => {
-          // Perform Success Action
-          console.log(response)
-        })
-        .catch((error) => {
-          // error.response.status Check status code
-          console.log(error)
-        })
-    },
     updateForm () {
       axiosInstance.patch('api/v1/ratings/', this.ratings)
         .then((response) => {
