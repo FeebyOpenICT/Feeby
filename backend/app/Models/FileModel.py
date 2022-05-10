@@ -14,8 +14,8 @@ class FileModel(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     filename: str = Column(String(length=255), nullable=False, index=True)
-    content_type: str = Column(String(length=200), nullable=False)
-    location: str = Column(String(length=200), nullable=False)
+    content_type: str = Column(String(length=255), nullable=False)
+    location: str = Column(String(length=255), nullable=False)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
