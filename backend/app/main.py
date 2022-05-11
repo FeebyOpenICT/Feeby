@@ -51,6 +51,8 @@ app.include_router(AspectRouter)
 
 app.include_router(RatingsRouter)
 
+app.include_router(RevisionRouter)
+
 app.include_router(FeedbackRouter)
 
 if __name__ == "__main__":

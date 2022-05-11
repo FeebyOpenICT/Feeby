@@ -9,3 +9,4 @@ from .UserAccessPostSchema import *
 from .UserIdListSchema import *
 from .UserSchema import *
 from .FeedbackSchema import *
+from .RevisionSchema import *

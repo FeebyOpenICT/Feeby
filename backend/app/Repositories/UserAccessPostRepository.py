@@ -23,6 +23,7 @@ class UserAccessPostRepository:
             raise UnexpectedInstanceError
 
         db.add(user_access_post_model)
-        db.commit()
+        db.flush()
+        db.refresh(user_access_post_model)
 
         return user_access_post_model

@@ -6,3 +6,4 @@ from .AspectRepository import AspectRepository
 from .RatingRepository import RatingRepository
 from .FeedbackRepository import FeedbackRepository
 from .AspectRatingRepository import AspectRatingRepository
+from .RevisionRepository import RevisionRepository
