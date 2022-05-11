@@ -54,5 +54,7 @@ class RatingRepository:
             raise UnexpectedInstanceError
 
         db.add(rating)
+        db.flush()
+        db.refresh(rating)
 
         return rating

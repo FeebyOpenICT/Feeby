@@ -25,6 +25,8 @@ class RoleRepository:
             raise UnexpectedInstanceError
 
         db.add(role)
+        db.flush()
+        db.refresh(role)
 
         return role
 

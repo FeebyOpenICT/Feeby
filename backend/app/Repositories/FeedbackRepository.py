@@ -42,6 +42,8 @@ class FeedbackRepository(RepositoryBase):
             raise UnexpectedInstanceError
 
         db.add(feedback)
+        db.flush()
+        db.refresh(feedback)
 
         return feedback
 

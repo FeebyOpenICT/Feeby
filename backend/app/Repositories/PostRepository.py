@@ -39,6 +39,8 @@ class PostRepository:
             raise UnexpectedInstanceError
 
         db.add(post)
+        db.flush()
+        db.refresh(post)
 
         return post
 

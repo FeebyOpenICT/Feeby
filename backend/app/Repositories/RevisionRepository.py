@@ -1,3 +1,4 @@
+from typing import List
 from .RepositoryBase import RepositoryBase
 from sqlalchemy.orm import Session
 from Models import RevisionModel
@@ -20,5 +21,13 @@ class RevisionRepository(RepositoryBase):
             raise UnexpectedInstanceError
 
         db.add(revision)
+        db.flush()
+        db.refresh(revision)
 
         return revision
+
+    @staticmethod
+    def get_revisions_from_post(post_id: int, db: Session) -> List[RevisionModel]:
+        result = db.query(RevisionModel).filter(
+            RevisionModel.post_id == post_id).all()
+        return result

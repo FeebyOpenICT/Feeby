@@ -81,5 +81,7 @@ class UserRepository:
             raise UnexpectedInstanceError
 
         db.add(user)
+        db.flush()
+        db.refresh(user)
 
         return user
