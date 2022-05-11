@@ -32,7 +32,7 @@ class RevisionController:
         self.post_id = post_id
 
         self.post = PostService.get_post_by_id_or_fail(
-            post_id=post_id, user_id=user_id, db=db)
+            post_id=post_id, db=db)
 
         if user_id != current_active_user.id:
             user = UserService.get_active_user_by_id_or_fail(id=user_id, db=db)

@@ -8,6 +8,41 @@ from Repositories import PostRepository
 
 class PostService:
     @staticmethod
+    def get_post_by_id(post_id: int, db: Session) -> Optional[PostModel]:
+        """get post by id
+
+        Args:
+            post_id (int): id of post
+            db (Session): database session
+
+        Returns:
+            Optional[PostModel]: post as saved in database or None
+        """
+        result = PostRepository.get_by_id(db=db, id=post_id)
+        return result
+
+    @staticmethod
+    def get_post_by_id_or_fail(post_id: int, db: Session) -> PostModel:
+        """get post by id or fail
+
+        Args:
+            post_id (int): id of post 
+            db (Session): database session
+
+        Raises:
+            NotFoundException: if post is not found
+
+        Returns:
+            PostModel: post as saved in database
+        """
+        result = PostRepository.get_by_id(db=db, id=post_id)
+
+        if not result:
+            raise NotFoundException(resource="post", id=post_id)
+
+        return result
+
+    @staticmethod
     def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[PostModel]:
         """get posts from user that current user has access to whilst checking if user is self
 
@@ -46,7 +81,7 @@ class PostService:
         return post
 
     @staticmethod
-    def get_post_by_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
+    def get_post_by_id_from_user_id(post_id: int, user_id: int, db: Session) -> Optional[PostModel]:
         """Get post by id created by user id
 
         Args:
@@ -62,7 +97,7 @@ class PostService:
         return post
 
     @staticmethod
-    def get_post_by_id_or_fail(post_id: int, user_id: int, db: Session) -> PostModel:
+    def get_post_by_id_from_user_id_or_fail(post_id: int, user_id: int, db: Session) -> PostModel:
         """Get post by id created by user id or fail
 
         Args:

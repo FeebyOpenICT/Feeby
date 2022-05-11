@@ -31,7 +31,7 @@ class FeedbackController:
             self.post = PostService.get_post_with_access_or_fail(
                 current_user_id=current_active_user.id, post_id=post_id, db=db)
         else:
-            self.post = PostService.get_post_by_id_or_fail(
+            self.post = PostService.get_post_by_id_from_user_id_or_fail(
                 post_id=post_id, user_id=user_id, db=db)
             self.user = current_active_user
 
