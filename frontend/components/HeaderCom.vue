@@ -55,7 +55,8 @@ export default {
     modal: false,
     items: [
       { title: 'Profiel', icon: 'mdi-account' },
-      { title: 'Toegang Beheer', icon: 'mdi-pencil' }
+      { title: 'Toegang Beheer', icon: 'mdi-pencil' },
+      { title: 'Admin' }
     ]
   })
 }
