@@ -39,6 +39,9 @@ app.add_exception_handler(DisabledResourceException,
 
 app.add_exception_handler(NoPermissions, no_permissions_exception_handler)
 
+app.add_exception_handler(
+    DoesNotBelongTo, does_not_belong_to_exception_handler)
+
 app.include_router(lti.router)
 
 app.include_router(Authentication.router)
