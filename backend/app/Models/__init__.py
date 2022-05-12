@@ -6,4 +6,6 @@ from .AspectRatingModel import AspectRatingModel
 from .RatingModel import RatingModel
 from .RoleModel import RoleModel
 from .UserRoleModel import UserRoleModel
+from .RevisionModel import RevisionModel
+from .FeedbackModel import FeedbackModel
 from .FileModel import FileModel

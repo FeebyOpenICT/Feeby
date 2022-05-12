@@ -13,6 +13,9 @@ class UserAccessPostRepository:
             user_access_post_model (UserAccessPostModel): user accesspost model
             db (Session): database session
 
+        Raises:
+            UnexpectedInstance: if instance is not of UserAccessPostModel
+
         Returns:
             UserAccessPostModel: UserAccessPostModel as saved in database
         """
@@ -20,6 +23,7 @@ class UserAccessPostRepository:
             raise UnexpectedInstanceError
 
         db.add(user_access_post_model)
-        db.commit()
+        db.flush()
+        db.refresh(user_access_post_model)
 
         return user_access_post_model

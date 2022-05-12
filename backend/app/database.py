@@ -19,8 +19,12 @@ def get_db_connection() -> Session:
 
     returns a sqlalchemy.orm Session 
     """
-    db = SessionLocal()
+    db: Session = SessionLocal()
     try:
         yield db
+        db.commit()
+    except:
+        db.rollback()
+        raise
     finally:
         db.close()

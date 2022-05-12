@@ -37,6 +37,8 @@ app.add_exception_handler(DuplicateKey, duplicate_key_exception_handler)
 app.add_exception_handler(DisabledResourceException,
                           disabled_resource_exception_handler)
 
+app.add_exception_handler(NoPermissions, no_permissions_exception_handler)
+
 app.include_router(lti.router)
 
 app.include_router(Authentication.router)
@@ -48,6 +50,10 @@ app.include_router(PostRouter)
 app.include_router(AspectRouter)
 
 app.include_router(RatingsRouter)
+
+app.include_router(RevisionRouter)
+
+app.include_router(FeedbackRouter)
 
 if __name__ == "__main__":
     uvicorn.run("__main__:app", host="0.0.0.0",
