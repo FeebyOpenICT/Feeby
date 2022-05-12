@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
-from .PostModel import PostModel
+from .RevisionModel import RevisionModel
 from database import Base
 
 
@@ -20,20 +20,20 @@ class FileModel(Base):
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
-    post = relationship('PostModel')
+    revision_id = Column(Integer, ForeignKey('revision.id'), nullable=False)
+    revision = relationship('RevisionModel')
 
-    def __init__(self, filename: str, content_type: str, location: str, post: PostModel) -> None:
+    def __init__(self, filename: str, content_type: str, location: str, revision: RevisionModel) -> None:
         """FileModel constructor
 
         Args:
             filename (str): name of the file
             content_type (str): content type of the file
             location (str): location of the file
-            post (PostModel): post file has been added to
+            revision (RevisionModel): post file has been added to
         """
         self.filename = filename
         self.content_type = content_type
         self.location = location
-        self.post = post
+        self.revision = revision
         super().__init__()

@@ -10,7 +10,7 @@ class File(BaseModel):
 
 class FileInDB(File):
     id: int
-    post_id: int
+    revision_id: int
     time_created: datetime
     time_updated: datetime
 
