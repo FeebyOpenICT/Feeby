@@ -1,13 +1,14 @@
 from fastapi import Depends, status, HTTPException
 from typing import List
 from Schemas import RevisionInDB
+from Schemas.RevisionSchema import CreateRevision
 from Services import PostService
 from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
 from sqlalchemy.orm import Session
 from Services.RevisionService import RevisionService
 from database import get_db_connection
 from Models.UserModel import UserModel
-from Schemas import CreateRevision, PostInDB, UserIdList
+from Schemas import CreateInitialRevision
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from Services.UserService import UserService

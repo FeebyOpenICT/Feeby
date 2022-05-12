@@ -60,7 +60,7 @@ class PostController:
         Allowed roles:
         - All
         """
-        post = PostService.create_post_for_user(title=body.title, description=body.description,
+        post = PostService.create_post_for_user(body=body,
                                                 user=current_self_user, db=self.db)
         return post
 
