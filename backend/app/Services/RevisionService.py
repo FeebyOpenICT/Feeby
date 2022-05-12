@@ -13,7 +13,16 @@ class RevisionService:
         Args:
             post (PostModel): post as saved in database
             db (Session): database session
+
+        Raises:
+            NoPermissions: if post does not belong to user
+
+        Returns:
+            RevisionModel: created revision as saved in database (transactional)
         """
+        if post.user_id != user.id:
+            raise NoPermissions(resource="post", id=post.id)
+
         revision = RevisionModel(description=description, post=post)
         revision = RevisionRepository.save(db=db, revision=revision)
         return revision

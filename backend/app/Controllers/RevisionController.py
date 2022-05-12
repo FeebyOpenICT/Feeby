@@ -61,10 +61,10 @@ class RevisionController:
             user_id (int): id of user in as saved in database
             post_id (int): post id of post you are creating revision for
 
-
         Allowed roles:
         - All
         """
         result = RevisionService.create_revision(
+            user=current_self_user,
             post=self.post, description=body.description, db=self.db)
         return result
