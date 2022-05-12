@@ -51,17 +51,23 @@ export default {
   components: { HeaderCom },
   data () {
     return {
+      user: '',
       form: {
         title: '',
-        description: '',
-        aspects: ''
+        description: ''
       }
     }
+  },
+
+  mounted () {
+    axiosInstance
+      .get('/api/v1/users/self')
+      .then(response => (this.user = response.data))
   },
   methods: {
     submitForm () {
       axiosInstance
-        .post('api/v1/posts', this.form)
+        .post('api/v1/users/1/posts', this.form)
         .then(response => (this.form = response.data))
         .catch(function (error) {
           if (error.response) {

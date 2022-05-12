@@ -38,7 +38,7 @@
                       className="formField"
                       maxlength="2000"
                       placeholder="Schrijf hier de titel van je post..."
-                      v-model="stepper.title"
+                      v-model="form.title"
                       required>
           </v-textarea>
         </v-card>
@@ -64,7 +64,7 @@
                         maxlength="2000"
                         id="Description"
                         placeholder="Schrijf hier de beschrijving van je post..."
-                        v-model="stepper.description"
+                        v-model="form.description"
                         required>
             </v-textarea>
           </div>
@@ -96,7 +96,7 @@
         </v-btn>
 
         <div className="stepper-buttons">
-          <button v-on:click.prevent className="btn btn-primary" @click="$router.push('postmaken')">Submit</button>
+          <button className="btn btn-primary">Submit</button>
         </div>
       </v-stepper-content>
     </v-stepper-items>
@@ -114,18 +114,23 @@ export default {
   data () {
     return {
       e1: 1,
-      stepper: {
+      user: '',
+      form: {
         title: '',
-        description: '',
-        aspects: ''
+        description: ''
       }
     }
+  },
+  mounted () {
+    axiosInstance
+      .get('/api/v1/users/self')
+      .then(response => (this.user = response.data))
   },
   methods: {
     submitForm () {
       axiosInstance
-        .post('api/v1/posts', this.stepper)
-        .then(response => (this.stepper = response.data))
+        .post('api/v1/users/1/posts', this.form)
+        .then(response => (this.form = response.data))
         .catch(function (error) {
           if (error.response) {
             // De post request is gemaakt en de server gaf in de terminal een status code aan
