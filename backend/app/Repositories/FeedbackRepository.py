@@ -1,8 +1,9 @@
+from ntpath import join
 from typing import List
 from sqlalchemy.orm import Session
 from Exceptions import UnexpectedInstanceError
 from .RepositoryBase import RepositoryBase
-from Models import FeedbackModel
+from Models import FeedbackModel, PostModel
 
 
 class FeedbackRepository(RepositoryBase):
@@ -51,3 +52,7 @@ class FeedbackRepository(RepositoryBase):
     def get_all(db: Session) -> List[FeedbackModel]:
         result = db.query(FeedbackModel).all()
         return result
+
+    # @staticmethod
+    # def get_baseline_measurement(post_id: int, db: Session):
+    #     result = db.query(Feedba)
