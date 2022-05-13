@@ -4,11 +4,12 @@ from sqlalchemy.orm import Session
 from Models import UserModel, PostModel, RevisionModel
 from Repositories import RevisionRepository
 from Exceptions import NotFoundException, NoPermissions
+from Schemas import CreateRevision
 
 
 class RevisionService:
     @staticmethod
-    def create_revision(post: PostModel, user: UserModel, description: str, db: Session) -> RevisionModel:
+    def create_revision(post: PostModel, user: UserModel, body: CreateRevision, db: Session) -> RevisionModel:
         """create revision
 
         Args:
@@ -24,7 +25,7 @@ class RevisionService:
         if post.user_id != user.id:
             raise NoPermissions(resource="post", id=post.id)
 
-        revision = RevisionModel(description=description, post=post)
+        revision = RevisionModel(description=body.description, post=post)
         revision = RevisionRepository.save(db=db, revision=revision)
         return revision
 
