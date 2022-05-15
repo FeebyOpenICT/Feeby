@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, constr
+from .FileSchema import CreateFile
 
 
 class Revision(BaseModel):
@@ -16,4 +17,4 @@ class RevisionInDB(Revision):
 
 
 class CreateRevision(Revision):
-    pass
+    file: CreateFile
