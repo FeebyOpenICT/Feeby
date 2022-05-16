@@ -12,6 +12,7 @@
       <v-toolbar
         flat
       >
+        <!-- TItle bar from Toolbar -->
         <v-toolbar-title>Mijn Aspecten</v-toolbar-title>
         <v-divider
           class="mx-4"
@@ -40,10 +41,12 @@
 
           <!-- V-card Form -->
           <v-card>
+            <!-- V-card Title Form -->
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
             </v-card-title>
 
+            <!-- V-card Text Form -->
             <v-card-text>
               <v-container>
                 <v-row>
