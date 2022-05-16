@@ -1,50 +1,76 @@
 <template className="container">
   <div id="app">
-<form v-on:submit.prevent="submitForm">
-  <v-stepper v-model="e1">
-    <v-stepper-header>
+<v-form ref="form" lazy-validation>
+
+  <v-stepper v-model="e1" style="background-color: #F3F3F3">
+    <v-stepper-header style="background-color: #0079CF">
       <v-stepper-step
         :complete="e1 > 1"
         step="1"
+        style="font-weight: bold"
       >
         Titel en beschrijving
       </v-stepper-step>
 
-      <v-divider></v-divider>
+      <v-divider style="background-color: white"></v-divider>
 
       <v-stepper-step
         :complete="e1 > 2"
         step="2"
+        style="background-color: #0079CF; font-weight: bold"
       >
         Bestanden uploaden
       </v-stepper-step>
 
-      <v-divider></v-divider>
+      <v-divider style="background-color: white"></v-divider>
 
-      <v-stepper-step step="3">
+      <v-stepper-step step="3"
+       style="background-color: #0079CF; font-weight: bold"
+      >
         Aspecten selecteren
+      </v-stepper-step>
+
+      <v-divider style="background-color: white"></v-divider>
+
+      <v-stepper-step step="4"
+       style="background-color: #0079CF; font-weight: bold"
+      >
+        Versturen
       </v-stepper-step>
     </v-stepper-header>
 
-    <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        >
-          <h2><strong>Vul titel in</strong></h2>
-          <v-textarea type="text"
-                      className="formField"
-                      maxlength="2000"
+    <v-stepper-items v-model="valid">
+      <v-stepper-content step="1" >
+          <v-card-title><strong>Vul titel in</strong></v-card-title>
+          <v-text-field
+                      maxlength="75"
                       placeholder="Schrijf hier de titel van je post..."
                       v-model="form.title"
+                      outlined
+                      color="grey"
+                      filled
+                      :rules="[v => !!v || 'Titel is verplicht.']"
                       required>
-          </v-textarea>
-        </v-card>
-        <v-btn
+
+          </v-text-field>
+        <v-card-title><strong>Vul beschrijving in</strong></v-card-title>
+          <v-text-field
+            type="text"
+            className="formField"
+            maxlength="75"
+            placeholder="Schrijf hier de beschrijving van je post..."
+            v-model="form.description"
+            outlined
+            color="grey"
+            filled
+            :rules="[v => !!v || 'Beschrijving is verplicht.']"
+            required>
+        </v-text-field>
+        <v-btn class="btn"
           color="primary"
           @click="e1 = 2"
+          style="background-color: #0079CF; color: white"
+          :disabled="!valid"
         >
           Continue
         </v-btn>
@@ -54,62 +80,50 @@
         <v-card
           class="mb-12"
           color="grey lighten-1"
-          height="200px"
         >
           <div className="form-group">
-            <h2><strong>Vul Toelichting in</strong></h2>
-            <v-textarea type="text"
-                        className="formField"
-                        counter
-                        maxlength="2000"
-                        id="Description"
-                        placeholder="Schrijf hier de beschrijving van je post..."
-                        v-model="form.description"
-                        required>
-            </v-textarea>
+            <UploadBox />
           </div>
         </v-card>
-
-        <v-btn
-          @click="e1 = 1"
+        <v-btn class="btn"
+               @click="e1 = 1"
+               style="background-color: #0079CF; color: white"
         >
           Ga terug
         </v-btn>
-        <v-btn
-          color="primary"
-          @click="e1 = 3"
+        <v-btn class="btn"
+               color="primary"
+               @click="e1 = 3"
+               style="background-color: #0079CF; color: white"
         >
-          Continue
+          Ga verder
         </v-btn>
       </v-stepper-content>
-
       <v-stepper-content step="3">
         <v-card
           class="mb-12"
           color="grey lighten-1"
-          height="200px"
         ></v-card>
-        <v-btn
-          @click="e1 = 2"
+        <v-btn class="btn"
+               @click="e1=2"
+               style="background-color: #0079CF; color: white"
         >
           Ga terug
         </v-btn>
-
-        <div className="stepper-buttons">
-          <button className="btn btn-primary">Submit</button>
-        </div>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
-</form>
+</v-form>
   </div>
 
 </template>
 <script>
 import { axiosInstance } from '../lib/axiosInstance'
+import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import HeaderCom from './HeaderCom.vue'
 // import FooterCom from './FooterCom.vue'
 export default {
+  components: { UploadBox },
   name: 'RevisionPage',
   data () {
     return {
@@ -123,10 +137,14 @@ export default {
   },
   mounted () {
     axiosInstance
-      .get('/api/v1/users/self')
+      .get('/api/v1/users/1/self')
       .then(response => (this.user = response.data))
   },
   methods: {
+    continue () {
+      this.$refs.form.continue()
+    },
+
     submitForm () {
       axiosInstance
         .post('api/v1/users/1/posts', this.form)
@@ -151,3 +169,10 @@ export default {
   }
 }
 </script>
+<style>
+.v-text-field--outlined fieldset {
+  color: #0079CF !important;
+  background-color: white;
+  border-width: 2px;
+}
+</style>
