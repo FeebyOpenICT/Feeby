@@ -1,6 +1,6 @@
 <template className="container">
   <div id="app">
-<v-form ref="form" lazy-validation>
+<v-form ref="form" lazy-validation v-on:submit.prevent="submitForm">
 
   <v-stepper v-model="e1" style="background-color: #F3F3F3">
     <v-stepper-header style="background-color: #0079CF">
@@ -118,13 +118,42 @@
             </v-btn>
           <v-btn class="btn"
                  color="primary"
-                 @click="e1 = 4"
+                 @click="e1 = 3"
                  style="background-color: #0079CF; color: white"
                  :disabled="!valid2"
           >
             Continue
           </v-btn>
         </v-card>
+      </v-stepper-content>
+      <v-stepper-content step="3">
+        <div class="checkBoxContainer" id="knowledge">
+          <div id="aspectCheck"
+          >
+            <v-checkbox v-model="form.aspects" type="button" class="selectBox" @click="isHidden = !isHidden"></v-checkbox>
+            <p class="aspect" style="color: white;"><strong>Juiste kennis opdoen</strong></p>
+          </div>
+          <v-textarea class="textField"
+                      v-model="form.aspects"
+                      id="aspectDescription"
+                      v-if="!isHidden"
+                      counter
+                      type="text"
+                      placeholder="Schrijf hier je toelichting over dit aspect..."
+          />
+          <v-btn class="btn"
+                 @click="e1=2"
+                 style="background-color: #0079CF; color: white"
+          >
+            Ga terug
+          </v-btn>
+          <v-btn class="btn"
+                 color="primary"
+                 @click="e1 = 4"
+                 style="background-color: #0079CF; color: white"
+          >Inzien
+          </v-btn>
+        </div>
       </v-stepper-content>
       <v-stepper-content step="4">
         <v-card-title><strong>Titel</strong></v-card-title>
@@ -140,7 +169,7 @@
           :rules="[v => !!v || 'Titel is verplicht.']"
           required
           disabled
-          >
+        >
         </v-text-field>
         <v-card-title><strong>Beschrijving</strong></v-card-title>
         <v-text-field
@@ -151,7 +180,7 @@
           color="grey"
           filled
           disabled
-          >
+        >
         </v-text-field>
         <v-file-input
           v-model="form.uploadFiles"
@@ -160,12 +189,25 @@
           truncate-length="15"
           disabled
         />
+        <div style="background-color: #0079CF;  max-width: 75%">
+          <v-checkbox style="color: white;" v-model="form.aspects" type="button" class="selectBox" disabled></v-checkbox>
+          <p class="aspect" style="color: white;"><strong>Juiste kennis opdoen</strong></p>
+          <v-textarea class="textField"
+                      style="background-color: white"
+                      v-model="form.aspects"
+                      id="aspectDescription"
+                      disabled
+          />
+        </div>
         <v-btn class="btn"
-               @click="e1=2"
+               @click="e1=3"
                style="background-color: #0079CF; color: white"
         >
-          Versturen
+          Ga terug
         </v-btn>
+        <div className="form-buttons">
+          <button className="btn btn-primary">Versturen</button>
+        </div>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -182,6 +224,8 @@ export default {
   name: 'RevisionPage',
   data () {
     return {
+      visible: true,
+      isHidden: true,
       e1: 1,
       user: '',
       dragover: false,
@@ -189,7 +233,7 @@ export default {
       form: {
         title: '',
         description: '',
-        uploadFiles: ''
+        aspects: ''
       }
     }
   },
@@ -199,10 +243,6 @@ export default {
       .then(response => (this.user = response.data))
   },
   methods: {
-    continue () {
-      this.$refs.form.continue()
-    },
-
     submitForm () {
       axiosInstance
         .post('api/v1/users/1/posts', this.form)
