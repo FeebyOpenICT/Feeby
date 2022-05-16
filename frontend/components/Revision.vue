@@ -43,21 +43,25 @@
       <v-stepper-content step="1" >
           <v-card-title><strong>Vul titel in</strong></v-card-title>
           <v-text-field
-                      maxlength="75"
-                      placeholder="Schrijf hier de titel van je post..."
-                      v-model="form.title"
-                      outlined
-                      color="grey"
-                      filled
-                      :rules="[v => !!v || 'Titel is verplicht.']"
-                      required>
+            solo
+            type="text"
+            class="formField"
+            maxlength="75"
+            placeholder="Schrijf hier de titel van je post..."
+            v-model="form.title"
+            outlined
+            color="grey"
+            filled
+            :rules="[v => !!v || 'Titel is verplicht.']"
+            required>
 
           </v-text-field>
         <v-card-title><strong>Vul beschrijving in</strong></v-card-title>
-          <v-text-field
+          <v-textarea
+            solo
             type="text"
-            className="formField"
-            maxlength="75"
+            class="formField"
+            maxlength="500"
             placeholder="Schrijf hier de beschrijving van je post..."
             v-model="form.description"
             outlined
@@ -65,50 +69,102 @@
             filled
             :rules="[v => !!v || 'Beschrijving is verplicht.']"
             required>
-        </v-text-field>
+        </v-textarea>
         <v-btn class="btn"
           color="primary"
           @click="e1 = 2"
-          style="background-color: #0079CF; color: white"
           :disabled="!valid"
+          style="background-color: #0079CF; color: white"
         >
           Continue
         </v-btn>
       </v-stepper-content>
 
-      <v-stepper-content step="2">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
+      <v-stepper-content step="2"
+      align="center"
+      >
+
+        <v-card justify="center"
+                align="center"
+                v-model="valid2"
+                @drop.prevent="dragover = false"
+                @dragover.prevent="dragover = true"
+                @dragenter.prevent="dragover = true"
+                @dragleave.prevent="dragover = false"
+                style="background-color: #0079CF; max-width: 50%"
         >
-          <div className="form-group">
-            <UploadBox />
-          </div>
+          <v-card-text
+          >
+            <v-row class="d-flex flex-column" dense align="center" justify="center">
+              <v-icon class="mt-3" size="70" style="color:white">mdi-cloud-upload</v-icon>
+              <p class="d-flex flex-column" dense align="center" justify="center" style="color: white">
+                Sleep je bestanden vanaf jou computer hierin.
+              </p>
+            </v-row>
+            <v-file-input
+              v-model="form.uploadFiles"
+              multiple
+              show-size
+              truncate-length="15"
+            />
+          </v-card-text>
+          <v-card-actions></v-card-actions>
+          <v-spacer></v-spacer>
+            <v-btn class="btn"
+                   @click="e1=1"
+                   style="background-color: #0079CF; color: white"
+            >
+              Ga terug
+            </v-btn>
+          <v-btn class="btn"
+                 color="primary"
+                 @click="e1 = 4"
+                 style="background-color: #0079CF; color: white"
+                 :disabled="!valid2"
+          >
+            Continue
+          </v-btn>
         </v-card>
-        <v-btn class="btn"
-               @click="e1 = 1"
-               style="background-color: #0079CF; color: white"
-        >
-          Ga terug
-        </v-btn>
-        <v-btn class="btn"
-               color="primary"
-               @click="e1 = 3"
-               style="background-color: #0079CF; color: white"
-        >
-          Ga verder
-        </v-btn>
       </v-stepper-content>
-      <v-stepper-content step="3">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-        ></v-card>
+      <v-stepper-content step="4">
+        <v-card-title><strong>Titel</strong></v-card-title>
+        <v-text-field
+          type="text"
+          class="formField"
+          maxlength="75"
+          placeholder="Schrijf hier de titel van je post..."
+          v-model="form.title"
+          outlined
+          color="grey"
+          filled
+          :rules="[v => !!v || 'Titel is verplicht.']"
+          required
+          disabled
+          >
+        </v-text-field>
+        <v-card-title><strong>Beschrijving</strong></v-card-title>
+        <v-text-field
+          type="text"
+          class="formField"
+          v-model="form.description"
+          outlined
+          color="grey"
+          filled
+          disabled
+          >
+        </v-text-field>
+        <v-file-input
+          v-model="form.uploadFiles"
+          multiple
+          show-size
+          truncate-length="15"
+          disabled
+        />
         <v-btn class="btn"
                @click="e1=2"
                style="background-color: #0079CF; color: white"
         >
-          Ga terug
+          Versturen
         </v-btn>
       </v-stepper-content>
     </v-stepper-items>
@@ -119,19 +175,21 @@
 </template>
 <script>
 import { axiosInstance } from '../lib/axiosInstance'
-import UploadBox from '~/components/PostrevisionComponents/uploadBox'
+// import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import HeaderCom from './HeaderCom.vue'
 // import FooterCom from './FooterCom.vue'
 export default {
-  components: { UploadBox },
   name: 'RevisionPage',
   data () {
     return {
       e1: 1,
       user: '',
+      dragover: false,
+      uploadedFiles: [],
       form: {
         title: '',
-        description: ''
+        description: '',
+        uploadFiles: ''
       }
     }
   },
@@ -175,4 +233,8 @@ export default {
   background-color: white;
   border-width: 2px;
 }
+.formField {
+  max-width: 75%;
+}
+
 </style>

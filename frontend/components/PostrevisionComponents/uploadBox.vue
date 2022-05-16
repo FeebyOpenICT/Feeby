@@ -1,12 +1,14 @@
-<template>
-    <v-card
+<template ref="upload" lazy-validation>
+    <v-card v-model="e1"
       @drop.prevent="dragover = false"
       @dragover.prevent="dragover = true"
       @dragenter.prevent="dragover = true"
       @dragleave.prevent="dragover = false"
       style="background-color: #0079CF"
     >
-      <v-card-text>
+      <v-card-text
+        v-model="valid"
+        >
         <v-row class="d-flex flex-column" dense align="center" justify="center">
           <v-icon class="mt-3" size="70" style="color:white">mdi-cloud-upload</v-icon>
           <p class="d-flex flex-column" dense align="center" justify="center" style="color: white">
@@ -14,8 +16,6 @@
           </p>
         </v-row>
         <v-file-input
-          v-model="input.title"
-          disabled
           multiple
           show-size
           truncate-length="15"
@@ -23,6 +23,22 @@
       </v-card-text>
       <v-card-actions></v-card-actions>
       <v-spacer></v-spacer>
+      <div className="buttons">
+        <v-btn class="btn"
+               @click="e1=1"
+               style="background-color: #0079CF; color: white"
+        >
+          Ga terug
+        </v-btn>
+        <v-btn class="btn"
+               color="primary"
+               @click="e1 = 4"
+               :disabled="!valid"
+               style="background-color: #0079CF; color: white"
+        >
+          Ga verder
+        </v-btn>
+      </div>
     </v-card>
 </template>
 
@@ -33,6 +49,7 @@ export default {
   name: 'UploadBox',
   data () {
     return {
+      e1: 1,
       user: '',
       dragover: false,
       uploadedFiles: [],
