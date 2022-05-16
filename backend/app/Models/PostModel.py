@@ -22,6 +22,8 @@ class PostModel(Base):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('UserModel')
 
+    revisions = relationship('RevisionModel', back_populates="post")
+
     def __init__(self, title: str, description: str, user: UserModel) -> None:
         """PostModel constructor
 

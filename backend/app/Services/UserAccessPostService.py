@@ -35,7 +35,7 @@ class UserAccessPostService:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
 
-        post = PostService.get_post_by_id_or_fail(
+        post = PostService.get_post_by_id_from_user_id_or_fail(
             post_id=post_id, user_id=user_id, db=db)
 
         users = [UserService.get_active_user_by_id_or_fail(
