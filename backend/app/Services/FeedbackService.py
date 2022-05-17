@@ -6,15 +6,10 @@ from Models import FeedbackModel, PostModel, RevisionModel, UserModel
 from Repositories import FeedbackRepository
 from Schemas import CreateFeedback
 from Services import PostService, RevisionService, AspectRatingService, AspectService, RatingService, UserAccessPostService
+import collections
 
 
 class FeedbackService:
-    # @staticmethod
-    # def get_baseline_measurement(
-    #     post_id: int,
-    #     db: Session
-    # ):
-
     @staticmethod
     def create_feedback(
         reviewer: UserModel,
@@ -39,7 +34,14 @@ class FeedbackService:
             raise DoesNotBelongTo(
                 parentResource="revision", parentId=revision.id, resource="post", id=post.id)
 
-        # check if all aspects coincide with the baseline measurement
+        baseline_measurement_aspect_ids = [
+            fb.aspect_id for fb in FeedbackRepository.get_baseline_measurement(post_id=post.id, db=db)]
+
+        sent_aspect_ids = [fb.aspect_id for fb in body]
+
+        if not collections.Counter(baseline_measurement_aspect_ids) == collections.Counter(sent_aspect_ids):
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                                detail="aspects that were graded do not match baseline measurement from student.")
 
         feedback = []
 
