@@ -10,7 +10,7 @@ import RevisionPage from '~/components/Revision.vue'
 // import FooterCom from './FooterCom.vue'
 
 export default {
-  name: 'CreatePost',
+  name: 'BeroepsproductInleveren',
   components: { RevisionPage },
   data () {
     return {
