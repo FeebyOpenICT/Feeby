@@ -1,9 +1,9 @@
 <template className="container">
   <div id="app">
-    <HeaderCom/>
+    <HeaderCom />
     <v-app>
       <v-container>
-        <v-form ref="form" lazy-validation v-on:submit.prevent="submitForm">
+        <v-form ref="form" lazy-validation v-on:submit.prevent="submitForm" v-model="valid">
           <v-stepper v-model="e1" style="background-color: #F3F3F3"><v-stepper-header style="background-color: #0079CF">
             <v-stepper-step
               :complete="e1 > 1"
@@ -25,23 +25,27 @@
 
             <v-divider style="background-color: white"></v-divider>
 
-            <v-stepper-step step="3"
-                            style="background-color: #0079CF; font-weight: bold"
+            <v-stepper-step
+              :complete="e1 > 3"
+              step="3"
+              style="background-color: #0079CF; font-weight: bold"
             >
               Aspecten selecteren
             </v-stepper-step>
 
             <v-divider style="background-color: white"></v-divider>
 
-            <v-stepper-step step="4"
-                            style="background-color: #0079CF; font-weight: bold"
+            <v-stepper-step
+              :complete="e1 > 4"
+              step="4"
+              style="background-color: #0079CF; font-weight: bold"
             >
               Versturen
             </v-stepper-step>
           </v-stepper-header>
 
-            <v-stepper-items v-model="valid">
-              <v-stepper-content step="1" >
+            <v-stepper-items>
+              <v-stepper-content step="1" v-model="valid">
                 <v-card-title><strong>Vul titel in</strong></v-card-title>
                 <v-text-field
                   background-color="white"
@@ -69,9 +73,9 @@
                   required>
                 </v-textarea>
                 <v-btn class="btn"
+                       :disabled="!valid"
                        color="primary"
                        @click="e1 = 2"
-                       :disabled="!valid"
                        style="background-color: #0079CF; color: white"
                 >
                   Continue
@@ -100,9 +104,10 @@
                     </v-row>
                     <v-file-input
                       v-model="form.uploadFiles"
+                      chips
+                      counter
                       multiple
-                      show-size
-                      truncate-length="15"
+                      truncate-length="50"
                     />
                   </v-card-text>
                   <v-card-actions></v-card-actions>
@@ -130,23 +135,13 @@
               </v-stepper-content>
               <v-stepper-content step="3">
                 <div class="checkBoxContainer" id="knowledge">
-                  <div id="aspectCheck"
-                  >
-                    <v-checkbox v-model="form.aspects" type="button" class="selectBox" @click="isHidden = !isHidden"></v-checkbox>
-                    <p class="aspect" style="color: white;"><strong>Juiste kennis opdoen</strong></p>
+                  <AspectInzien />
                   </div>
-                  <v-textarea class="textField"
-                              v-model="form.aspects"
-                              id="aspectDescription"
-                              v-if="!isHidden"
-                              counter
-                              type="text"
-                              placeholder="Schrijf hier je toelichting over dit aspect..."
-                  />
+                <div classname="buttons" align="center" justify="center">
                   <v-btn class="btn"
-                       @click="e1=2"
-                       style="background-color: white;
-                       white; color: #0079CF;
+                         @click="e1=2"
+                         style="background-color: white; margin: 15px;
+                       color: #0079CF;
                        border-style: solid;
                        border-color: #0079CF"
                   >
@@ -159,6 +154,7 @@
                   >Inzien
                   </v-btn>
                 </div>
+
               </v-stepper-content>
               <v-stepper-content step="4">
                 <v-card-title><strong>Titel</strong></v-card-title>
@@ -194,27 +190,26 @@
                   disabled
                 />
                 <div style="background-color: #0079CF;  max-width: 75%">
-                  <v-checkbox style="color: white;" v-model="form.aspects" type="button" class="selectBox" disabled></v-checkbox>
-                  <p class="aspect" style="color: white;"><strong>Juiste kennis opdoen</strong></p>
-                  <v-text-field class="textField"
-                              style="background-color: white"
-                              v-model="form.aspects"
-                              id="aspectDescription"
-                              disabled
-                  />
                 </div>
+                <AspectInzien v-model="form.aspects" disabled />
                 <v-btn class="btn-back"
                        @click="e1=3"
-                       style="background-color:
-                       white; color: #0079CF;
+                       style="
+                       background-color: white;
+                       color: #0079CF;
                        border-style: solid;
                        border-color: #0079CF"
                 >
                   Ga terug
                 </v-btn>
-                <div className="form-buttons">
+                <v-btn classname="form-buttons"
+                       style="
+                       background-color: #0079CF;
+                       color: white;
+                       border-style: solid;
+                       border-color: #0079CF">
                   <button className="btn btn-primary">Versturen</button>
-                </div>
+                </v-btn>
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -226,14 +221,17 @@
 </template>
 <script>
 import { axiosInstance } from '../lib/axiosInstance'
+import HeaderCom from './HeaderCom.vue'
+import AspectInzien from '@/components/AspectCards/AspectInzien'
 // import UploadBox from '~/components/PostrevisionComponents/uploadBox'
-// import HeaderCom from './HeaderCom.vue'
 // import FooterCom from './FooterCom.vue'
 export default {
+  components: { AspectInzien, HeaderCom },
   name: 'RevisionPage',
   data: () => ({
     visible: true,
     isHidden: true,
+    valid: true,
     e1: 1,
     user: '',
     dragover: false,
@@ -251,35 +249,52 @@ export default {
       uploadedFiles: []
     }
   }),
-  mounted () {
-    axiosInstance
-      .get('/api/v1/users/1/self')
-      .then(response => (this.user = response.data))
-  },
   methods: {
-    submitForm () {
+    validate () {
+      this.$refs.form.validate()
+    },
+    reset () {
+      this.$refs.form.reset()
+    },
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    },
+    mounted () {
       axiosInstance
-        .post('api/v1/users/1/posts', this.form)
-        .then(response => (this.form = response.data))
-        .catch(function (error) {
-          if (error.response) {
-            // De post request is gemaakt en de server gaf in de terminal een status code aan
+        .get('/api/v1/users/1/self')
+        .then(response => (this.user = response.data))
+      axiosInstance
+        .get('api/v1/aspects')
+        .then(response => (this.aspects = response.data), JSON.stringify([this.aspects]))
+    },
 
-            console.log(error.response.data)
-            console.log('render error', error.response.status)
-            alert('Je bent momenteel niet ingelogd').console.log('je bent momenteel niet ingelogd', error.response.headers)
-          } else if (error.request) {
-            // Request is verzonden, echter geen reactie terug
-            alert('De website is momenteel niet beschikbaar').console.log('De website is momenteel niet beschikbaar', error.request)
-          } else {
-            // Iets in de request heeft voor een error gezorgd
-            alert('Er is iets mis gegaan met het versturen van de data').console.log('Er is iets mis gegaan met het versturen van de data', error.message)
-          }
-          console.log(error.config)
-        })
+    methods: {
+      submitForm () {
+        axiosInstance
+          .post('api/v1/users/1/posts', this.form)
+          // .patch(`api/v1/aspects/${this.aspects.id}`)
+          .then(response => (this.form = response.data))
+          .catch(function (error) {
+            if (error.response) {
+              // De post request is gemaakt en de server gaf in de terminal een status code aan
+
+              console.log(error.response.data)
+              console.log('render error', error.response.status)
+              alert('Je bent momenteel niet ingelogd').console.log('je bent momenteel niet ingelogd', error.response.headers)
+            } else if (error.request) {
+              // Request is verzonden, echter geen reactie terug
+              alert('De website is momenteel niet beschikbaar').console.log('De website is momenteel niet beschikbaar', error.request)
+            } else {
+              // Iets in de request heeft voor een error gezorgd
+              alert('Er is iets mis gegaan met het versturen van de data').console.log('Er is iets mis gegaan met het versturen van de data', error.message)
+            }
+            console.log(error.config)
+          })
+      }
     }
   }
 }
+
 </script>
 <style>
 .formField {
