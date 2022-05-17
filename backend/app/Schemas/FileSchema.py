@@ -1,5 +1,6 @@
 from pydantic import BaseModel, constr
 from datetime import datetime
+from fastapi import UploadFile
 
 
 class File(BaseModel):

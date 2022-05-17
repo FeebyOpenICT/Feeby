@@ -1,4 +1,4 @@
-from fastapi import Depends, status, HTTPException
+from fastapi import Depends, status, HTTPException, UploadFile, Form
 from typing import List
 from Schemas import RevisionInDB
 from Services import PostService
@@ -11,6 +11,7 @@ from Schemas import CreateRevision, PostInDB, UserIdList
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from Services.UserService import UserService
+
 
 router = InferringRouter(
     tags=["Revisions"]
@@ -54,17 +55,19 @@ class RevisionController:
     #     return result
 
     @router.post('/users/{user_id}/posts/{post_id}/revisions', status_code=status.HTTP_201_CREATED, response_model=RevisionInDB)
-    async def create_revision(self, body: CreateRevision, current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
+    async def create_revision(self, files: List[UploadFile], body: CreateRevision=Depends(), current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
         """Create revision
 
         Args:
             user_id (int): id of user in as saved in database
             post_id (int): post id of post you are creating revision for
+            files (UploadFile): Uploaded files
 
 
         Allowed roles:
         - All
         """
+        body = body.dict()
         result = RevisionService.create_revision(
-            post=self.post, description=body.description, db=self.db)
+            post=self.post, description=body["description"], files=files, db=self.db)
         return result

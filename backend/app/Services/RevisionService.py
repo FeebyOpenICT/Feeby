@@ -1,13 +1,14 @@
-from typing import List
-from fastapi import HTTPException, status
+from typing import List, Optional
+from fastapi import HTTPException, status, UploadFile
 from sqlalchemy.orm import Session
 from Models import UserModel, PostModel, RevisionModel
 from Repositories import RevisionRepository
+from Services import FileService
 
 
 class RevisionService:
     @staticmethod
-    def create_revision(post: PostModel, description: str, db: Session) -> RevisionModel:
+    def create_revision(post: PostModel, files: List[UploadFile], description: str, db: Session) -> RevisionModel:
         """create revision
 
         Args:
@@ -16,6 +17,8 @@ class RevisionService:
         """
         revision = RevisionModel(description=description, post=post)
         revision = RevisionRepository.save(db=db, revision=revision)
+        for file in files:
+            FileService.create_file(file=file, revision_id=revision.id, db=db)
         return revision
 
     @staticmethod
