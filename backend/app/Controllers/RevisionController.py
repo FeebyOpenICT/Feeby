@@ -1,5 +1,5 @@
-from fastapi import Depends, status, HTTPException, UploadFile, Form
-from typing import List
+from fastapi import Depends, status, HTTPException, UploadFile, Form, File
+from typing import List, Optional
 from Schemas import RevisionInDB
 from Services import PostService
 from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
@@ -55,7 +55,7 @@ class RevisionController:
     #     return result
 
     @router.post('/users/{user_id}/posts/{post_id}/revisions', status_code=status.HTTP_201_CREATED, response_model=RevisionInDB)
-    async def create_revision(self, files: List[UploadFile], body: CreateRevision=Depends(), current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
+    async def create_revision(self, body: CreateRevision=Depends(CreateRevision), files: Optional[List[UploadFile]] = File(default=[]), current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
         """Create revision
 
         Args:

@@ -25,7 +25,7 @@ class FileRepository(RepositoryBase):
                 shutil.copyfileobj(upload_file.file, buffer)
         finally:
             upload_file.file.close()
-        return{"filename": upload_file.filename, "content_type": upload_file.content_type, "destination": Path}
+        return{"filename": upload_file.filename, "content_type": upload_file.content_type, "destination": destination}
 
     @staticmethod
     def save(db: Session, file: FileModel) -> FileModel:
