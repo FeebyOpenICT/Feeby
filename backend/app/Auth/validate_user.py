@@ -53,10 +53,10 @@ async def get_current_user(
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not enough permissions")
 
-        # validate access token against canvas
-        # canvas_user = token.validate_self()
+    # validate access token against canvas
+    # canvas_user = token.validate_self()
 
-        # user = UserRepository.get_user_by_canvas_id(canvas_user['id'], db)
+    # user = UserRepository.get_user_by_canvas_id(canvas_user['id'], db)
     user = UserRepository.get_user_by_canvas_id(id=token.canvas_id, db=db)
 
     return user
