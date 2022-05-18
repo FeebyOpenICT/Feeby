@@ -18,9 +18,11 @@ class FileService:
             revision (RevisionModel): revision id as saved in database
             db (Session): database session
         """
-        file.filename = str(uuid.uuid4().hex) + pathlib.Path(file.filename).suffix
+        file.filename = str(uuid.uuid4().hex) + \
+            pathlib.Path(file.filename).suffix
 
-        file_on_disk = FileRepository.save_file_to_disk(upload_file=file, destination=Path('./files'))
+        file_on_disk = FileRepository.save_file_to_disk(
+            upload_file=file, destination=Path(f'./files/{file.filename}'))
 
         location = file_on_disk.get("destination").absolute().as_posix()
 
