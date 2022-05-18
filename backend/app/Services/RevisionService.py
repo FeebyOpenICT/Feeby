@@ -18,7 +18,6 @@ class RevisionService:
         revision = RevisionModel(description=description, post=post)
         revision = RevisionRepository.save(db=db, revision=revision)
         for file in files:
-            print(file)
             FileService.create_file(file=file, revision=revision, db=db)
         return revision
 

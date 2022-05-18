@@ -55,7 +55,7 @@ class RevisionController:
     #     return result
 
     @router.post('/users/{user_id}/posts/{post_id}/revisions', status_code=status.HTTP_201_CREATED, response_model=RevisionInDB)
-    async def create_revision(self, body: CreateRevision=Depends(CreateRevision), files: Optional[List[UploadFile]] = File(default=[]), current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
+    async def create_revision(self, body: CreateRevision = Depends(), files: Optional[List[UploadFile]] = File([]), current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
         """Create revision
 
         Args:
