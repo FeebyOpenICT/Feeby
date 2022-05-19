@@ -5,7 +5,6 @@
       <v-container>
         <v-form ref="form" lazy-validation v-on:submit.prevent="submitForm" v-model="valid">
           <v-stepper v-model="e1" style="background-color: #F3F3F3"><v-stepper-header style="background-color: #0079CF">
-            <h1>Revision_temp</h1>
             <v-stepper-step
               :complete="e1 > 1"
               step="1"
@@ -116,8 +115,8 @@
                 </v-card>
                 <div class="buttonContainer" style="margin-top: 20px">
                   <v-btn class="btn"
-                       @click="e1=1"
-                       style="background-color: white;
+                         @click="e1=1"
+                         style="background-color: white;
                        color: #0079CF;
                        border-style: solid;
                        border-color: #0079CF"
@@ -136,21 +135,21 @@
               </v-stepper-content>
               <v-stepper-content step="3">
                 <AspectLijstStudenten />
-<!--                <div class="checkBoxContainer" id="knowledge">-->
-<!--                  <div id="aspectCheck"-->
-<!--                       style="color: white"-->
-<!--                  >-->
-<!--                    <v-checkbox color="white" label="Juiste kennis ontwikkelen" type="button" class="selectBox" @click="isHidden = !isHidden"></v-checkbox>-->
-<!--                     </div>-->
-<!--                      <v-textarea class="textField"-->
-<!--                                  v-model="form.aspects"-->
-<!--                                  id="aspectDescription"-->
-<!--                                  v-if="!isHidden"-->
-<!--                                  counter-->
-<!--                                  type="text"-->
-<!--                                  placeholder="Schrijf hier je toelichting over dit aspect..."-->
-<!--                      />-->
-<!--                </div>-->
+                <!--                <div class="checkBoxContainer" id="knowledge">-->
+                <!--                  <div id="aspectCheck"-->
+                <!--                       style="color: white"-->
+                <!--                  >-->
+                <!--                    <v-checkbox color="white" label="Juiste kennis ontwikkelen" type="button" class="selectBox" @click="isHidden = !isHidden"></v-checkbox>-->
+                <!--                     </div>-->
+                <!--                      <v-textarea class="textField"-->
+                <!--                                  v-model="form.aspects"-->
+                <!--                                  id="aspectDescription"-->
+                <!--                                  v-if="!isHidden"-->
+                <!--                                  counter-->
+                <!--                                  type="text"-->
+                <!--                                  placeholder="Schrijf hier je toelichting over dit aspect..."-->
+                <!--                      />-->
+                <!--                </div>-->
                 <div classname="buttons" align="center" justify="center">
                   <v-btn class="btn"
                          @click="e1=2"
@@ -206,7 +205,7 @@
                 <div style="background-color: #0079CF;  max-width: 75%">
                 </div>
                 <AspectLijstStudenten
-                v-form="form.aspects"
+                  v-form="form.aspects"
                 >
 
                 </AspectLijstStudenten>
@@ -234,7 +233,7 @@
         </v-form>
       </v-container>
     </v-app>
-</div>
+  </div>
 
 </template>
 <script>
@@ -245,7 +244,7 @@ import AspectLijstStudenten from '~/components/AspectCards/AspectLijstStudenten'
 // import FooterCom from './FooterCom.vue'
 export default {
   components: { HeaderCom, AspectLijstStudenten },
-  name: 'RevisionPage',
+  name: 'ProductPage',
   data: () => ({
     visible: true,
     isHidden: true,

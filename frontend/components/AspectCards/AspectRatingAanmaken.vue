@@ -20,7 +20,7 @@
           max. 255 characters
         </div>
       </div>
-      <div id="productTextContainer" class="container">
+      <div class="productTextContainer">
         <h2 class="textBoxTitle">
           Beschrijving
         </h2>
@@ -35,11 +35,11 @@
           placeholder="Schrijf hier je beschrijving over dit aspect rating..."
         />
 
-        <div id="characterLimit">
+        <div class="characterLimit">
           max. 1000 characters
         </div>
       </div>
-      <div id="productTextContainer" class="container">
+      <div class="productTextContainer">
         <h2 class="textBoxTitle">
           Korte Beschrijving
         </h2>
@@ -54,7 +54,7 @@
           placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
         />
 
-        <div id="characterLimit">
+        <div class="characterLimit">
           max. 255 characters
         </div>
       </div>
