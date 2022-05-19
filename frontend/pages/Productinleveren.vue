@@ -6,7 +6,6 @@
 
 import { axiosInstance } from '../lib/axiosInstance'
 import ProductPage from '~/components/Product.vue'
-
 // import HeaderCom from './HeaderCom.vue'
 // import FooterCom from './FooterCom.vue'
 
