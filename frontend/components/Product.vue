@@ -134,7 +134,12 @@
 
               </v-stepper-content>
               <v-stepper-content step="3">
-                <AspectLijstStudenten />
+                <AspectLijstStudenten
+                  v-for="aspect in headers"
+                  :key="aspect.text"
+                  :select="aspect.selected"
+
+                />
                 <!--                <div class="checkBoxContainer" id="knowledge">-->
                 <!--                  <div id="aspectCheck"-->
                 <!--                       style="color: white"-->
@@ -205,10 +210,8 @@
                 <div style="background-color: #0079CF;  max-width: 75%">
                 </div>
                 <AspectLijstStudenten
-                  v-form="form.aspects"
-                >
-
-                </AspectLijstStudenten>
+                  v-model="form.aspects"
+                />
                 <v-btn class="btn-back"
                        @click="e1=3"
                        style="
@@ -265,7 +268,10 @@ export default {
       description: '',
       aspects: '',
       uploadedFiles: []
-    }
+    },
+    headers: [
+      {}
+    ]
   }),
   methods: {
     submitForm () {

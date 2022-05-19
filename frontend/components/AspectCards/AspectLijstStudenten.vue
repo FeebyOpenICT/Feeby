@@ -1,9 +1,9 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <!-- Data Tabel -->
   <v-data-table
     :headers="headers"
     :items="aspects"
-    sort-by="title"
+    item-key="title"
     class="elevation-1"
     data-app
     show-select
@@ -29,10 +29,6 @@
         >
           <!-- V-card Form -->
           <v-card>
-            <!-- V-card Title Form -->
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
 
             <!-- V-card Text Form -->
             <v-card-text>
@@ -137,9 +133,7 @@ export default {
     headers: [
       { text: 'Titel', value: 'title' },
       { text: 'Korte Beschrijving', value: 'short_description' },
-      { text: 'Beschrijving', value: 'description' },
-      { text: 'Link', value: 'external_url' },
-      { text: 'Ratings', value: 'ratings' }
+      { text: 'Beschrijving', value: 'description' }
     ],
     aspects: [],
     aspectRatings: [],
@@ -149,6 +143,7 @@ export default {
       short_description: '',
       description: '',
       external_url: '',
+      selected: [],
       rating_ids: ''
     },
     defaultItem: {
@@ -156,6 +151,7 @@ export default {
       short_description: '',
       description: '',
       external_url: '',
+      selected: [],
       rating_ids: ''
     }
   }),
