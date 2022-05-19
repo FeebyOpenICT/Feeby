@@ -1,17 +1,17 @@
 <template className="container">
-  <RevisionPage />
+  <ProductPage />
 </template>
 
 <script>
 
 import { axiosInstance } from '../lib/axiosInstance'
-import RevisionPage from '~/components/Revision.vue'
+import ProductPage from '~/components/Product'
 // import HeaderCom from './HeaderCom.vue'
 // import FooterCom from './FooterCom.vue'
 
 export default {
   name: 'BeroepsproductInleveren',
-  components: { RevisionPage },
+  components: { ProductPage },
   data () {
     return {
       form: {
