@@ -26,19 +26,6 @@
           v-model="dialog"
           max-width="500px"
         >
-          <!-- New Item Button -->
-          <template #activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
-              New Item
-            </v-btn>
-          </template>
-
           <!-- V-card Form -->
           <v-card>
             <!-- V-card Title Form -->
@@ -165,7 +152,7 @@ export default {
       { text: 'Korte Beschrijving', value: 'short_description' },
       { text: 'Beschrijving', value: 'description' },
       { text: 'Link', value: 'external_url' },
-      { text: 'Ratings', value: 'ratings' },
+      { text: 'Ratings', value: 'ratings.title' },
       { text: 'Actions', value: 'actions', sortable: false }
     ],
     aspects: [],
@@ -199,13 +186,16 @@ export default {
     }
   },
 
-  mounted () {
-    axiosInstance
-      .get('api/v1/aspects')
-      .then(response => (this.aspects = response.data), JSON.stringify([this.aspects]))
-    axiosInstance
-      .get('api/v1/ratings')
-      .then(response => (this.aspectRatings = response.data))
+  async mounted () {
+    try {
+      const response = await axiosInstance.get('api/v1/aspects')
+      this.aspects = response.data
+      const resp = await axiosInstance.get('api/v1/ratings')
+      this.aspectRatings = resp.data
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
   },
 
   methods: {
