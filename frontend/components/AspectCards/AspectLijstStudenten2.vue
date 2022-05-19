@@ -126,14 +126,13 @@
 import { axiosInstance } from '../../lib/axiosInstance'
 
 export default {
-  name: 'AspectLijstStudenten',
+  name: 'AspectLijstStudenten2',
   props: ['headers'],
   headers: [
     { text: 'Titel', value: 'title' },
     { text: 'Korte Beschrijving', value: 'short_description' },
     { text: 'Beschrijving', value: 'description' }
   ],
-
   data: () => ({
     dialog: false,
     aspects: [],
