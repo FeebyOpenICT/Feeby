@@ -134,15 +134,12 @@
 
               </v-stepper-content>
               <v-stepper-content step="3">
-                <ul>
-                  <li v-for="(aspect) in aspects"
-                  :key="aspect.id"
-                  >
-                    <p>
-                      {{aspects.title}}
-                    </p>
-                  </li>
-                </ul>
+                <AspectLijstStudenten
+                  v-for="aspect in headers"
+                  :key="aspect.text"
+                  :select="aspect.selected"
+
+                />
                 <!--                <div class="checkBoxContainer" id="knowledge">-->
                 <!--                  <div id="aspectCheck"-->
                 <!--                       style="color: white"-->
@@ -245,11 +242,11 @@
 <script>
 import { axiosInstance } from '../lib/axiosInstance'
 import HeaderCom from './HeaderCom.vue'
-// import AspectLijstStudenten from '~/components/AspectCards/AspectLijstStudenten'
+import AspectLijstStudenten from '~/components/AspectCards/AspectLijstStudenten'
 // import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import FooterCom from './FooterCom.vue'
 export default {
-  components: { HeaderCom },
+  components: { HeaderCom, AspectLijstStudenten },
   name: 'ProductPage',
   data: () => ({
     visible: true,
@@ -265,11 +262,6 @@ export default {
     descriptionRules: [
       v => !!v || 'Beschrijving is verplicht'
     ],
-    headers: [
-      { text: 'Titel', value: 'title' },
-      { text: 'Korte Beschrijving', value: 'short_description' },
-      { text: 'Beschrijving', value: 'description' }
-    ],
     form: {
       post_id: '',
       title: '',
@@ -277,22 +269,9 @@ export default {
       aspects: '',
       uploadedFiles: []
     },
-    aspects: {
-      title: '',
-      short_description: '',
-      description: '',
-      external_url: '',
-      selected: [],
-      rating_ids: '',
-      ratings: [
-        {
-          title: '',
-          short_description: '',
-          description: '',
-          id: []
-        }
-      ]
-    }
+    headers: [
+      {}
+    ]
   }),
   methods: {
     submitForm () {
@@ -316,10 +295,6 @@ export default {
           }
           console.log(error.config)
         })
-      axiosInstance
-        .get('api/v1/aspects')
-        .then(response => (this.aspects = response.data), JSON.stringify([this.aspects])
-        )
     }
   }
 }
