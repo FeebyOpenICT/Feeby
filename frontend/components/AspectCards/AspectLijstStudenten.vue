@@ -125,7 +125,6 @@
 
 <script>
 import { axiosInstance } from '../../lib/axiosInstance'
-
 export default {
   name: 'AspectLijstStudenten',
   data: () => ({
