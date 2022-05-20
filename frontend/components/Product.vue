@@ -131,9 +131,15 @@
                     Continue
                   </v-btn>
                 </div>
+
               </v-stepper-content>
               <v-stepper-content step="3">
-                <AspectLijstStudenten v-bind:headers="headers"/>
+                <AspectLijstStudenten
+                  v-for="aspect in headers"
+                  :key="aspect.text"
+                  :select="aspect.selected"
+
+                />
                 <!--                <div class="checkBoxContainer" id="knowledge">-->
                 <!--                  <div id="aspectCheck"-->
                 <!--                       style="color: white"-->
@@ -203,7 +209,9 @@
                 />
                 <div style="background-color: #0079CF;  max-width: 75%">
                 </div>
-                <AspectLijstStudenten2 v-bind:headers="headers"/>
+                <AspectLijstStudenten
+                  v-model="form.aspects"
+                />
                 <v-btn class="btn-back"
                        @click="e1=3"
                        style="
@@ -235,14 +243,12 @@
 import { axiosInstance } from '../lib/axiosInstance'
 import HeaderCom from './HeaderCom.vue'
 import AspectLijstStudenten from '~/components/AspectCards/AspectLijstStudenten'
-import AspectLijstStudenten2 from '~/components/AspectCards/AspectLijstStudenten2'
 // import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import FooterCom from './FooterCom.vue'
 export default {
-  components: { HeaderCom, AspectLijstStudenten, AspectLijstStudenten2 },
+  components: { HeaderCom, AspectLijstStudenten },
   name: 'ProductPage',
   data: () => ({
-    select: { state: 'Florida', abbr: 'FL' },
     visible: true,
     isHidden: true,
     valid: true,
@@ -261,12 +267,10 @@ export default {
       title: '',
       description: '',
       aspects: '',
-      select: ''
+      uploadedFiles: []
     },
     headers: [
-      { text: 'Titel', value: 'title' },
-      { text: 'Korte Beschrijving', value: 'short_description' },
-      { text: 'Beschrijving', value: 'description' }
+      {}
     ]
   }),
   methods: {

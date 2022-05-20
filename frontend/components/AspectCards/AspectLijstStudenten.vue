@@ -1,6 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <!-- Data Tabel -->
   <v-data-table
+    :headers="headers"
     :items="aspects"
     item-key="title"
     class="elevation-1"
@@ -127,15 +128,13 @@ import { axiosInstance } from '../../lib/axiosInstance'
 
 export default {
   name: 'AspectLijstStudenten',
-  props: ['headers'],
-  headers: [
-    { text: 'Titel', value: 'title' },
-    { text: 'Korte Beschrijving', value: 'short_description' },
-    { text: 'Beschrijving', value: 'description' }
-  ],
-
   data: () => ({
     dialog: false,
+    headers: [
+      { text: 'Titel', value: 'title' },
+      { text: 'Korte Beschrijving', value: 'short_description' },
+      { text: 'Beschrijving', value: 'description' }
+    ],
     aspects: [],
     aspectRatings: [],
     editedIndex: -1,
