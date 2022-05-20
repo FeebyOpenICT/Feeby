@@ -19,6 +19,25 @@ class FeedbackService:
         body: List[CreateFeedback],
         db: Session
     ) -> List[FeedbackModel]:
+        """create feedback
+
+        Args:
+            reviewer (UserModel): reviewer
+            owner (UserModel): owner of post
+            post (PostModel): post to give feedback on
+            revision (RevisionModel): revision to give feedback on
+            body (List[CreateFeedback]): feedback
+            db (Session): database session
+
+        Raises:
+            HTTPException: raised if owner == reviewer 
+            DoesNotBelongTo: if owner is not truly owner of post
+            DoesNotBelongTo: if revision does not belong to post    
+            HTTPException: feedback does not match baseline measurement
+
+        Returns:
+            List[FeedbackModel]: list of feedback
+        """
         if reviewer.id == owner.id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not allowed to give oneself feedback")

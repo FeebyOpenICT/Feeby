@@ -54,6 +54,16 @@ class FeedbackRepository(RepositoryBase):
 
     @staticmethod
     def get_baseline_measurement(post_id: int, db: Session) -> List[FeedbackModel]:
+        """get baseline measurement of post
+
+        Args:
+            post_id (int): id of post as saved in database
+            db (Session): database session
+
+        Returns:
+            List[FeedbackModel]: list of feedback from baseline measurement
+        """
+
         result = db.execute("""
             SELECT feedback.*
             FROM post 

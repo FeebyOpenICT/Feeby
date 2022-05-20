@@ -39,6 +39,16 @@ class FeedbackController:
 
     @router.post('/users/{user_id}/posts/{post_id}/revisions/{revision_id}/feedback', response_model=List[FeedbackInDB])
     async def create_feedback(self, body: List[CreateFeedback], current_active_user: UserModel = Depends(get_current_active_user)):
+        """Create feedback on revision
+
+        Args:
+            user_id (int): id of user as saved in database
+            post_id (int): id of post as saved in database
+            revision_id (int): id of revision as saved in database
+
+        Allowed roles:
+        - All
+        """
         feedback = FeedbackService.create_feedback(
             reviewer=current_active_user, owner=self.user, post=self.post, revision=self.revision, body=body, db=self.db)
         return feedback
