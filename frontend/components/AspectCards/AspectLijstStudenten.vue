@@ -1,9 +1,12 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <!-- Data Tabel -->
   <v-data-table
+    :value="selectedAspects"
+    @input="$emit('update:selectedAspects', $event)"
+    step="1"
     :headers="headers"
     :items="aspects"
-    item-key="title"
+    item-key="id"
     class="elevation-1"
     data-app
     show-select
@@ -127,6 +130,7 @@
 import { axiosInstance } from '../../lib/axiosInstance'
 
 export default {
+  props: ['selectedAspects'],
   name: 'AspectLijstStudenten',
   data: () => ({
     dialog: false,

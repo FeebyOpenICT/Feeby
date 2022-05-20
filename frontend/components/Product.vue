@@ -135,26 +135,9 @@
               </v-stepper-content>
               <v-stepper-content step="3">
                 <AspectLijstStudenten
-                  v-for="aspect in headers"
-                  :key="aspect.text"
-                  :select="aspect.selected"
-
+                  v-model="form.aspects"
+                  :selected-aspects.sync="value"
                 />
-                <!--                <div class="checkBoxContainer" id="knowledge">-->
-                <!--                  <div id="aspectCheck"-->
-                <!--                       style="color: white"-->
-                <!--                  >-->
-                <!--                    <v-checkbox color="white" label="Juiste kennis ontwikkelen" type="button" class="selectBox" @click="isHidden = !isHidden"></v-checkbox>-->
-                <!--                     </div>-->
-                <!--                      <v-textarea class="textField"-->
-                <!--                                  v-model="form.aspects"-->
-                <!--                                  id="aspectDescription"-->
-                <!--                                  v-if="!isHidden"-->
-                <!--                                  counter-->
-                <!--                                  type="text"-->
-                <!--                                  placeholder="Schrijf hier je toelichting over dit aspect..."-->
-                <!--                      />-->
-                <!--                </div>-->
                 <div classname="buttons" align="center" justify="center">
                   <v-btn class="btn"
                          @click="e1=2"
@@ -211,6 +194,8 @@
                 </div>
                 <AspectLijstStudenten
                   v-model="form.aspects"
+                  :selected-aspects.sync="value"
+                  disabled="true"
                 />
                 <v-btn class="btn-back"
                        @click="e1=3"
@@ -249,6 +234,7 @@ export default {
   components: { HeaderCom, AspectLijstStudenten },
   name: 'ProductPage',
   data: () => ({
+    selectedAspects: '',
     visible: true,
     isHidden: true,
     valid: true,
