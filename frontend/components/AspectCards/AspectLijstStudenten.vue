@@ -1,7 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <!-- Data Tabel -->
   <v-data-table
-    v-model="message"
     :value="selectedAspects"
     @input="$emit('update:selectedAspects', $event)"
     step="1"
@@ -12,23 +11,125 @@
     data-app
     show-select
   >
-    >
-    <template>
-      <v-text-field
-        v-model.trim="selectAspect"></v-text-field>
+    <!-- De Header van het Tabel -->
+    <template #top>
+      <v-toolbar
+        flat
+      >
+        <!-- TItle bar from Toolbar -->
+        <v-toolbar-title>Mijn Aspecten</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        />
+        <v-spacer />
+
+        <!-- Form Dialog -->
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+        >
+          <!-- V-card Form -->
+          <v-card>
+
+            <!-- V-card Text Form -->
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.title"
+                      label="Aspect Title"
+                      counter
+                      maxlength="255"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.short_description"
+                      label="Korte Beschrijving"
+                      counter
+                      maxlength="255"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.description"
+                      label="Beschrijving"
+                      counter
+                      maxlength="1000"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.external_url"
+                      label="Link"
+                      counter
+                      maxlength="2000"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-select
+                      v-model="editedItem.ratings"
+                      :items="aspectRatings"
+                      label="Rating"
+                      multiple
+                      counter
+                      item-text="title"
+                      item-value="id"
+                      chips
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <!-- V-card acties -->
+            <v-card-actions>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <!-- Items bewerken/verwijderen knoppen -->
+    <template #[`item.actions`]="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import Vuex from 'vuex'
 import { axiosInstance } from '../../lib/axiosInstance'
 
-export default new Vuex.Store({
-  state: {
-    selectAspect: ''
-  },
-
+export default {
   props: ['selectedAspects'],
   name: 'AspectLijstStudenten',
   data: () => ({
@@ -36,9 +137,7 @@ export default new Vuex.Store({
     headers: [
       { text: 'Titel', value: 'title' },
       { text: 'Korte Beschrijving', value: 'short_description' },
-      { text: 'Beschrijving', value: 'description' },
-      { text: 'Jou geschreven toelichting', value: 'explanation' }
-
+      { text: 'Beschrijving', value: 'description' }
     ],
     aspects: [],
     aspectRatings: [],
@@ -48,6 +147,7 @@ export default new Vuex.Store({
       short_description: '',
       description: '',
       external_url: '',
+      selected: [],
       rating_ids: ''
     },
     defaultItem: {
@@ -55,18 +155,14 @@ export default new Vuex.Store({
       short_description: '',
       description: '',
       external_url: '',
+      selected: [],
       rating_ids: ''
     }
   }),
 
   computed: {
-    selectAspect: {
-      get () {
-        return this.$store.state.selectAspect
-      },
-      set (newValue) {
-        this.selectAspect = newValue
-      }
+    formTitle () {
+      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     }
   },
 
@@ -110,8 +206,7 @@ export default new Vuex.Store({
       this.close()
     }
   }
-})
-
+}
 </script>
 
 <style scoped>
