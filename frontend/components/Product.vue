@@ -3,7 +3,8 @@
     <HeaderCom />
     <v-app>
       <v-container>
-        <v-form ref="form" lazy-validation v-on:submit.prevent="submitForm" v-model="valid">
+        <template>
+        <v-form ref="form" v-on:submit.prevent="submitForm" v-model="valid">
           <v-stepper v-model="e1" style="background-color: #F3F3F3"><v-stepper-header style="background-color: #0079CF">
             <v-stepper-step
               :complete="e1 > 1"
@@ -219,6 +220,7 @@
             </v-stepper-items>
           </v-stepper>
         </v-form>
+        </template>
       </v-container>
     </v-app>
   </div>
@@ -284,7 +286,6 @@ export default {
     }
   }
 }
-
 </script>
 <style>
 .formField {
