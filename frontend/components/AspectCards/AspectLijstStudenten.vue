@@ -24,80 +24,57 @@ import { axiosInstance } from '../../lib/axiosInstance'
 export default {
   props: ['selectedAspects'],
   name: 'AspectLijstStudenten',
-  data: () => ({
-    dialog: false,
-    headers: [
-      { text: 'Titel', value: 'title' },
-      { text: 'Korte Beschrijving', value: 'short_description' },
-      { text: 'Beschrijving', value: 'description' },
-      { text: 'Jou geschreven toelichting', value: 'explanation' }
-
-    ],
-    aspects: [],
-    aspectRatings: [],
-    editedIndex: -1,
-    editedItem: {
-      title: '',
-      short_description: '',
-      description: '',
-      external_url: '',
-      selected: [],
-      rating_ids: ''
-    },
-    defaultItem: {
-      title: '',
-      short_description: '',
-      description: '',
-      external_url: '',
-      selected: [],
-      rating_ids: ''
-    }
-  }),
-
-  computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    }
-  },
-
-  watch: {
-    dialog (val) {
-      val || this.close()
+  data () {
+    return {
+      aspects: [],
+      aspectRatings: [],
+      dialog: false,
+      headers: [
+        { text: 'Titel', value: 'title' },
+        { text: 'Korte Beschrijving', value: 'short_description' },
+        { text: 'Beschrijving', value: 'description' },
+        { text: 'Jou geschreven toelichting', value: 'explanation' }
+      ],
+      aspectList: {
+        title: '',
+        short_description: '',
+        description: '',
+        external_url: '',
+        rating_ids: []
+      }
     }
   },
 
   mounted () {
     axiosInstance
       .get('api/v1/aspects')
-      .then(response => (this.aspects = response.data), JSON.stringify([this.aspects]))
+      .then(response => (this.aspects = response.data))
     axiosInstance
       .get('api/v1/ratings')
       .then(response => (this.aspectRatings = response.data))
   },
-
   methods: {
-    editItem (item) {
-      this.editedIndex = this.aspects.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
+    submitForm () {
+      axiosInstance
+        .post('api/v1/users/1/posts', this.values)
+        // .patch(`api/v1/aspects/${this.aspects.id}`)
+        .then(response => (this.values = response.data))
+        .catch(function (error) {
+          if (error.response) {
+            // De post request is gemaakt en de server gaf in de terminal een status code aan
 
-    close () {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    updateForm () {
-      if (this.editedIndex > -1) {
-        axiosInstance.patch(`api/v1/aspects/${this.aspects[this.editedIndex].id}`, this.editedItem)
-        Object.assign(this.aspects[this.editedIndex], this.editedItem)
-      } else {
-        this.aspects.push(this.editedItem)
-      }
-      this.close()
+            console.log(error.response.data)
+            console.log('render error', error.response.status)
+            alert('Je bent momenteel niet ingelogd').console.log('je bent momenteel niet ingelogd', error.response.headers)
+          } else if (error.request) {
+            // Request is verzonden, echter geen reactie terug
+            alert('De website is momenteel niet beschikbaar').console.log('De website is momenteel niet beschikbaar', error.request)
+          } else {
+            // Iets in de request heeft voor een error gezorgd
+            alert('Er is iets mis gegaan met het versturen van de data').console.log('Er is iets mis gegaan met het versturen van de data', error.message)
+          }
+          console.log(error.config)
+        })
     }
   }
 }
