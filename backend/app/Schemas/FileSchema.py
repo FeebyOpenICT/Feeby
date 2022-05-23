@@ -1,6 +1,7 @@
 from pydantic import BaseModel, constr
 from datetime import datetime
-from fastapi import UploadFile
+from typing import Optional
+from Models import RevisionModel, FeedbackModel
 
 
 class File(BaseModel):
@@ -20,4 +21,5 @@ class FileInDB(File):
 
 
 class CreateFile(File):
-    pass
+    revision_id: Optional[RevisionModel]
+    feedback_id: Optional[FeedbackModel]

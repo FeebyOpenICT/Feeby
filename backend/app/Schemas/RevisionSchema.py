@@ -1,6 +1,5 @@
 from datetime import datetime
 from pydantic import BaseModel, constr
-from .FileSchema import CreateFile
 from typing import List, Optional
 from .FormData import FormData
 

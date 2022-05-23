@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+from typing import Optional
 
 from .RevisionModel import RevisionModel
+from .FeedbackModel import FeedbackModel
 from database import Base
 
 
@@ -20,20 +22,25 @@ class FileModel(Base):
     time_updated = Column(DateTime(timezone=True),
                           server_default=func.now(), onupdate=func.now())
 
-    revision_id = Column(Integer, ForeignKey('revision.id'), nullable=False)
+    revision_id = Column(Integer, ForeignKey('revision.id'), nullable=True)
     revision = relationship('RevisionModel')
 
-    def __init__(self, filename: str, content_type: str, location: str, revision: RevisionModel) -> None:
+    feedback_id = Column(Integer, ForeignKey('feedback.id'), nullable=True)
+    feedback = relationship('FeedbackModel')
+
+    def __init__(self, filename: str, content_type: str, location: str, revision: RevisionModel, feedback: FeedbackModel) -> None:
         """FileModel constructor
 
         Args:
             filename (str): name of the file
             content_type (str): content type of the file
             location (str): location of the file
-            revision (RevisionModel): post file has been added to
+            revision (RevisionModel): revision file might have been added to
+            feedback (FeedbackModel): feedback file might have been added to
         """
         self.filename = filename
         self.content_type = content_type
         self.location = location
         self.revision = revision
+        self.feedback = feedback
         super().__init__()
