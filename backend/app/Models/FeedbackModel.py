@@ -8,7 +8,9 @@ from sqlalchemy.orm import relationship
 
 
 class FeedbackModel(Base):
-    __tablename__ = 'revision'
+    """FeedbackModel
+    """
+    __tablename__ = 'feedback'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
@@ -28,6 +30,15 @@ class FeedbackModel(Base):
     reviewer = relationship("UserModel")
 
     def __init__(self, description: str, rating: RatingModel, aspect: AspectModel, revision: RevisionModel, reviewer: UserModel) -> None:
+        """FeedbackModel intializer
+
+        Args:
+            description (str): description of feedback 
+            rating (RatingModel): given rating, should belong to aspect
+            aspect (AspectModel): aspect on which feedback is being given
+            revision (RevisionModel): revision on which feedback is being given
+            reviewer (UserModel): user thats giving the review
+        """
         self.description = description
         self.rating = rating
         self.aspect = aspect
