@@ -11,7 +11,6 @@
     data-app
     show-select
   >
-    >
     <template #[`item.explanation`]="props">
       <v-textarea v-model="props.item.explanation"></v-textarea>
     </template>

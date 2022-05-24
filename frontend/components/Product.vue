@@ -134,10 +134,20 @@
 
               </v-stepper-content>
               <v-stepper-content step="3">
-                <AspectLijstStudenten
+                <v-data-table
+                  :items="aspects"
+                  :value="selectedAspects"
+                  @input="$emit('update:selectedAspects', $event)"
+                  :headers="headers"
                   v-model="form.aspects"
-                  :selected-aspects.sync="value"
-                />
+                  item-key="id"
+                  class="elevation-1"
+                  data-app
+                  show-select
+                ><template #[`item.explanation`]="props">
+                  <v-textarea v-model="props.item.explanation"></v-textarea>
+                </template>
+                </v-data-table>
                 <div classname="buttons" align="center" justify="center">
                   <v-btn class="btn"
                          @click="e1=2"
@@ -192,11 +202,18 @@
                 />
                 <div style="background-color: #0079CF;  max-width: 75%">
                 </div>
-                <AspectLijstStudenten
+                <v-data-table
+                  :value="selectedAspects"
+                  @input="$emit('update:selectedAspects', $event)"
+                  :headers="headers"
+                  :items="aspects"
                   v-model="form.aspects"
-                  :selected-aspects.sync="value"
-                  disabled="true"
-                />
+                  item-key="id"
+                  class="elevation-1"
+                  data-app
+                  disabled
+                >
+                </v-data-table>
                 <v-btn class="btn-back"
                        @click="e1=3"
                        style="
@@ -227,38 +244,60 @@
 <script>
 import { axiosInstance } from '../lib/axiosInstance'
 import HeaderCom from './HeaderCom.vue'
-import AspectLijstStudenten from '~/components/AspectCards/AspectLijstStudenten'
 // import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import FooterCom from './FooterCom.vue'
 export default {
-  components: { HeaderCom, AspectLijstStudenten },
+  components: { HeaderCom },
   name: 'ProductPage',
-  data: () => ({
-    selectedAspects: '',
-    visible: true,
-    isHidden: true,
-    valid: true,
-    e1: 1,
-    user: '',
-    dragover: false,
-    titleRules: [
-      v => !!v || 'Titel is verplicht',
-      v => (v && v.length <= 74) || 'Titel mag niet meer dan 75 characters hebben'
-    ],
-    descriptionRules: [
-      v => !!v || 'Beschrijving is verplicht'
-    ],
-    form: {
-      post_id: '',
-      title: '',
-      description: '',
-      aspects: '',
-      uploadedFiles: []
-    },
-    headers: [
-      {}
-    ]
-  }),
+  data () {
+    return {
+      selectedAspects: '',
+      visible: true,
+      isHidden: true,
+      valid: true,
+      e1: 1,
+      user: '',
+      aspects: [],
+      aspectRatings: [],
+      dragover: false,
+      titleRules: [
+        v => !!v || 'Titel is verplicht',
+        v => (v && v.length <= 74) || 'Titel mag niet meer dan 75 characters hebben'
+      ],
+      descriptionRules: [
+        v => !!v || 'Beschrijving is verplicht'
+      ],
+      form: [{
+        post_id: '',
+        title: '',
+        description: '',
+        uploadedFiles: []
+      }],
+      aspectList: {
+        title: '',
+        short_description: '',
+        description: '',
+        aspects: [],
+        external_url: '',
+        rating_ids: []
+      },
+      headers: [
+        { text: 'Titel', value: 'title' },
+        { text: 'Korte Beschrijving', value: 'short_description' },
+        { text: 'Beschrijving', value: 'description' },
+        { text: 'Jou geschreven toelichting', value: 'explanation' }
+      ]
+    }
+  },
+
+  mounted () {
+    axiosInstance
+      .get('api/v1/aspects')
+      .then(response => (this.aspects = response.data))
+    axiosInstance
+      .get('api/v1/ratings')
+      .then(response => (this.aspectRatings = response.data))
+  },
   methods: {
     submitForm () {
       axiosInstance
