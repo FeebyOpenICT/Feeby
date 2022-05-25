@@ -20,6 +20,6 @@ class FileInDB(File):
         orm_mode = True
 
 
-class CreateFile(File):
+class CreateFile(BaseModel):
     revision_id: Optional[RevisionModel]
     feedback_id: Optional[FeedbackModel]

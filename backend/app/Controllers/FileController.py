@@ -14,7 +14,7 @@ router = InferringRouter(
 
 @router.post('/users/{user_id}/files', status_code=status.HTTP_201_CREATED,
              response_model=FileInDB)
-async def create_revision(self, body: CreateFile, files: List[UploadFile],
+async def create_file(self, body: CreateFile, files: List[UploadFile],
                           current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
     """Create revision
 

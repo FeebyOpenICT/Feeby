@@ -21,6 +21,11 @@ class FileService:
             feedback(FeedbackModel): feedback id as saved in database
             db (Session): database session
         """
+        if feedback:
+            revision = None
+        else:
+            feedback = None
+
         for file in files:
             file.filename = str(uuid.uuid4().hex) + \
                             pathlib.Path(file.filename).suffix
