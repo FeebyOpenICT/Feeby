@@ -67,7 +67,7 @@
                   class="formField"
                   maxlength="500"
                   label="Schrijf hier de beschrijving van je post..."
-                  v-model="form.description"
+                  v-model="form.revision.description"
                   outlined
                   :rules="descriptionRules"
                   required>
@@ -102,7 +102,6 @@
                       </p>
                     </v-row>
                     <v-file-input
-                      v-model="form.uploadFiles"
                       chips
                       counter
                       multiple
@@ -134,10 +133,7 @@
               <v-stepper-content step="3">
                 <v-data-table
                   :items="aspects"
-                  :value="selectedAspects"
-                  @input="$emit('update:selectedAspects', $event)"
                   :headers="headers"
-                  v-model="form.aspects"
                   item-key="id"
                   class="elevation-1"
                   data-app
@@ -199,12 +195,11 @@
                   type="text"
                   class="formField"
                   outlined
-                  v-model="form.description"
+                  v-model="form.revision.description"
                   disabled
                 >
                 </v-text-field>
                 <v-file-input
-                  v-model="form.uploadFiles"
                   multiple
                   show-size
                   truncate-length="15"
@@ -213,11 +208,8 @@
                 <div style="background-color: #0079CF;  max-width: 75%">
                 </div>
                 <v-data-table
-                  :value="selectedAspects"
-                  @input="$emit('update:selectedAspects', $event)"
                   :headers="headers"
                   :items="aspects"
-                  v-model="form.aspects"
                   item-key="id"
                   class="elevation-1"
                   data-app
@@ -265,8 +257,8 @@
 
 </template>
 <script>
-import { axiosInstance } from '../lib/axiosInstance'
 import HeaderCom from './HeaderCom.vue'
+import { axiosInstance } from '~/lib/axiosInstance'
 // import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import FooterCom from './FooterCom.vue'
 export default {
@@ -280,10 +272,7 @@ export default {
       isHidden: true,
       valid: true,
       e1: 1,
-      user: '',
-      aspects: [],
-      selectedRating: null,
-      aspectRatings: [],
+      user: [],
       dragover: false,
       titleRules: [
         v => !!v || 'Titel is verplicht',
@@ -292,19 +281,11 @@ export default {
       descriptionRules: [
         v => !!v || 'Beschrijving is verplicht'
       ],
-      form: [{
-        post_id: '',
+      form: {
         title: '',
-        description: '',
-        uploadedFiles: []
-      }],
-      aspectList: {
-        title: '',
-        short_description: '',
-        description: '',
-        aspects: [],
-        external_url: '',
-        rating_ids: []
+        revision: {
+          description: ''
+        }
       },
       headers: [
         { text: 'Titel', value: 'title' },
@@ -315,20 +296,19 @@ export default {
       ]
     }
   },
-
   mounted () {
+    axiosInstance
+      .get('/api/v1/users/1')
+      .then(response => (this.user = response.data))
+
     axiosInstance
       .get('api/v1/aspects')
       .then(response => (this.aspects = response.data))
-    axiosInstance
-      .get('api/v1/ratings')
-      .then(response => (this.aspectRatings = response.data))
   },
   methods: {
     submitForm () {
       axiosInstance
         .post('api/v1/users/1/posts', this.form)
-        // .patch(`api/v1/aspects/${this.aspects.id}`)
         .then(response => (this.form = response.data))
         .catch(function (error) {
           if (error.response) {
@@ -346,11 +326,6 @@ export default {
           }
           console.log(error.config)
         })
-    },
-
-    selectRating (item) {
-      this.selectedRating = Object.assign({}, item)
-      this.dialog = true
     }
   }
 }
