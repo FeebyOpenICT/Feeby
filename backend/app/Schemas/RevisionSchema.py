@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import List
 from pydantic import BaseModel, constr
 from typing import List, Optional
 from .FormData import FormData
+from Schemas.FeedbackSchema import CreateFeedback
 
 
 class Revision(BaseModel):
@@ -15,6 +17,10 @@ class RevisionInDB(Revision):
 
     class Config:
         orm_mode = True
+
+
+class CreateInitialRevision(Revision):
+    feedback: List[CreateFeedback]
 
 
 class CreateRevision(Revision):

@@ -1,9 +1,10 @@
 from typing import List
 from fastapi import Depends
-from Auth.validate_user import get_current_active_user
+from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
 from Models import UserModel
-from Services import PostService, UserService
-from Schemas import FeedbackInDB, CreateFeedback
+from Schemas.FeedbackSchema import FeedbackInDB
+from Services import PostService, UserService, RevisionService
+from Schemas import CreateFeedback
 from sqlalchemy.orm import Session
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
@@ -22,23 +23,22 @@ class FeedbackController:
         self,
         post_id: int,
         user_id: int,
+        revision_id: int,
         db: Session = Depends(get_db_connection),
-        current_active_user: UserModel = Depends(get_current_active_user)
     ) -> None:
-        if user_id != current_active_user.id:
-            self.user = UserService.get_active_user_by_id_or_fail(
-                id=user_id, db=db)
-            self.post = PostService.get_post_with_access_or_fail(
-                current_user_id=current_active_user.id, post_id=post_id, db=db)
-        else:
-            self.post = PostService.get_post_by_id_from_user_id_or_fail(
-                post_id=post_id, user_id=user_id, db=db)
-            self.user = current_active_user
-
-        self.current_active_user = current_active_user
         self.db = db
+        self.user_id = user_id
+        self.post_id = post_id
+        self.revision_id = revision_id
 
-    @router.post('/users/{user_id}/posts/{post_id}/feedback'
-                 )
-    async def create_feedback(self):
-        pass
+        self.user = UserService.get_active_user_by_id_or_fail(
+            id=user_id, db=db)
+        self.post = PostService.get_post_by_id_or_fail(post_id=post_id, db=db)
+        self.revision = RevisionService.get_revision_by_id_or_fail(
+            id=revision_id, db=db)
+
+    @router.post('/users/{user_id}/posts/{post_id}/revisions/{revision_id}/feedback', response_model=List[FeedbackInDB])
+    async def create_feedback(self, body: List[CreateFeedback], current_active_user: UserModel = Depends(get_current_active_user)):
+        feedback = FeedbackService.create_feedback(
+            reviewer=current_active_user, owner=self.user, post=self.post, revision=self.revision, body=body, db=self.db)
+        return feedback
