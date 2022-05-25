@@ -85,7 +85,6 @@
               <v-stepper-content step="2"
                                  align="center"
               >
-
                 <v-card justify="center"
                         align="center"
                         @drop.prevent="dragover = false"
@@ -131,7 +130,6 @@
                     Continue
                   </v-btn>
                 </div>
-
               </v-stepper-content>
               <v-stepper-content step="3">
                 <v-data-table
@@ -145,8 +143,20 @@
                   data-app
                   show-select
                 ><template #[`item.explanation`]="props">
-                  <v-textarea v-model="props.item.explanation"></v-textarea>
+                  <v-textarea v-model="props.item.explanation" outlined></v-textarea>
                 </template>
+                  <template #[`item.selectRating`]="props">
+                    <div class="text-center mt-5">
+                      <v-rating v-model="props.item.selectedRating"
+                                color="primary"
+                                background-color="grey darken-1"
+                                empty-icon="$ratingFull"
+                                half-increments
+                                hover
+                                large
+                      ></v-rating>
+                    </div>
+                  </template>
                 </v-data-table>
                 <div classname="buttons" align="center" justify="center">
                   <v-btn class="btn"
@@ -213,6 +223,19 @@
                   data-app
                   disabled
                 >
+                  <template #[`item.selectRating`]="props">
+                  <div class="text-center mt-5">
+                    <v-rating v-model="props.item.selectedRating"
+                      color="primary"
+                      background-color="grey darken-1"
+                      empty-icon="$ratingFull"
+                      half-increments
+                      hover
+                      large
+                      readonly
+                    ></v-rating>
+                  </div>
+                </template>
                 </v-data-table>
                 <v-btn class="btn-back"
                        @click="e1=3"
@@ -251,6 +274,7 @@ export default {
   name: 'ProductPage',
   data () {
     return {
+      dialog: false,
       selectedAspects: '',
       visible: true,
       isHidden: true,
@@ -258,6 +282,7 @@ export default {
       e1: 1,
       user: '',
       aspects: [],
+      selectedRating: null,
       aspectRatings: [],
       dragover: false,
       titleRules: [
@@ -285,7 +310,8 @@ export default {
         { text: 'Titel', value: 'title' },
         { text: 'Korte Beschrijving', value: 'short_description' },
         { text: 'Beschrijving', value: 'description' },
-        { text: 'Jou geschreven toelichting', value: 'explanation' }
+        { text: 'Jou geschreven toelichting', value: 'explanation' },
+        { text: 'rating', value: 'selectRating' }
       ]
     }
   },
@@ -320,6 +346,11 @@ export default {
           }
           console.log(error.config)
         })
+    },
+
+    selectRating (item) {
+      this.selectedRating = Object.assign({}, item)
+      this.dialog = true
     }
   }
 }
