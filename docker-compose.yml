@@ -31,6 +31,26 @@ services:
       - ./backend/app:/app
     ports:
       - 5678:5678
+    environment:
+      - BASE_CANVAS_URL=https://canvas.lucabergman.nl
+      - BASE_APP_URL=http://localhost
+      - JWT_ALGORITHM=HS256
+      - DATABASE_URL=db
+      - CANVAS_CLIENT_ID_FILE=/run/secrets/CANVAS_CLIENT_ID
+      - CANVAS_CLIENT_SECRET_FILE=/run/secrets/CANVAS_CLIENT_SECRET
+      - CANVAS_DEVELOPER_KEY_FILE=/run/secrets/CANVAS_DEVELOPER_KEY
+      - CANVAS_DEVELOPER_KEY_ID_FILE=/run/secrets/CANVAS_DEVELOPER_KEY_ID
+      - JWT_SECRET_FILE=/run/secrets/JWT_SECRET
+      - POSTGRES_USER_FILE=/run/secrets/POSTGRES_USER
+      - POSTGRES_PASSWORD_FILE=/run/secrets/POSTGRES_PASSWORD
+    secrets:
+      - CANVAS_CLIENT_ID
+      - CANVAS_CLIENT_SECRET
+      - CANVAS_DEVELOPER_KEY
+      - CANVAS_DEVELOPER_KEY_ID
+      - JWT_SECRET
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     labels:
       traefik.enable: true
       traefik.http.routers.backend.rule: Host(`127.0.0.1`) || Host(`localhost`) && PathPrefix(`/api/v1`)
@@ -63,8 +83,11 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_PASSWORD=hallo123
-      - POSTGRES_USER=feeby
+      - POSTGRES_USER_FILE=/run/secrets/POSTGRES_USER
+      - POSTGRES_PASSWORD_FILE=/run/secrets/POSTGRES_PASSWORD
+    secrets:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
 
   redis:
     container_name: feeby-redis-dev
@@ -81,3 +104,21 @@ services:
       traefik.http.routers.adminer.rule: Host(`adminer.localhost`)
       traefik.http.routers.adminer.entrypoints: web
       traefik.http.services.adminer.loadbalancer.server.port: 8080
+
+
+secrets:
+  CANVAS_CLIENT_ID:
+    file: CANVAS_CLIENT_ID.txt
+  CANVAS_CLIENT_SECRET:
+    file: CANVAS_CLIENT_SECRET.txt
+  CANVAS_DEVELOPER_KEY:
+    file: CANVAS_DEVELOPER_KEY.txt
+  CANVAS_DEVELOPER_KEY_ID:
+    file: CANVAS_DEVELOPER_KEY_ID.txt
+  JWT_SECRET:
+    file: JWT_SECRET.txt
+  POSTGRES_PASSWORD:
+    file: POSTGRES_PASSWORD.txt
+  POSTGRES_USER:
+    file: POSTGRES_USER.txt
+    
