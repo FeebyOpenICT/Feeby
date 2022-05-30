@@ -1,143 +1,154 @@
 <template>
-  <!-- Data Tabel -->
-  <v-data-table
-    :headers="headers"
-    :items="aspects"
-    sort-by="title"
-    class="elevation-1"
-    data-app
-  >
-    <!-- De Header van het Tabel -->
-    <template #top>
-      <v-toolbar
-        flat
-      >
-        <!-- TItle bar from Toolbar -->
-        <v-toolbar-title>Mijn Aspecten</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        />
-        <v-spacer />
+  <v-card v-model="aspectTabel">
+    <!-- Data Tabel -->
+    <v-data-table
+      :headers="headers"
+      :items="aspects"
+      sort-by="title"
+      class="elevation-1"
+      data-app
+      temporary
+    >
+      <template #[`item.ratings`]="{ item }">
+        <td>{{ getRatingNames(item.ratings) }}</td>
+      </template>
 
-        <!-- Form Dialog -->
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
+      <!-- De Header van het Tabel -->
+      <template #top>
+        <v-toolbar
+          flat
         >
-          <!-- V-card Form -->
-          <v-card>
-            <!-- V-card Title Form -->
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
+          <!-- TItle bar from Toolbar -->
+          <v-toolbar-title>Mijn Aspecten</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          />
+          <v-spacer />
 
-            <!-- V-card Text Form -->
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.title"
-                      label="Aspect Title"
-                      counter
-                      maxlength="255"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.short_description"
-                      label="Korte Beschrijving"
-                      counter
-                      maxlength="255"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.description"
-                      label="Beschrijving"
-                      counter
-                      maxlength="1000"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.external_url"
-                      label="Link"
-                      counter
-                      maxlength="2000"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-select
-                      v-model="editedItem.ratings"
-                      :items="aspectRatings"
-                      label="Rating"
-                      multiple
-                      counter
-                      item-text="title"
-                      item-value="id"
-                      chips
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+          <!-- Form Dialog -->
+          <v-dialog
+            v-model="dialog"
+            max-width="80%"
+            max-height="80%"
+          >
+            <!-- V-card Form -->
+            <v-card>
+              <!-- V-card Title Form -->
+              <v-card-title>
+                <span class="text-h5">{{ formTitle }}</span>
+              </v-card-title>
 
-            <!-- V-card acties -->
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="updateForm"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <!-- Items bewerken/verwijderen knoppen -->
-    <template #[`item.actions`]="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-    </template>
-  </v-data-table>
+              <!-- V-card Text Form -->
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedItem.title"
+                        label="Aspect Title"
+                        counter
+                        maxlength="255"
+                      />
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-textarea
+                        v-model="editedItem.short_description"
+                        class="textField"
+                        label="Korte Beschrijving"
+                        counter
+                        maxlength="255"
+                      />
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-textarea
+                        v-model="editedItem.description"
+                        class="textField"
+                        label="Beschrijving"
+                        counter
+                        maxlength="1000"
+                      />
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedItem.external_url"
+                        label="Link"
+                        counter
+                        maxlength="2000"
+                      />
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-select
+                        v-model="editedItem.ratings"
+                        :items="aspectRatings"
+                        label="Rating"
+                        multiple
+                        counter
+                        item-text="title"
+                        item-value="id"
+                        chips
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <!-- V-card acties -->
+              <v-card-actions>
+                <v-spacer />
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="close"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="updateForm"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+
+      <!-- Items bewerken/verwijderen knoppen -->
+      <template #[`item.actions`]="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
@@ -146,13 +157,14 @@ import { axiosInstance } from '../../lib/axiosInstance'
 export default {
   name: 'AspectInzien',
   data: () => ({
-    dialog: false,
+    dialog: null,
+    aspectTabel: null,
     headers: [
       { text: 'Titel', value: 'title' },
       { text: 'Korte Beschrijving', value: 'short_description' },
       { text: 'Beschrijving', value: 'description' },
       { text: 'Link', value: 'external_url' },
-      { text: 'Ratings', value: 'ratings.title' },
+      { text: 'Ratings', value: 'ratings' },
       { text: 'Actions', value: 'actions', sortable: false }
     ],
     aspects: [],
@@ -213,6 +225,10 @@ export default {
       })
     },
 
+    getRatingNames: (ratings) => {
+      return ratings.map(rating => rating.title).join(', ').toString()
+    },
+
     updateForm () {
       if (this.editedIndex > -1) {
         axiosInstance.patch(`api/v1/aspects/${this.aspects[this.editedIndex].id}`, this.editedItem)
@@ -238,7 +254,6 @@ export default {
 }
 
 .v-card {
-  margin: 15px;
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
 }
