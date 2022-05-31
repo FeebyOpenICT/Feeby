@@ -6,19 +6,19 @@ from Repositories import FileRepository
 from fastapi import UploadFile
 from pathlib import Path
 import uuid
-from typing import List
+from typing import List, Optional
 
 
 class FileService:
     @staticmethod
-    def create_file(files: List[UploadFile], revision: RevisionModel, feedback: FeedbackModel,
+    def create_file(files: List[UploadFile], revision: Optional[int], feedback: Optional[int],
                     db: Session) -> FileModel:
         """create file
 
         Args:
             files(UploadFile): all uploaded files
-            revision (RevisionModel): revision id as saved in database
-            feedback(FeedbackModel): feedback id as saved in database
+            revision (int): revision id as saved in database
+            feedback(int): feedback id as saved in database
             db (Session): database session
         """
         if feedback:

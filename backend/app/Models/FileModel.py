@@ -28,15 +28,15 @@ class FileModel(Base):
     feedback_id = Column(Integer, ForeignKey('feedback.id'), nullable=True)
     feedback = relationship('FeedbackModel')
 
-    def __init__(self, filename: str, content_type: str, location: str, revision: RevisionModel, feedback: FeedbackModel) -> None:
+    def __init__(self, filename: str, content_type: str, location: str, revision: Optional[int], feedback: Optional[int]) -> None:
         """FileModel constructor
 
         Args:
             filename (str): name of the file
             content_type (str): content type of the file
             location (str): location of the file
-            revision (RevisionModel): revision file might have been added to
-            feedback (FeedbackModel): feedback file might have been added to
+            revision (int): revision file might have been added to
+            feedback (int): feedback file might have been added to
         """
         self.filename = filename
         self.content_type = content_type

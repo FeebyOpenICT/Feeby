@@ -29,7 +29,7 @@ services:
       target: development
     volumes:
       - ./backend/app:/app
-      - ./backend/files:/app/files
+      - ./backend/files:/app/files:rw
     ports:
       - 5678:5678
     labels:

@@ -21,5 +21,5 @@ class FileInDB(File):
 
 
 class CreateFile(BaseModel):
-    revision_id: Optional[RevisionModel]
-    feedback_id: Optional[FeedbackModel]
+    revision_id: Optional[int]
+    feedback_id: Optional[int]

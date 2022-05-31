@@ -61,3 +61,24 @@ class FeedbackService:
             )
 
         return feedback
+
+    @staticmethod
+    def get_feedback_by_id_or_fail(feedback_id: int, db: Session) -> FeedbackModel:
+        """get feedback by id or raise not found exception
+
+        Args:
+            feedback_id (int): id of feedback
+            db (Session): database session
+
+        Raises:
+            NotFoundException: if feedback not found
+
+        Returns:
+            RevisionModel: feedback as saved in database
+        """
+        feedback = FeedbackRepository.get_by_id(id=feedback_id, db=db)
+
+        if not feedback:
+            raise NotFoundException(resource="feedback", id=feedback_id)
+
+        return feedback
