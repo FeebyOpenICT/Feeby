@@ -11,6 +11,7 @@
       v-model="drawer"
       class="modalmenu"
       temporary
+      hide-overlay
     >
       <v-list-item>
         <v-list-item-title class="text-h6">
