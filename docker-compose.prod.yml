@@ -13,3 +13,5 @@ services:
     build:
       context: ./frontend
       target: production-server
+    environment:
+      - NODE_ENV=production
