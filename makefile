@@ -25,11 +25,15 @@ debug-logs:
 prod-start:
 	docker compose -f docker-compose.yml -f  docker-compose.prod.yml up -d --build
 
+prod-build:
+	docker compose -f docker-compose.yml -f  docker-compose.prod.yml build
+
 prod-down:
 	docker compose -f docker-compose.yml -f  docker-compose.prod.yml down
 
 prod-logs:
 	docker compose -f docker-compose.yml -f  docker-compose.prod.yml logs -f
 
-pytest:
-	PYTHONPATH=backend/app pytest
+pytest-backend:
+	docker compose -f docker-compose.yml -f docker-compose.test.yml up backend | tee test_backend_log.txt
+	docker compose logs backend 
