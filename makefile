@@ -34,5 +34,6 @@ prod-down:
 prod-logs:
 	docker compose -f docker-compose.yml -f  docker-compose.prod.yml logs -f
 
-pytest:
-	PYTHONPATH=backend/app pytest
+pytest-backend:
+	docker compose -f docker-compose.yml -f docker-compose.test.yml up backend
+	docker compose logs backend
