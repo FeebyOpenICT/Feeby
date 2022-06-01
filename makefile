@@ -35,5 +35,5 @@ prod-logs:
 	docker compose -f docker-compose.yml -f  docker-compose.prod.yml logs -f
 
 pytest-backend:
-	docker compose -f docker-compose.yml -f docker-compose.test.yml up backend | tee test_backend_result.txt
+	docker compose -f docker-compose.yml -f docker-compose.test.yml up backend | tee test_backend_log.txt
 	docker compose logs backend 
