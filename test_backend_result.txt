@@ -1,0 +1,38 @@
+Attaching to feeby-backend
+feeby-backend  | ============================= test session starts ==============================
+feeby-backend  | platform linux -- Python 3.9.13, pytest-7.0.0, pluggy-1.0.0
+feeby-backend  | rootdir: /app
+feeby-backend  | plugins: anyio-3.5.0
+feeby-backend  | collected 38 items
+feeby-backend  | 
+feeby-backend  | Controllers/Tests/AspectController_test.py ....                          [ 10%]
+feeby-backend  | Controllers/Tests/PostController_test.py .....                           [ 23%]
+feeby-backend  | Controllers/Tests/RatingsController_test.py ...                          [ 31%]
+feeby-backend  | Controllers/Tests/UserController_test.py .....                           [ 44%]
+feeby-backend  | Models/Tests/Aspect_test.py ..                                           [ 50%]
+feeby-backend  | Models/Tests/Post_test.py ..                                             [ 55%]
+feeby-backend  | Models/Tests/Role_test.py .                                              [ 57%]
+feeby-backend  | Models/Tests/User_test.py ......                                         [ 73%]
+feeby-backend  | Repositories/Tests/PostRepository_test.py ......                         [ 89%]
+feeby-backend  | Services/tests/UserService_test.py ....                                  [100%]
+feeby-backend  | 
+feeby-backend  | =============================== warnings summary ===============================
+feeby-backend  | Controllers/Tests/AspectController_test.py::test_create_aspect
+feeby-backend  |   /app/Repositories/RoleRepository.py:44: SAWarning: relationship 'AspectModel.aspect_rating' will copy column aspect.id to column aspect_rating.aspect_id, which conflicts with relationship(s): 'AspectModel.ratings' (copies aspect.id to aspect_rating.aspect_id). If this is not the intention, consider if these relationships should be linked with back_populates, or if viewonly=True should be applied to one or more if they are read-only. For the less common case that foreign key constraints are partially overlapping, the orm.foreign() annotation can be used to isolate the columns that should be written towards.   To silence this warning, add the parameter 'overlaps="ratings"' to the 'AspectModel.aspect_rating' relationship. (Background on this error at: https://sqlalche.me/e/14/qzyx)
+feeby-backend  |     db_role = db.query(RoleModel).filter(
+feeby-backend  | 
+feeby-backend  | Controllers/Tests/AspectController_test.py::test_create_aspect
+feeby-backend  |   /app/Repositories/RoleRepository.py:44: SAWarning: relationship 'AspectRatingModel.aspect' will copy column aspect.id to column aspect_rating.aspect_id, which conflicts with relationship(s): 'AspectModel.ratings' (copies aspect.id to aspect_rating.aspect_id). If this is not the intention, consider if these relationships should be linked with back_populates, or if viewonly=True should be applied to one or more if they are read-only. For the less common case that foreign key constraints are partially overlapping, the orm.foreign() annotation can be used to isolate the columns that should be written towards.   To silence this warning, add the parameter 'overlaps="ratings"' to the 'AspectRatingModel.aspect' relationship. (Background on this error at: https://sqlalche.me/e/14/qzyx)
+feeby-backend  |     db_role = db.query(RoleModel).filter(
+feeby-backend  | 
+feeby-backend  | Controllers/Tests/AspectController_test.py::test_create_aspect
+feeby-backend  |   /app/Repositories/RoleRepository.py:44: SAWarning: relationship 'RatingModel.aspect_rating' will copy column rating.id to column aspect_rating.rating_id, which conflicts with relationship(s): 'AspectModel.ratings' (copies rating.id to aspect_rating.rating_id). If this is not the intention, consider if these relationships should be linked with back_populates, or if viewonly=True should be applied to one or more if they are read-only. For the less common case that foreign key constraints are partially overlapping, the orm.foreign() annotation can be used to isolate the columns that should be written towards.   To silence this warning, add the parameter 'overlaps="ratings"' to the 'RatingModel.aspect_rating' relationship. (Background on this error at: https://sqlalche.me/e/14/qzyx)
+feeby-backend  |     db_role = db.query(RoleModel).filter(
+feeby-backend  | 
+feeby-backend  | Controllers/Tests/AspectController_test.py::test_create_aspect
+feeby-backend  |   /app/Repositories/RoleRepository.py:44: SAWarning: relationship 'AspectRatingModel.rating' will copy column rating.id to column aspect_rating.rating_id, which conflicts with relationship(s): 'AspectModel.ratings' (copies rating.id to aspect_rating.rating_id). If this is not the intention, consider if these relationships should be linked with back_populates, or if viewonly=True should be applied to one or more if they are read-only. For the less common case that foreign key constraints are partially overlapping, the orm.foreign() annotation can be used to isolate the columns that should be written towards.   To silence this warning, add the parameter 'overlaps="ratings"' to the 'AspectRatingModel.rating' relationship. (Background on this error at: https://sqlalche.me/e/14/qzyx)
+feeby-backend  |     db_role = db.query(RoleModel).filter(
+feeby-backend  | 
+feeby-backend  | -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+feeby-backend  | ======================== 38 passed, 4 warnings in 1.94s ========================
+feeby-backend exited with code 0
