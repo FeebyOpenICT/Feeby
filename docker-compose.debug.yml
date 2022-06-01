@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: feeby-backend-debug
+    build:
+      context: ./backend
+      target: debug
+    ports:
+      - 5678:5678
+
+  db:
+    container_name: feeby-database-debug
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

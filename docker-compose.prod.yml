@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: feeby-backend
+    build:
+      context: ./backend
+      target: production
+
+
+  frontend:
+    container_name: feeby-frontend
+    build:
+      context: ./frontend
+      target: production-server
