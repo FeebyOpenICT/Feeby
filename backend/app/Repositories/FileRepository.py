@@ -13,7 +13,7 @@ class FileRepository(RepositoryBase):
         """create file
 
         Args:
-            upload_file (object): file that has been uploaded
+            upload_file (UploadFile): file that has been uploaded
             destination (str): destination of the file
         Returns:
             filename (str): name of the file

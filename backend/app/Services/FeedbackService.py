@@ -74,7 +74,7 @@ class FeedbackService:
             NotFoundException: if feedback not found
 
         Returns:
-            RevisionModel: feedback as saved in database
+            FeedbackModel: feedback as saved in database
         """
         feedback = FeedbackRepository.get_by_id(id=feedback_id, db=db)
 

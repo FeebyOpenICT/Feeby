@@ -18,15 +18,12 @@ class FileService:
 
         Args:
             files(UploadFile): all uploaded files
-            revision (int): revision id as saved in database
-            feedback(int): feedback id as saved in database
+            revision (RevisionModel): revision id as saved in database
+            feedback(FeedbackModel): feedback id as saved in database
             db (Session): database session
-        """
-        """
-        if feedback:
-            revision = None
-        else:
-            feedback = None
+
+        Returns:
+            Filemodel: file as saved in database
         """
 
         for file in files:
