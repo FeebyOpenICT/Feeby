@@ -24,18 +24,14 @@ class RevisionController:
             self,
             user_id: int,
             post_id: int,
-            revision_id: Optional[int],
             db: Session = Depends(get_db_connection),
             current_active_user: UserModel = Depends(get_current_active_user),
     ) -> None:
         self.user_id = user_id
-        self.revision_id = revision_id
         self.db = db
         self.current_active_user = current_active_user
         self.post_id = post_id
-        self.feedback = None
 
-        self.revision = RevisionService.get_revision_by_id_or_fail(revision_id=revision_id, db=db)
         self.post = PostService.get_post_by_id_or_fail(
             post_id=post_id, db=db)
 
@@ -86,15 +82,17 @@ class RevisionController:
 
     @router.post('/users/{user_id}/posts/{post_id}/revisions/{revision_id}/files', status_code=status.HTTP_201_CREATED,
                  response_model=FileInDB)
-    async def create_revision_file(self, files: List[UploadFile]):
+    async def create_revision_file(self, revision_id: int, files: List[UploadFile]):
         """Create revision file
 
         Args:
+            revision_id (int): revision id as saved in db
             files (UploadFile): List of uploaded files
 
 
         Allowed roles:
         - All
         """
-        files = FileService.create_file(files=files, feedback=self.feedback, revision=self.revision_id, db=self.db)
+        revision = RevisionService.get_revision_by_id_or_fail(revision_id=revision_id, db=self.db)
+        files = FileService.create_files(files=files, revision=revision, db=self.db)
         return files

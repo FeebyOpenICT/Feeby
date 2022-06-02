@@ -11,8 +11,9 @@ from typing import List, Optional
 
 class FileService:
     @staticmethod
-    def create_file(files: List[UploadFile], revision: Optional[int], feedback: Optional[int],
-                    db: Session) -> FileModel:
+    def create_files(files: List[UploadFile], db: Session, revision: Optional[RevisionModel] = None,
+                     feedback: Optional[FeedbackModel] = None
+                     ) -> FileModel:
         """create file
 
         Args:
@@ -21,10 +22,12 @@ class FileService:
             feedback(int): feedback id as saved in database
             db (Session): database session
         """
+        """
         if feedback:
             revision = None
         else:
             feedback = None
+        """
 
         for file in files:
             file.filename = str(uuid.uuid4().hex) + \

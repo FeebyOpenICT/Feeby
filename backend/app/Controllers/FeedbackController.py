@@ -25,14 +25,12 @@ class FeedbackController:
         post_id: int,
         user_id: int,
         revision_id: int,
-        feedback_id: int,
         db: Session = Depends(get_db_connection),
     ) -> None:
         self.db = db
         self.user_id = user_id
         self.post_id = post_id
         self.revision_id = revision_id
-        self.feedback_id = FeedbackService.get_feedback_by_id_or_fail(feedback_id=feedback_id, db=db)
 
         self.user = UserService.get_active_user_by_id_or_fail(
             id=user_id, db=db)
@@ -47,15 +45,17 @@ class FeedbackController:
         return feedback
 
     @router.post('/users/{user_id}/posts/{post_id}/revisions/{revision_id}/feedback/{feedback_id}/files', status_code=status.HTTP_201_CREATED, response_model=FileInDB)
-    async def create_revision_file(self, files: List[UploadFile]):
+    async def create_revision_file(self, feedback_id: int, files: List[UploadFile]):
         """Create revision file
 
         Args:
+            feedback_id (int): Feedback id as saved in db
             files (UploadFile): List of uploaded files
 
 
         Allowed roles:
         - All
         """
-        files = FileService.create_file(files=files, feedback=self.feedback_id, db=self.db)
+        feedback = FeedbackService.get_feedback_by_id_or_fail(feedback_id=feedback_id, db=self.db)
+        files = FileService.create_files(files=files, feedback=feedback, db=self.db)
         return files

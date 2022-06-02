@@ -12,7 +12,8 @@ class File(BaseModel):
 
 class FileInDB(File):
     id: int
-    revision_id: int
+    revision_id: Optional[int]
+    feedback_id: Optional[int]
     time_created: datetime
     time_updated: datetime
 
