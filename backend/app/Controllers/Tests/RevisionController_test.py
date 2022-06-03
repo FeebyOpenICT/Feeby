@@ -10,8 +10,7 @@ def test_create_files_for_revision(client, current_active_user, db: Session):
     db.commit()
     file = tempfile.TemporaryFile()
     data = {
-        "files": [file],
-
+        "files": [file]
     }
     response = client.post("/users/1/posts/1/revisions/1/files")
     assert response.status_code == 201
