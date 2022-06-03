@@ -2,7 +2,8 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  ssr: true,
+  mode: 'universal',
 
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -26,8 +27,22 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
+  // router: {
+  //   middleware: ['authenticated'],
+  // },
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    // {
+    //   src: '~plugins/persistedstate.js',
+    // },
+    {
+      src: '~plugins/axios.js',
+    },
+    // {
+    //   src: '~plugins/auth.js',
+    // },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -49,7 +64,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: process.env.BACKEND_URL,
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

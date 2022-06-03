@@ -1,9 +1,9 @@
 <template>
-  <div>Hello</div>
+  <div>Not authenticated</div>
 </template>
 
 <script>
 export default {
-  middleware: ['authenticated'],
+  layout: 'error',
 }
 </script>

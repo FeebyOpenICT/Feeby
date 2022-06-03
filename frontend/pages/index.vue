@@ -9,7 +9,6 @@
       color="primary"
       fab
       large
-      dark
       fixed
       bottom
       right
@@ -25,5 +24,10 @@ import Beroepsproduct from '~/components/Beroepsproduct.vue'
 export default {
   components: { Beroepsproduct },
   name: 'IndexPage',
+  async fetch() {
+    console.log(this.$store.state.auth)
+    // this.posts = await this.$axios.$get('/posts')
+  },
+  middleware: ['authenticated'],
 }
 </script>
