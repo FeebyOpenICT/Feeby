@@ -43,12 +43,12 @@ def test_get_posts_self(client, db, current_active_user):
 
 
 def test_get_posts_from_user_that_doesnt_exist(client, db: Session):
-    response = client.get('/users/2/posts')
+    response = client.get('/users/99/posts')
 
     json = response.json()
     assert response.status_code == 404
-    assert json['detail'] == 'Requested user: 2 not found in database'
-    assert json['id'] == 2
+    assert json['detail'] == 'Requested user: 99 not found in database'
+    assert json['id'] == 99
     assert json['resource'] == 'user'
 
 
