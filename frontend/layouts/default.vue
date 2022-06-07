@@ -1,14 +1,15 @@
 <template>
   <v-app>
+    <!-- App bar -->
+    <v-app-bar clipped-left fixed app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>
+        <v-btn class="btn-fix" x-large to="/" link depressed> Feeby </v-btn>
+      </v-toolbar-title>
+    </v-app-bar>
+
     <!-- Navigation drawer -->
-    <v-navigation-drawer
-      permanent
-      expand-on-hover
-      app
-      floating
-      mini-variant
-      style="border-right: 1px solid grey"
-    >
+    <v-navigation-drawer v-model="drawer" app fixed clipped>
       <!-- Title -->
       <v-list-item>
         <v-list-item-content>
@@ -19,8 +20,8 @@
       <v-divider></v-divider>
 
       <!-- Avatar -->
-      <v-list>
-        <v-list-item link class="px-2">
+      <v-list v-if="isAuthenticated">
+        <v-list-item link to="/me" class="px-2">
           <v-list-item-avatar color="blue">
             <!-- Show first to letters, implemt canvas image later -->
             <span class="white--text text-h5">{{
@@ -68,7 +69,15 @@
 <script>
 export default {
   name: 'DefaultLayout',
+  data() {
+    return {
+      drawer: false,
+    }
+  },
   computed: {
+    isAuthenticated() {
+      return this.$store.state.auth.isAuthenticated
+    },
     fullname() {
       return this.$store.state.auth.user.fullname
     },
@@ -81,3 +90,9 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+.btn-fix::before {
+  opacity: 0;
+}
+</style>
