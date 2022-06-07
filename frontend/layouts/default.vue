@@ -20,15 +20,16 @@
       <v-divider></v-divider>
 
       <!-- Avatar -->
-      <AvatarAndName
-        :canvas_email="user.canvas_email"
-        :fullname="user.fullname"
-        link
-        to="/me"
-        v-if="isAuthenticated"
-      />
+      <template v-if="isAuthenticated">
+        <AvatarAndName
+          :canvas_email="user.canvas_email"
+          :fullname="user.fullname"
+          link
+          to="/me"
+        />
 
-      <v-divider></v-divider>
+        <v-divider></v-divider>
+      </template>
 
       <!-- Links -->
       <v-list nav dense>
