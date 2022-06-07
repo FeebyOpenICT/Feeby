@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'BeroepsProduct',
+  name: 'PostCard',
   props: {
     title: String,
     description: String,
