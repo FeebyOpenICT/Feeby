@@ -21,12 +21,16 @@
 
 <script>
 import Beroepsproduct from '~/components/Beroepsproduct.vue'
+import { mapGetters } from 'vuex'
 export default {
   components: { Beroepsproduct },
   name: 'IndexPage',
+  computed: {
+    ...mapGetters('auth', ['userId']),
+  },
+  fetchOnServer: true,
   async fetch() {
-    console.log(this.$store.state.auth)
-    // this.posts = await this.$axios.$get('/posts')
+    this.posts = await this.$axios.$get(`/users/${this.userId}/posts`)
   },
   middleware: ['authenticated'],
 }
