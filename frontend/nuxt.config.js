@@ -10,8 +10,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Feeby',
-    title: 'Beroepsproducten',
+    titleTemplate: 'Feeby',
     htmlAttrs: {
       lang: 'nl',
     },
@@ -33,15 +32,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // {
-    //   src: '~plugins/persistedstate.js',
-    // },
     {
       src: '~plugins/axios.js',
     },
-    // {
-    //   src: '~plugins/auth.js',
-    // },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
