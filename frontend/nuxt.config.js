@@ -89,4 +89,12 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Custom loading component
+  loading: {
+    // color must be the same as primary color defined above
+    // see: https://v15.vuetifyjs.com/en/framework/colors/
+    color: '#1976D2',
+    height: '5px',
+  },
 }
