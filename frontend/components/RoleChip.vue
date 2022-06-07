@@ -1,5 +1,5 @@
 <template>
-  <v-chip pill :color="color">{{ capitalizedTitle }}</v-chip>
+  <v-chip pill :color="color" text-color="white">{{ capitalizedTitle }}</v-chip>
 </template>
 
 <script>
@@ -14,11 +14,11 @@ export default {
   computed: {
     color() {
       const colors = {
-        1: '#E57373',
+        1: '#9575CD',
         2: '#F06292',
-        3: '#BA68C8',
-        4: '#9575CD',
-        5: '#7986CB',
+        3: '#7986CB',
+        4: '#E57373',
+        5: '#BA68C8',
         6: '#64B5F6',
       }
       console.log('' + this.id)
