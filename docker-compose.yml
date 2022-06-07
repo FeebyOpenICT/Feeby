@@ -59,7 +59,9 @@ services:
       context: ./frontend
       target: development
     environment:
+      - BACKEND_URL=http://backend
       - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
@@ -68,7 +70,6 @@ services:
       traefik.http.routers.frontend.rule: Host(`localhost`) || Host(`127.0.0.1`)
       traefik.http.routers.frontend.entrypoints: web
       traefik.http.services.frontend.loadbalancer.server.port: 3000
-
 
   db:
     container_name: feeby-database-dev
@@ -98,7 +99,6 @@ services:
       traefik.http.routers.adminer.entrypoints: web
       traefik.http.services.adminer.loadbalancer.server.port: 8080
 
-
 secrets:
   CANVAS_CLIENT_ID:
     file: CANVAS_CLIENT_ID.txt
@@ -114,4 +114,3 @@ secrets:
     file: POSTGRES_PASSWORD.txt
   POSTGRES_USER:
     file: POSTGRES_USER.txt
-    
