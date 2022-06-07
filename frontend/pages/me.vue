@@ -28,15 +28,15 @@
         </thead>
         <tbody>
           <tr>
-            <td>Fullname</td>
+            <td>Volledige naam</td>
             <td>{{ user.fullname }}</td>
           </tr>
           <tr>
-            <td>Internal Id</td>
+            <td>Interne Id</td>
             <td>{{ user.id }}</td>
           </tr>
           <tr>
-            <td>Canvas Email</td>
+            <td>Canvas e-mail</td>
             <td>{{ user.canvas_email }}</td>
           </tr>
           <tr>
