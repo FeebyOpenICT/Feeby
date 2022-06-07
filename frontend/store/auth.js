@@ -34,7 +34,7 @@ export const actions = {
     commit('setUser', res)
   },
   async refresh({ commit }) {
-    const res = await this.$axios.$post('/auth/refresh')
+    const res = await this.$axios.$get('/auth/refresh')
     commit('setTokens', res)
   },
 }
