@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'DefaultLayout',
   data() {
@@ -75,9 +76,7 @@ export default {
     }
   },
   computed: {
-    isAuthenticated() {
-      return this.$store.state.auth.isAuthenticated
-    },
+    ...mapGetters('auth', ['isAuthenticated']),
     fullname() {
       return this.$store.state.auth.user.fullname
     },
@@ -91,7 +90,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .btn-fix::before {
   opacity: 0;
 }
