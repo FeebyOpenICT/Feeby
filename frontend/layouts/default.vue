@@ -60,7 +60,7 @@
     <!-- Main content -->
     <v-main class="grey lighten-2">
       <v-container fluid>
-        <Nuxt />
+        <Nuxt keep-alive />
       </v-container>
     </v-main>
   </v-app>
