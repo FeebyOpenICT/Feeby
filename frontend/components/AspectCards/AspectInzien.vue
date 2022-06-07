@@ -54,6 +54,7 @@
                         label="Aspect Title"
                         counter
                         maxlength="255"
+                        required
                       />
                     </v-col>
                     <v-col
@@ -67,6 +68,7 @@
                         label="Korte Beschrijving"
                         counter
                         maxlength="255"
+                        required
                       />
                     </v-col>
                     <v-col
@@ -80,6 +82,7 @@
                         label="Beschrijving"
                         counter
                         maxlength="1000"
+                        required
                       />
                     </v-col>
                     <v-col
@@ -92,6 +95,7 @@
                         label="Link"
                         counter
                         maxlength="2000"
+                        required
                       />
                     </v-col>
                     <v-col
@@ -105,9 +109,10 @@
                         label="Rating"
                         multiple
                         counter
+                        chips
                         item-text="title"
                         item-value="id"
-                        chips
+                        required
                       />
                     </v-col>
                   </v-row>
@@ -171,13 +176,6 @@ export default {
     aspectRatings: [],
     editedIndex: -1,
     editedItem: {
-      title: '',
-      short_description: '',
-      description: '',
-      external_url: '',
-      rating_ids: ''
-    },
-    defaultItem: {
       title: '',
       short_description: '',
       description: '',
