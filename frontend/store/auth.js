@@ -1,11 +1,13 @@
-import axios from 'axios'
 export const state = () => ({
   token: null,
 })
 
 export const getters = {
-  isAuthenticated(state) {
+  isAuthenticated: (state) => {
     return !!state.token
+  },
+  userId: (state) => {
+    return state.user.id
   },
 }
 
@@ -27,15 +29,12 @@ export const actions = {
     commit('setTokens', token)
     await dispatch('getUser')
   },
-  async getUser({ state, commit }) {
+  async getUser({ commit }) {
     const res = await this.$axios.$get('/users/self')
     commit('setUser', res)
   },
-  // async refresh({ state, commit }) {
-  //   const res = await this.$axios.$post('/auth/refresh', {
-  //     refreshToken: state.refreshToken,
-  //   })
-
-  //   commit('setTokens', res)
-  // },
+  async refresh({ commit }) {
+    const res = await this.$axios.$post('/auth/refresh')
+    commit('setTokens', res)
+  },
 }

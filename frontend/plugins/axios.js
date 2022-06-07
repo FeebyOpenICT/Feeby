@@ -1,9 +1,12 @@
 export default function ({ store, app: { $axios }, redirect }) {
   $axios.onRequest((config) => {
     // check if the user is authenticated
-    if (store.state.auth.token) {
+    if (store.getters['auth/isAuthenticated']) {
       // set the Authorization header using the access token
       config.headers.Authorization = 'Bearer ' + store.state.auth.token
+    }
+    if (process.client) {
+      config.baseURL = '/api/v1'
     }
 
     return config
