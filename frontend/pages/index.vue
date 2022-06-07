@@ -1,18 +1,19 @@
 <template>
   <div>
     <template v-if="posts.length">
-      <BeroepsProduct
-        v-for="post in posts"
-        :title="post.title"
-        :description="post.description"
-        :key="post.id"
-      />
+      <v-col v-for="post in posts">
+        <BeroepsProduct
+          :title="post.title"
+          :description="post.description"
+          :key="post.id"
+        />
+      </v-col>
     </template>
     <v-card v-else>
       <v-card-title>Geen beroepsproducten gevonden</v-card-title>
       <v-card-text
-        >Helaas zijn er geen beroepsproducten in uw portfolio
-        gevonden</v-card-text
+        >Helaas zijn er geen beroepsproducten in uw portfolio gevonden, maak via
+        de plus knop rechtsonderin een beroepsproduct aan.</v-card-text
       >
     </v-card>
 
@@ -45,7 +46,6 @@ export default {
   fetchOnServer: true,
   async fetch() {
     this.posts = await this.$axios.$get(`/users/${this.userId}/posts`)
-    console.log(this.posts)
   },
   middleware: ['authenticated'],
 }
