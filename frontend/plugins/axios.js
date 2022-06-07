@@ -12,18 +12,17 @@ export default function ({ store, app: { $axios }, redirect }) {
     return config
   })
 
-  //   TODO implement auto refreshing of tokens
-
   $axios.onError(async (error) => {
     const statusCode = error.response ? error.response.status : -1
 
+    // auto refreshing of tokens
     if (statusCode === 401) {
       try {
         await store.dispatch('auth/refresh')
         return Promise.resolve($axios(config))
       } catch (e) {
         store.commit('auth/logout')
-        return redirect('/')
+        return redirect('/unauthenticated')
       }
     }
     return Promise.reject(error)
