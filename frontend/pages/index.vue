@@ -1,12 +1,8 @@
 <template>
   <div>
     <template v-if="posts.length">
-      <v-col v-for="post in posts">
-        <BeroepsProduct
-          :title="post.title"
-          :description="post.description"
-          :key="post.id"
-        />
+      <v-col v-for="post in posts" :key="post.id">
+        <BeroepsProduct :title="post.title" :description="post.description" />
       </v-col>
     </template>
     <v-card v-else>
