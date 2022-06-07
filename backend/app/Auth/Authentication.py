@@ -11,7 +11,7 @@ from Services import RoleService
 from .JWTToken import AccessToken
 from Auth.validate_user import token_auth_scheme
 from database import get_db_connection
-from config import BASE_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
+from config import BASE_CANVAS_URL, DELEVOPER_KEY_ID, DEVELOPER_KEY, BASE_APP_API_CALLBACK_URL
 from Models.UserModel import UserModel
 from Models.RoleModel import RoleModel
 from Schemas.RolesEnum import RolesEnum
@@ -34,7 +34,7 @@ async def callback(response: Response, jwt: Optional[str] = Cookie(None), code: 
         raise OAuth2AuthenticationException(title=error)
     elif code:
         # TODO verify state
-        r = requests.post(f'{BASE_URL}/login/oauth2/token', data={
+        r = requests.post(f'{BASE_CANVAS_URL}/login/oauth2/token', data={
             'grant_type': 'authorization_code',
             'client_id': DELEVOPER_KEY_ID,
             'client_secret': DEVELOPER_KEY,
@@ -118,7 +118,7 @@ async def refresh_token(response: Response, jwt: HTTPAuthorizationCredentials = 
     if jwt_token.refresh_token is None:
         return HTTPException(400, "No refresh token was provided")
 
-    r = requests.post(f'{BASE_URL}/login/oauth2/token', data={
+    r = requests.post(f'{BASE_CANVAS_URL}/login/oauth2/token', data={
         'grant_type': 'refresh_token',
         'client_id': DELEVOPER_KEY_ID,
         'client_secret': DEVELOPER_KEY,

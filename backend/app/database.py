@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
+from config import POSTGRES_PASSWORD, POSTGRES_USER, DATABASE_URL
 
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://feeby:hallo123@db:5432/feeby"
+SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DATABASE_URL}:5432/feeby"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -19,8 +20,12 @@ def get_db_connection() -> Session:
 
     returns a sqlalchemy.orm Session 
     """
-    db = SessionLocal()
+    db: Session = SessionLocal()
     try:
         yield db
+        db.commit()
+    except:
+        db.rollback()
+        raise
     finally:
         db.close()

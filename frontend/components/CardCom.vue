@@ -33,7 +33,8 @@ export default {
   },
   data () {
     return {
-      cards: null
+      cards: [],
+      user: []
     }
   },
   computed: {
@@ -43,9 +44,18 @@ export default {
   },
   mounted () {
     axiosInstance
-      .get('/api/v1/posts/self')
-      .then(response => (this.cards = response.data))
+      .get('/api/v1/users/self')
+      .then(response => (this.user = response.data))
+      .finally(this.initialize)
       .catch(error => console.log(error))
+  },
+  methods: {
+    initialize () {
+      axiosInstance
+        .get(`api/v1/users/${this.user.id}/posts`)
+        .then(response => (this.cards = response.data))
+        .catch(error => console.log(error))
+    }
   }
 }
 

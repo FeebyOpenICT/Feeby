@@ -1,27 +1,22 @@
 <template>
   <v-card class="menu">
     <v-app-bar color="var(--blue)">
-      <v-app-bar-nav-icon class="iconbtn" @click="modal = true" />
+      <v-app-bar-nav-icon class="iconbtn" @click="drawer = true" />
       <v-btn to="/" nuxt class="logobtn">
         <v-toolbar-title>FEEBY</v-toolbar-title>
       </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
-      v-model="modal"
+      v-model="drawer"
       class="modalmenu"
       temporary
       hide-overlay
     >
       <v-list-item>
-        <v-list-item-content color="var(--blue)">
-          <v-list-item-title class="text-h6">
-            FEEBY
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Test Menu
-          </v-list-item-subtitle>
-        </v-list-item-content>
+        <v-list-item-title class="text-h6">
+          FEEBY
+        </v-list-item-title>
       </v-list-item>
 
       <v-divider />
@@ -79,7 +74,7 @@ import '../style/style.css'
 export default {
   name: 'HeaderCom',
   data: () => ({
-    modal: false,
+    drawer: null,
     items: [
       { title: 'Profiel', icon: 'mdi-account' },
       { title: 'Toegang Beheer', icon: 'mdi-pencil' }

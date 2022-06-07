@@ -4,9 +4,15 @@ from sqlalchemy import and_
 
 from Models import PostModel, UserAccessPostModel, UserModel
 from Exceptions import UnexpectedInstanceError
+from .RepositoryBase import RepositoryBase
 
 
-class PostRepository:
+class PostRepository(RepositoryBase):
+    @staticmethod
+    def get_by_id(db: Session, id: int) -> PostModel:
+        result = db.query(PostModel).filter(PostModel.id == id).first()
+        return result
+
     @staticmethod
     def get_posts_from_user_by_id(user_id: int, db: Session) -> List[PostModel]:
         """Get all posts from a user
@@ -39,7 +45,8 @@ class PostRepository:
             raise UnexpectedInstanceError
 
         db.add(post)
-        db.commit()
+        db.flush()
+        db.refresh(post)
 
         return post
 
