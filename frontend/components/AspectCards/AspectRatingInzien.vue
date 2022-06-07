@@ -211,7 +211,6 @@ export default {
 }
 
 .v-card {
-  margin: 15px;
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
 }

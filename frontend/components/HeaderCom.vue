@@ -11,6 +11,7 @@
       v-model="modal"
       class="modalmenu"
       temporary
+      hide-overlay
     >
       <v-list-item>
         <v-list-item-content color="var(--blue)">
