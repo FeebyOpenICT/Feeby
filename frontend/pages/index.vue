@@ -1,9 +1,20 @@
 <template>
   <div>
-    <beroepsproduct
-      title="Test Beroepsproduct"
-      description="Dit is een test beschrijving"
-    />
+    <template v-if="posts.length">
+      <BeroepsProduct
+        v-for="post in posts"
+        :title="post.title"
+        :description="post.description"
+        :key="post.id"
+      />
+    </template>
+    <v-card v-else>
+      <v-card-title>Geen beroepsproducten gevonden</v-card-title>
+      <v-card-text
+        >Helaas zijn er geen beroepsproducten in uw portfolio
+        gevonden</v-card-text
+      >
+    </v-card>
 
     <v-btn
       color="primary"
@@ -20,17 +31,21 @@
 </template>
 
 <script>
-import Beroepsproduct from '~/components/Beroepsproduct.vue'
 import { mapGetters } from 'vuex'
 export default {
-  components: { Beroepsproduct },
   name: 'IndexPage',
+  data() {
+    return {
+      posts: [],
+    }
+  },
   computed: {
     ...mapGetters('auth', ['userId']),
   },
   fetchOnServer: true,
   async fetch() {
     this.posts = await this.$axios.$get(`/users/${this.userId}/posts`)
+    console.log(this.posts)
   },
   middleware: ['authenticated'],
 }
