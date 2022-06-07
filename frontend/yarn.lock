@@ -4953,11 +4953,6 @@ jiti@^1.9.2:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.13.0.tgz#3cdfc4e651ca0cca4c62ed5e47747b5841d41a8e"
   integrity sha512-/n9mNxZj/HDSrincJ6RP+L+yXbpnB8FybySBa+IjIaoH9FIxBbrbRT5XUbe8R7zuVM2AQqNMNDDqz0bzx3znOQ==
 
-js-cookie@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
-  integrity sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==
-
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -7425,11 +7420,6 @@ shell-quote@^1.6.1:
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.3.tgz#aa40edac170445b9a431e17bb62c0b881b9c4123"
   integrity sha512-Vpfqwm4EnqGdlsBFNmHhxhElJYrdfcxPThu+ryKS5J8L/fhAwLazFZtq+S+TWZ9ANj2piSQLGj6NQg+lKPmxrw==
 
-shvl@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/shvl/-/shvl-2.0.3.tgz#eb4bd37644f5684bba1fc52c3010c96fb5e6afd1"
-  integrity sha512-V7C6S9Hlol6SzOJPnQ7qzOVEWUQImt3BNmmzh40wObhla3XOYMe4gGiYzLrJd5TFa+cI2f9LKIRJTTKZSTbWgw==
-
 side-channel@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/side-channel/-/side-channel-1.0.4.tgz#efce5c8fdc104ee751b25c58d4290011fa5ea2cf"
@@ -8342,14 +8332,6 @@ vuetify@^2.6, vuetify@^2.6.1:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.6.tgz#7af178fece5ccd561639eba425fe6c0a5803b37e"
   integrity sha512-H4KtxDFmDN8QiTRiGfBySyjMhVaHAJTKB0llGGKZT5jKxtnx9gvEtMWXKtVuRP0NJJP0H6xBPJHNOH7nT18qiQ==
-
-vuex-persistedstate@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/vuex-persistedstate/-/vuex-persistedstate-4.1.0.tgz#127165f85f5b4534fb3170a5d3a8be9811bd2a53"
-  integrity sha512-3SkEj4NqwM69ikJdFVw6gObeB0NHyspRYMYkR/EbhR0hbvAKyR5gksVhtAfY1UYuWUOCCA0QNGwv9pOwdj+XUQ==
-  dependencies:
-    deepmerge "^4.2.2"
-    shvl "^2.0.3"
 
 vuex@^3.6.2:
   version "3.6.2"

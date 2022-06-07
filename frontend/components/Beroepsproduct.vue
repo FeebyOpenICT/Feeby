@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  setup() {},
+  name: 'Beroepsproduct',
   props: {
     title: String,
     description: String,
