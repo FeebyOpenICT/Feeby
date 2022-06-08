@@ -1,8 +1,5 @@
 <template className="container">
-  <div id="app">
-    <HeaderCom />
-    <v-app>
-      <v-container>
+
         <v-form ref="form" lazy-validation v-on:submit.prevent="submitForm" v-model="valid">
           <v-stepper v-model="e1" style="background-color: #F3F3F3"><v-stepper-header style="background-color: #0079CF">
             <v-stepper-step
@@ -251,19 +248,13 @@
             </v-stepper-items>
           </v-stepper>
         </v-form>
-      </v-container>
-    </v-app>
-  </div>
 
 </template>
 <script>
-import HeaderCom from './HeaderCom.vue'
-import { axiosInstance } from '~/lib/axiosInstance'
 // import UploadBox from '~/components/PostrevisionComponents/uploadBox'
 // import FooterCom from './FooterCom.vue'
 export default {
-  components: { HeaderCom },
-  name: 'ProductPage',
+  name: 'beroepsproduct-inleveren',
   data () {
     return {
       dialog: false,
@@ -296,36 +287,12 @@ export default {
       ]
     }
   },
-  mounted () {
-    axiosInstance
-      .get('/api/v1/users/1')
-      .then(response => (this.user = response.data))
-
-    axiosInstance
-      .get('api/v1/aspects')
-      .then(response => (this.aspects = response.data))
+  async fetch() {
+    this.aspects = await this.$axios.$get('aspects')
   },
   methods: {
     submitForm () {
-      axiosInstance
-        .post('api/v1/users/1/posts', this.form)
-        .then(response => (this.form = response.data))
-        .catch(function (error) {
-          if (error.response) {
-            // De post request is gemaakt en de server gaf in de terminal een status code aan
-
-            console.log(error.response.data)
-            console.log('render error', error.response.status)
-            alert('Je bent momenteel niet ingelogd').console.log('je bent momenteel niet ingelogd', error.response.headers)
-          } else if (error.request) {
-            // Request is verzonden, echter geen reactie terug
-            alert('De website is momenteel niet beschikbaar').console.log('De website is momenteel niet beschikbaar', error.request)
-          } else {
-            // Iets in de request heeft voor een error gezorgd
-            alert('Er is iets mis gegaan met het versturen van de data').console.log('Er is iets mis gegaan met het versturen van de data', error.message)
-          }
-          console.log(error.config)
-        })
+      this.form = this.$axios.$post('users/1/posts', this.form)
     }
   }
 }
