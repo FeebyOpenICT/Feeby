@@ -24,9 +24,11 @@ WORKDIR /app
 # turn on remote debugging from within container
 CMD python -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn main:app --reload --host 0.0.0.0 --port 80
 
-
-FROM base as production
+FROM base as test
 WORKDIR /app
-RUN PYTHONPATH=. pytest
+CMD PYTHONPATH=. pytest
+
+FROM test as production
+WORKDIR /app
 EXPOSE 80
 CMD uvicorn main:app --proxy-headers --host 0.0.0.0 --port 80

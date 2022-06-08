@@ -1,16 +1,28 @@
-CLIENT_ID = "ONE"
-CLIENT_SECRET = "LwTvyGLDcn56qdNDxz4U"
-DEVELOPER_KEY = "XmF8czbHavW1YooJCQZJ3Z5YhajtsNaDHslxtZc7xi9ieiAWPmV2vZPuPTOnLibU"
-DELEVOPER_KEY_ID = "34"
-# Canvas instance
-BASE_URL = "https://canvas.lucabergman.nl"
+import os
 
-# Hosted LTI instance
-BASE_APP_URL = "http://localhost"
-# make /api/v1 dynamic so it can be set to something else
+
+def get_secret(key, default):
+    try:
+        with open(f'/run/secrets/{key}') as secret_file:
+            return secret_file.read()
+    except:
+        try:
+            return os.environ[key]
+        except:
+            return default
+
+
+BASE_CANVAS_URL = get_secret(
+    'BASE_CANVAS_URL', 'https://canvas.lucabergman.nl')
+BASE_APP_URL = get_secret('BASE_APP_URL', 'http://localhost')
 BASE_APP_API_URL = f'{BASE_APP_URL}/api/v1'
 BASE_APP_API_CALLBACK_URL = f'{BASE_APP_API_URL}/auth/callback'
-
-# JWT tokens
-JWT_SECRET = "this is a secret"
-JWT_ALGORITHM = "HS256"
+JWT_ALGORITHM = get_secret('JWT_ALGORITHM', 'HS256')
+DATABASE_URL = get_secret('DATABASE_URL', 'db')
+CLIENT_ID = get_secret('CANVAS_CLIENT_ID', '')
+CLIENT_SECRET = get_secret('CANVAS_CLIENT_SECRET', '')
+JWT_SECRET = get_secret('JWT_SECRET', '123')
+DEVELOPER_KEY = get_secret('CANVAS_DEVELOPER_KEY', '')
+DELEVOPER_KEY_ID = get_secret('CANVAS_DEVELOPER_KEY_ID', '')
+POSTGRES_USER = get_secret('POSTGRES_USER', 'feeby')
+POSTGRES_PASSWORD = get_secret('POSTGRES_PASSWORD', 'hallo123')
