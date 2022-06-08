@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapGetters } from 'vuex'
 export default {
   name: 'IndexPage',
