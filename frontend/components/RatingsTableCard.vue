@@ -14,7 +14,7 @@
           <!-- New Item Dialog -->
 
           <!-- Edit Item Dialog -->
-          <v-dialog v-model="dialog" max-width="70%">
+          <v-dialog @click:outside="close" v-model="edit_rating_dialog" max-width="800">
             <!-- V-card Form -->
             <v-card>
               <v-card-title>
@@ -22,11 +22,11 @@
               </v-card-title>
 
               <v-card-text>
-<!--                <AspectsRatingsField-->
-<!--                  v-model:title="ratingsNew.title"-->
-<!--                  v-model:short_description="ratingsNew.short_description"-->
-<!--                  v-model:description="ratingsNew.description"-->
-<!--                />-->
+                <AspectsRatingsField
+              :title.sync="edit_rating.title"
+              :short_description.sync="edit_rating.short_description"
+              :description.sync="edit_rating.description"
+            />
               </v-card-text>
 
               <!-- V-card acties -->
@@ -44,7 +44,7 @@
             </v-card>
           </v-dialog>
         </template>
-        <!-- Items bewerken/verwijderen knoppen -->
+        <!-- Items bewerken knoppen -->
         <template #[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
@@ -53,7 +53,7 @@
       </v-data-table>
     </v-card-text>
     <v-card-actions>
-      <v-dialog v-model="dialogNew" max-width="70%">
+      <v-dialog @click:outside="close" v-model="new_rating_dialog" max-width="800">
         <!-- New Item Button -->
         <template #activator="{ on, attrs }">
           <v-btn color="primary" outlined v-bind="attrs" v-on="on">
@@ -66,9 +66,9 @@
           </v-card-title>
           <v-card-text>
             <AspectsRatingsField
-              :title.sync="new_rating.title"
-              :short_description.sync="new_rating.short_description"
-              :description.sync="new_rating.description"
+              :title.sync="edit_rating.title"
+              :short_description.sync="edit_rating.short_description"
+              :description.sync="edit_rating.description"
             />
           </v-card-text>
           <v-card-actions>
@@ -92,9 +92,8 @@
 import AspectsRatingsField from './RatingsForm.vue'
 export default {
   data: () => ({
-    dialog: false,
-    dialogNew: false,
-    dialogDelete: false,
+    edit_rating_dialog: false,
+    new_rating_dialog: false,
     headers: [
       { text: 'Titel', value: 'title' },
       { text: 'Korte Beschrijving', value: 'short_description' },
@@ -102,17 +101,12 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     ratings: [],
-    new_rating: {
+    edit_rating: {
       title: '',
       description: '',
       short_description: ''
     },
-    editedIndex: -1,
-    defaultItem: {
-      title: '',
-      short_description: '',
-      description: '',
-    },
+    editedIndex: -1
   }),
   computed: {
     formTitle() {
@@ -131,30 +125,34 @@ export default {
   methods: {
     editItem(item) {
       this.editedIndex = this.ratings.indexOf(item)
-      this.ratingsNew = Object.assign({}, item)
-      this.dialog = true
+      this.edit_rating = Object.assign({}, item)
+      this.edit_rating_dialog = true
     },
     close() {
-      this.dialog = false
-      this.dialogNew = false
+      this.edit_rating_dialog = false
+      this.new_rating_dialog = false
+      this.edit_rating = {
+        title: '',
+        description: '',
+        short_description: ''
+      }
       this.$nextTick(() => {
-        this.ratingsNew = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
     async submitForm() {
-      this.ratings.push(await this.$axios.$post('/ratings', this.new_rating))
+      this.ratings.push(await this.$axios.$post('/ratings', this.edit_rating))
       this.close()
     },
     async updateForm() {
       if (this.editedIndex > -1) {
         await this.$axios.$patch(
           `/ratings/${this.ratings[this.editedIndex].id}`,
-          this.ratingsNew
+          this.edit_rating
         )
-        Object.assign(this.ratings[this.editedIndex], this.ratingsNew)
+        Object.assign(this.ratings[this.editedIndex], this.edit_rating)
       } else {
-        this.ratings.push(this.ratingsNew)
+        this.ratings.push(this.edit_rating)
       }
       this.close()
     },

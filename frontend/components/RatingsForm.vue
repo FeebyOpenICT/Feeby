@@ -29,9 +29,10 @@
     </v-row>
   </v-container>
 </template>
+
 <script>
 export default {
-  name: 'AspectsRatingsField',
+  name: 'RatingsForm',
   props: {
     title: {type: String, required: true},
     short_description: {type: String, required: true},
