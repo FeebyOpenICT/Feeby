@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import AspectsRatingsField from './AspectsRatingsField.vue'
+import AspectsRatingsField from './RatingsForm.vue'
 export default {
   data: () => ({
     dialog: false,

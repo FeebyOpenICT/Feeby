@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AspectsRatingsInzien from '~/components/AspectsRatingsInzien.vue'
+import AspectsRatingsInzien from '~/components/RatingsTableCard.vue'
 export default {
   name: 'aspects-ratings',
   middleware: ['authenticated'],
