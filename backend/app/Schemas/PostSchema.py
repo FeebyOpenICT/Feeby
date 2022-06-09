@@ -1,6 +1,7 @@
 from typing import List
 from pydantic import BaseModel, constr
 from datetime import datetime
+from Schemas.RevisionSchema import CreateInitialRevision
 
 
 class Post(BaseModel):
@@ -9,7 +10,7 @@ class Post(BaseModel):
 
 
 class CreatePost(Post):
-    pass
+    revision: CreateInitialRevision
 
 
 class PostInDB(Post):
