@@ -2,8 +2,8 @@
   <v-container>
     <v-row>
       <v-text-field
-        @input="$emit('update:title', $event)"
         :value="title"
+        @input="$emit('update:title', $event)"
         counter
         maxlength="255"
         label="Rating Title"
@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <v-text-field
-        @input="$emit('update:short_description', $event.target.value)"
+        @input="$emit('update:short_description', $event)"
         :value="short_description"
         counter
         maxlength="255"
@@ -20,7 +20,7 @@
     </v-row>
     <v-row>
       <v-textarea
-        @input="$emit('update:description', $event.target.value)"
+        @input="$emit('update:description', $event)"
         :value="description"
         counter
         maxlength="1000"
@@ -33,9 +33,9 @@
 export default {
   name: 'AspectsRatingsField',
   props: {
-    title: String,
-    short_description: String,
-    description: String,
+    title: {type: String, required: true},
+    short_description: {type: String, required: true},
+    description: {type: String, required: true},
   },
   emits: ['update:title', 'update:short_description', 'update:description'],
 }

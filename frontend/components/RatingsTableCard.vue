@@ -22,11 +22,11 @@
               </v-card-title>
 
               <v-card-text>
-                <AspectsRatingsField
-                  v-model:title="ratingsNew.title"
-                  v-model:short_description="ratingsNew.short_description"
-                  v-model:description="ratingsNew.description"
-                />
+<!--                <AspectsRatingsField-->
+<!--                  v-model:title="ratingsNew.title"-->
+<!--                  v-model:short_description="ratingsNew.short_description"-->
+<!--                  v-model:description="ratingsNew.description"-->
+<!--                />-->
               </v-card-text>
 
               <!-- V-card acties -->
@@ -73,10 +73,9 @@
           </v-card-title>
           <v-card-text>
             <AspectsRatingsField
-              v-model:title="ratingsNew.title"
-              v-model:short_description="ratingsNew.short_description"
-              v-model:description="ratingsNew.description"
-              @update:title="(event) => console.log(event)"
+              :title.sync="new_rating.title"
+              :short_description.sync="new_rating.short_description"
+              :description.sync="new_rating.description"
             />
           </v-card-text>
           <v-card-actions>
@@ -112,10 +111,10 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     ratings: [],
-    ratingsNew: {
+    new_rating: {
       title: '',
-      short_description: '',
       description: '',
+      short_description: ''
     },
     editedIndex: -1,
     defaultItem: {
@@ -153,7 +152,7 @@ export default {
       })
     },
     async submitForm() {
-      this.ratings.push(await this.$axios.$post('/ratings', this.ratingsNew))
+      this.ratings.push(await this.$axios.$post('/ratings', this.new_rating))
       this.close()
     },
     async updateForm() {
