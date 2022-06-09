@@ -54,10 +54,9 @@ async def get_current_user(
                                 detail="Not enough permissions")
 
     # validate access token against canvas
-    # canvas_user = token.validate_self()
+    canvas_user = token.validate_self()
 
-    # user = UserRepository.get_user_by_canvas_id(canvas_user['id'], db)
-    user = UserRepository.get_user_by_canvas_id(id=token.canvas_id, db=db)
+    user = UserRepository.get_user_by_canvas_id(canvas_user['id'], db)
 
     return user
 
