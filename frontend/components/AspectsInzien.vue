@@ -1,209 +1,99 @@
 <template>
-  <!-- Data Tabel -->
-  <v-data-table
-    :headers="headers"
-    :items="aspects"
-    sort-by="title"
-    class="elevation-1 ma-3 rounded-lg"
-  >
-    <template #[`item.ratings`]="{ item }">
-      <td>{{ getRatingNames(item.ratings) }}</td>
-    </template>
+  <v-card>
+    <v-card-title>Aspects</v-card-title>
+    <v-card-text>
+      <!-- Data Tabel -->
+      <v-data-table :headers="headers" :items="aspects" sort-by="title">
+        <!-- Rating Array To String Method -->
+        <template #[`item.ratings`]="{ item }">
+          <td>{{ getRatingNames(item.ratings) }}</td>
+        </template>
 
-    <!-- De Header van het Tabel -->
-    <template #top>
-      <v-toolbar flat>
-        <v-toolbar-title>Mijn Aspects</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical />
-        <v-spacer />
+        <template #top>
+          <!-- Edit Item Dialog -->
+          <v-dialog
+            @click:outside="close"
+            v-model="edit_aspect_dialog"
+            max-width="800"
+          >
+            <!-- V-card Form -->
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ formTitle }}</span>
+              </v-card-title>
 
-        <!-- New Item Dialog -->
-        <v-dialog v-model="dialogNew" max-width="70%" max-height="80%">
-          <!-- New Item Button -->
-          <template #activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              fab
-              small
-              fixed
-              top
-              right
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon> mdi-plus </v-icon>
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="aspectsNew.title"
-                      counter
-                      maxlength="255"
-                      label="Rating Title"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-textarea
-                      v-model="aspectsNew.short_description"
-                      counter
-                      maxlength="255"
-                      label="Korte Beschrijving"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-textarea
-                      v-model="aspectsNew.description"
-                      counter
-                      maxlength="1000"
-                      label="Beschrijving"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      v-model="aspectsNew.external_url"
-                      counter
-                      maxlength="2000"
-                      label="Link"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-select
-                      v-model="aspectsNew.rating_ids"
-                      :items="aspectsRatings"
-                      label="Rating"
-                      multiple
-                      counter
-                      item-text="title"
-                      item-value="id"
-                      chips
-                      outlined
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn class="mx-auto" color="blue darken-1" text @click="close">
-                Cancel
-              </v-btn>
-              <v-btn
-                class="mx-auto"
-                color="blue darken-1"
-                text
-                @click="submitForm"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+              <v-card-text>
+                <AspectsForm
+                  :title.sync="edit_aspect.title"
+                  :short_description.sync="edit_aspect.short_description"
+                  :description.sync="edit_aspect.description"
+                  :external_url.sync="edit_aspect.external_url"
+                  :rating_ids.sync="edit_aspect.rating_ids"
+                />
+              </v-card-text>
 
-        <!-- Edit Item Dialog -->
-        <v-dialog v-model="dialog" max-width="70%" max-height="80%">
-          <!-- V-card Form -->
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
+              <!-- V-card acties -->
+              <v-card-actions>
+                <v-btn @click="close"> Cancel </v-btn>
+                <v-btn color="primary" @click="submitForm"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </template>
+        <!-- Items bewerken/verwijderen knoppen -->
+        <template #[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card-text>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="aspectsNew.title"
-                      counter
-                      maxlength="255"
-                      label="Rating Title"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-textarea
-                      v-model="aspectsNew.short_description"
-                      counter
-                      maxlength="255"
-                      label="Korte Beschrijving"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-textarea
-                      v-model="aspectsNew.description"
-                      counter
-                      maxlength="1000"
-                      label="Beschrijving"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      v-model="aspectsNew.external_url"
-                      counter
-                      maxlength="2000"
-                      label="Link"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-select
-                      v-model="aspectsNew.ratings"
-                      :items="aspectsRatings"
-                      label="Rating"
-                      multiple
-                      counter
-                      item-text="title"
-                      item-value="id"
-                      chips
-                      outlined
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+    <v-card-actions>
+      <!-- New Item Dialog -->
+      <v-dialog
+        @click:outside="close"
+        v-model="new_aspect_dialog"
+        max-width="800"
+      >
+        <!-- New Item Button -->
+        <template #activator="{ on, attrs }">
+          <v-btn color="primary" outlined v-bind="attrs" v-on="on">
+            New Aspect
+          </v-btn>
+        </template>
+        <!-- New Item Form -->
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">{{ formTitle }}</span>
+          </v-card-title>
+          <!-- V-card text -->
+          <v-card-text>
+            <AspectsForm
+              :title.sync="edit_aspect.title"
+              :short_description.sync="edit_aspect.short_description"
+              :description.sync="edit_aspect.description"
+              :external_url.sync="edit_aspect.external_url"
+              :rating_ids.sync="edit_aspect.rating_ids"
+            />
+          </v-card-text>
 
-            <!-- V-card acties -->
-            <v-card-actions>
-              <v-btn class="mx-auto" color="blue darken-1" text @click="close">
-                Cancel
-              </v-btn>
-              <v-btn
-                class="mx-auto"
-                color="blue darken-1"
-                text
-                @click="updateForm"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <!-- Items bewerken/verwijderen knoppen -->
-    <template #[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-    </template>
-  </v-data-table>
+          <!-- V-card acties -->
+          <v-card-actions>
+            <v-btn @click="close"> Cancel </v-btn>
+            <v-btn color="primary" @click="submitForm"> Save </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 export default {
   data: () => ({
-    dialog: false,
-    dialogNew: false,
-    dialogDelete: false,
+    edit_aspect_dialog: false,
+    new_aspect_dialog: false,
     headers: [
       { text: 'Titel', value: 'title' },
       { text: 'Korte Beschrijving', value: 'short_description' },
@@ -214,7 +104,7 @@ export default {
     ],
     aspects: [],
     aspectsRatings: [],
-    aspectsNew: {
+    edit_aspect: {
       title: '',
       short_description: '',
       description: '',
@@ -222,18 +112,11 @@ export default {
       rating_ids: '',
     },
     editedIndex: -1,
-    defaultItem: {
-      title: '',
-      short_description: '',
-      description: '',
-      external_url: '',
-      rating_ids: '',
-    },
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Aspect' : 'Edit Aspect'
     },
   },
 
@@ -241,9 +124,9 @@ export default {
     dialog(val) {
       val || this.close()
     },
-    'aspectsNew.ratings'(ratings) {
-      return ratings.map((ratings_ids) => ratings_ids.id)
-    },
+    // 'edit_aspect.ratings'(ratings) {
+    //   return ratings.map((ratings_ids) => ratings_ids.id)
+    // },
   },
   fetchOnServer: true,
   async fetch() {
@@ -253,15 +136,21 @@ export default {
   methods: {
     editItem(item) {
       this.editedIndex = this.aspects.indexOf(item)
-      this.aspectsNew = Object.assign({}, item)
-      this.dialog = true
+      this.edit_aspect = Object.assign({}, item)
+      this.edit_aspect_dialog = true
     },
 
     close() {
-      this.dialog = false
-      this.dialogNew = false
+      this.edit_aspect_dialog = false
+      this.new_aspect_dialog = false
+      this.edit_aspect = {
+        title: '',
+        short_description: '',
+        description: '',
+        external_url: '',
+        rating_ids: '',
+      }
       this.$nextTick(() => {
-        this.aspectsNew = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
@@ -274,7 +163,7 @@ export default {
     },
 
     async submitForm() {
-      this.aspects.push(await this.$axios.$post('/aspects', this.aspectsNew))
+      this.aspects.push(await this.$axios.$post('/aspects', this.edit_aspect))
       this.close()
     },
 
@@ -282,11 +171,11 @@ export default {
       if (this.editedIndex > -1) {
         await this.$axios.$patch(
           `/aspects/${this.ratings[this.editedIndex].id}`,
-          this.aspectsNew
+          this.edit_aspect
         )
-        Object.assign(this.aspects[this.editedIndex], this.aspectsNew)
+        Object.assign(this.aspects[this.editedIndex], this.edit_aspect)
       } else {
-        this.aspects.push(this.aspectsNew)
+        this.aspects.push(this.edit_aspect)
       }
       this.close()
     },
