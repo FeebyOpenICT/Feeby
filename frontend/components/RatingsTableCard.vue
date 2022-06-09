@@ -22,7 +22,7 @@
               </v-card-title>
 
               <v-card-text>
-                <AspectsRatingsField
+                <RatingsForm
               :title.sync="edit_rating.title"
               :short_description.sync="edit_rating.short_description"
               :description.sync="edit_rating.description"
@@ -65,7 +65,7 @@
             <span class="text-h5">{{ formTitle }}</span>
           </v-card-title>
           <v-card-text>
-            <AspectsRatingsField
+            <RatingsForm
               :title.sync="edit_rating.title"
               :short_description.sync="edit_rating.short_description"
               :description.sync="edit_rating.description"
@@ -89,7 +89,6 @@
 </template>
 
 <script>
-import AspectsRatingsField from './RatingsForm.vue'
 export default {
   data: () => ({
     edit_rating_dialog: false,
@@ -157,6 +156,5 @@ export default {
       this.close()
     },
   },
-  components: { AspectsRatingsField },
 }
 </script>
