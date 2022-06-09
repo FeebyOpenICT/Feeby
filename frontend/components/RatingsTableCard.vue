@@ -31,18 +31,11 @@
 
               <!-- V-card acties -->
               <v-card-actions>
-                <v-btn
-                  class="mx-auto"
-                  color="blue darken-1"
-                  text
-                  @click="close"
-                >
+                <v-btn @click="close">
                   Cancel
                 </v-btn>
                 <v-btn
-                  class="mx-auto"
-                  color="blue darken-1"
-                  text
+                  color="primary"
                   @click="updateForm"
                 >
                   Save
@@ -79,13 +72,11 @@
             />
           </v-card-text>
           <v-card-actions>
-            <v-btn class="mx-auto" color="blue darken-1" text @click="close">
+            <v-btn @click="close">
               Cancel
             </v-btn>
             <v-btn
-              class="mx-auto"
-              color="blue darken-1"
-              text
+              color="primary"
               @click="submitForm"
             >
               Save
@@ -125,7 +116,7 @@ export default {
   }),
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Rating' : 'Edit Item'
     },
   },
   watch: {
