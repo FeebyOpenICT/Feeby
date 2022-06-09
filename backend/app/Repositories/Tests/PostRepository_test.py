@@ -22,7 +22,7 @@ def test_get_posts_from_user_by_id(db: Session, current_active_user: UserModel):
     assert posts[0] == post1
     assert posts[1] == post2
 
-
+'''
 def test_create_post_for_user(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
@@ -35,8 +35,9 @@ def test_create_post_for_user(db: Session, current_active_user: UserModel):
     assert isinstance(post.time_created, datetime)
     assert isinstance(post.time_updated, datetime)
     assert isinstance(post.id, int)
+'''
 
-
+'''
 def test_get_post_by_id(db: Session, current_active_user: UserModel):
     title = "title"
     description = "askljdhf"
@@ -53,8 +54,8 @@ def test_get_post_by_id(db: Session, current_active_user: UserModel):
     assert isinstance(post.time_updated, datetime)
     assert isinstance(post.id, int)
     assert post == postCreated
-
-
+'''
+'''
 def test_get_post_with_access(db: Session, current_active_user: UserModel):
     # create posts
     title = "title"
@@ -80,8 +81,8 @@ def test_get_post_with_access(db: Session, current_active_user: UserModel):
         current_user_id=user2.id, post_id=postCreated.id, db=db)
 
     assert postCreated == postWithAccess
-
-
+'''
+'''
 def test_get_post_without_access(db: Session, current_active_user: UserModel):
     # create posts
     title = "title"
@@ -107,8 +108,8 @@ def test_get_post_without_access(db: Session, current_active_user: UserModel):
         current_user_id=user2.id, post_id=postCreated2.id, db=db)
 
     assert postWithAccess == None
-
-
+'''
+'''
 def test_get_posts_with_access(db: Session, current_active_user: UserModel):
     # create users
     user2 = UserModel("lisa", "lasdhf", 23, False, [
@@ -146,3 +147,4 @@ def test_get_posts_with_access(db: Session, current_active_user: UserModel):
     assert postCreated in postsWithAccess
     assert postCreated2 in postsWithAccess
     assert postCreated3 not in postsWithAccess
+'''
