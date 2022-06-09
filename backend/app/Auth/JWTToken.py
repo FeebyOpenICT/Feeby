@@ -3,7 +3,7 @@ from jose import jwt
 from fastapi import status, HTTPException
 import requests
 
-from config import JWT_ALGORITHM, JWT_SECRET, BASE_URL
+from config import JWT_ALGORITHM, JWT_SECRET, BASE_CANVAS_URL
 from Schemas.RolesEnum import RolesEnum
 
 
@@ -46,7 +46,8 @@ class AccessToken:
         headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
-        r = requests.get(f'{BASE_URL}/api/v1/users/self', headers=headers)
+        r = requests.get(
+            f'{BASE_CANVAS_URL}/api/v1/users/self', headers=headers)
 
         if r.status_code >= 400:
             # Something went wrong on canvas's side, forward error to frontend
