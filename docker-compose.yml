@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   traefik:
@@ -22,8 +22,10 @@ services:
   backend:
     container_name: feeby-backend-dev
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     build:
       context: ./backend
       target: development
@@ -82,6 +84,11 @@ services:
     secrets:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     container_name: feeby-redis-dev
