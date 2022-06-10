@@ -38,13 +38,13 @@ services:
       - BASE_APP_URL=http://localhost
       - JWT_ALGORITHM=HS256
       - DATABASE_URL=db
+      - POSTGRES_USER=feeby
     secrets:
       - CANVAS_CLIENT_ID
       - CANVAS_CLIENT_SECRET
       - CANVAS_DEVELOPER_KEY
       - CANVAS_DEVELOPER_KEY_ID
       - JWT_SECRET
-      - POSTGRES_USER
       - POSTGRES_PASSWORD
     labels:
       traefik.enable: true
@@ -79,13 +79,12 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER_FILE=/run/secrets/POSTGRES_USER
+      - POSTGRES_USER=feeby
       - POSTGRES_PASSWORD_FILE=/run/secrets/POSTGRES_PASSWORD
     secrets:
-      - POSTGRES_USER
       - POSTGRES_PASSWORD
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U feeby"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -119,5 +118,3 @@ secrets:
     file: JWT_SECRET.txt
   POSTGRES_PASSWORD:
     file: POSTGRES_PASSWORD.txt
-  POSTGRES_USER:
-    file: POSTGRES_USER.txt
