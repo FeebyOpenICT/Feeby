@@ -119,19 +119,19 @@
               </v-card-actions>
             </v-card>
           </v-stepper-content>
-          <!-- STAP 3: aspecten selecteren-->
+          <!-- STAP 3-->
           <v-stepper-content step="3" class="pa-5">
             <v-card>
-                            <v-data-table
-                              :items="aspects"
-                              :headers="headers"
-                              item-key="id"
-                              show-select
-                            >
-                              <template #[`item.explanation`]="props">
-                                <v-textarea v-model="props.item.explanation" outlined class="pa-5"></v-textarea>
-                              </template>
-                            </v-data-table>
+              <v-data-table
+                :items="aspects"
+                :headers="headers"
+                item-key="id"
+                show-select
+              >
+                <template #[`item.explanation`]="props">
+                  <v-textarea v-model="props.item.explanation" outlined class="pa-5"></v-textarea>
+                </template>
+              </v-data-table>
               <v-card-actions>
                 <v-btn
                   @click="e1=2"
@@ -154,7 +154,7 @@
 </template>
 <script>
 export default {
-  name: 'beroepsproduct-inleveren',
+  name: 'revision-inleveren',
   data() {
     return {
       aspects: [],
@@ -164,6 +164,7 @@ export default {
       isHidden: true,
       valid: true,
       e1: 1,
+      user: [],
       dragover: false,
       titleRules: [
         v => !!v || 'Titel is verplicht',
@@ -175,14 +176,7 @@ export default {
       form: {
         title: '',
         revision: {
-          description: '',
-          feedback: [
-            {
-              description: '',
-              aspect_id: [],
-              rating_id: []
-            }
-          ]
+          description: ''
         }
       },
       headers: [
