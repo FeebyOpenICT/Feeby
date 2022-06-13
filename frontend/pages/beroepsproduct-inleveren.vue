@@ -175,19 +175,18 @@ export default {
         v => !!v || 'Beschrijving is verplicht'
       ],
       form: {
-        title: '',
-        description: '',
-        rating_id: [],
-        revision: {
+      title: '',
+      description: '',
+      revision: {
+      description: '',
+        feedback: [
+        {
           description: '',
-          feedback: [
-            {
-              description: '',
-              aspect_id: [],
-              rating_id: []
-            }
-          ]
+          aspect_id: 1,
+          rating_id: 1
         }
+      ]
+    }
       },
       headers: [
         {text: 'Titel', value: 'title'},
@@ -198,9 +197,14 @@ export default {
       ]
     }
   },
+
+
   async fetch() {
     this.aspects = await this.$axios.$get('aspects')
     console.log(this.aspects)
+    this.user = this.$axios.$get('/api/v1/users/self')
+    .then(response => (this.user = response.data))
+    .finally(this.initialize)
   },
   methods: {
     submitForm() {
