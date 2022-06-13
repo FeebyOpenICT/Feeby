@@ -122,16 +122,18 @@
           <!-- STAP 3: aspecten selecteren-->
           <v-stepper-content step="3" class="pa-5">
             <v-card>
-                            <v-data-table
-                              :items="aspects"
-                              :headers="headers"
-                              item-key="id"
-                              show-select
-                            >
-                              <template #[`item.explanation`]="props">
-                                <v-textarea v-model="props.item.explanation" outlined class="pa-5"></v-textarea>
-                              </template>
-                            </v-data-table>
+              <v-data-table
+                v-model="form.revision.feedback"
+                @input="clickSelectedAspects()"
+                :items="aspects"
+                :headers="headers"
+                item-key="id"
+                show-select
+              >
+                <template #[`item.explanation`]="props">
+                  <v-textarea v-model="props.item.explanation" outlined class="pa-5"></v-textarea>
+                </template>
+              </v-data-table>
               <v-card-actions>
                 <v-btn
                   @click="e1=2"
@@ -174,14 +176,16 @@ export default {
       ],
       form: {
         title: '',
+        description: '',
+        rating_id: [],
         revision: {
           description: '',
           feedback: [
-            {
-              description: '',
-              aspect_id: [],
-              rating_id: []
-            }
+            // {
+            //   description: '',
+            //   aspect_id: [],
+            //   rating_id: []
+            // }
           ]
         }
       },
@@ -201,7 +205,11 @@ export default {
   methods: {
     submitForm() {
       this.form = this.$axios.$post('users/1/posts', this.form)
+    },
+    clickSelectedAspects() {
+      console.log(this.form.revision.feedback.map(e => e.description))
     }
+
   }
 }
 
