@@ -19,25 +19,6 @@ class FeedbackService:
         body: List[CreateFeedback],
         db: Session
     ) -> List[FeedbackModel]:
-        """create feedback
-
-        Args:
-            reviewer (UserModel): reviewer
-            owner (UserModel): owner of post
-            post (PostModel): post to give feedback on
-            revision (RevisionModel): revision to give feedback on
-            body (List[CreateFeedback]): feedback
-            db (Session): database session
-
-        Raises:
-            HTTPException: raised if owner == reviewer 
-            DoesNotBelongTo: if owner is not truly owner of post
-            DoesNotBelongTo: if revision does not belong to post    
-            HTTPException: feedback does not match baseline measurement
-
-        Returns:
-            List[FeedbackModel]: list of feedback
-        """
         if reviewer.id == owner.id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not allowed to give oneself feedback")
@@ -78,5 +59,26 @@ class FeedbackService:
                     db=db
                 )
             )
+
+        return feedback
+
+    @staticmethod
+    def get_feedback_by_id_or_fail(feedback_id: int, db: Session) -> FeedbackModel:
+        """get feedback by id or raise not found exception
+
+        Args:
+            feedback_id (int): id of feedback
+            db (Session): database session
+
+        Raises:
+            NotFoundException: if feedback not found
+
+        Returns:
+            FeedbackModel: feedback as saved in database
+        """
+        feedback = FeedbackRepository.get_by_id(id=feedback_id, db=db)
+
+        if not feedback:
+            raise NotFoundException(resource="feedback", id=feedback_id)
 
         return feedback

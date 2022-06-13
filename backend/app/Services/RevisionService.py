@@ -1,10 +1,13 @@
 from typing import List, Optional
 from fastapi import HTTPException, status
+from typing import List, Optional
+from fastapi import HTTPException, status, UploadFile
 from sqlalchemy.orm import Session
 from Models import UserModel, PostModel, RevisionModel
 from Repositories import RevisionRepository
 from Exceptions import NotFoundException, NoPermissions
 from Schemas import CreateRevision
+from Services import FileService
 
 
 class RevisionService:
@@ -13,6 +16,7 @@ class RevisionService:
         """create revision
 
         Args:
+            body (CreateRevision): description of revision
             post (PostModel): post as saved in database
             db (Session): database session
 
@@ -34,6 +38,7 @@ class RevisionService:
         """get all revisions from post
 
         Args:
+            post_id (int): post_id as saved in database
             db (Session): database session
             post_id (int): id of post
 
@@ -59,11 +64,11 @@ class RevisionService:
         return revision
 
     @staticmethod
-    def get_revision_by_id_or_fail(id: int, db: Session) -> RevisionModel:
+    def get_revision_by_id_or_fail(revision_id: int, db: Session) -> RevisionModel:
         """get revision by id or raise not found exception
 
         Args:
-            id (int): id of revision
+            revision_id (int): id of revision
             db (Session): database session
 
         Raises:
@@ -72,9 +77,9 @@ class RevisionService:
         Returns:
             RevisionModel: revision as saved in database
         """
-        revision = RevisionRepository.get_by_id(id=id, db=db)
+        revision = RevisionRepository.get_by_id(id=revision_id, db=db)
 
         if not revision:
-            raise NotFoundException(resource="revision", id=id)
+            raise NotFoundException(resource="revision", id=revision_id)
 
         return revision
