@@ -35,7 +35,7 @@
               <!-- V-card acties -->
               <v-card-actions>
                 <v-btn @click="close"> Cancel </v-btn>
-                <v-btn color="primary" @click="submitForm"> Save </v-btn>
+                <v-btn color="primary" @click="updateForm"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -124,9 +124,6 @@ export default {
     dialog(val) {
       val || this.close()
     },
-    // 'edit_aspect.ratings'(ratings) {
-    //   return ratings.map((ratings_ids) => ratings_ids.id)
-    // },
   },
   fetchOnServer: true,
   async fetch() {

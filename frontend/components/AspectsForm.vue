@@ -65,7 +65,7 @@ export default {
     short_description: { type: String, required: true },
     description: { type: String, required: true },
     external_url: { type: String, required: true },
-    rating_ids: { type: [String, Array], required: true },
+    rating_ids: { type: Array, required: true },
   },
   data() {
     return {

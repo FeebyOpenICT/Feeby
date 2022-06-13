@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <h1 class="mx-auto">Admin Pagina</h1>
-    <v-divider />
-    <v-row>
-      <v-col> </v-col>
-      <v-col> <AspectsInzien /> </v-col>
-    </v-row>
-  </div>
+  <v-row>
+    <v-col> </v-col>
+    <v-col> <AspectsInzien /> </v-col>
+  </v-row>
 </template>
 
 <script>
