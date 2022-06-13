@@ -181,11 +181,11 @@ export default {
         revision: {
           description: '',
           feedback: [
-            // {
-            //   description: '',
-            //   aspect_id: [],
-            //   rating_id: []
-            // }
+            {
+              description: '',
+              aspect_id: [],
+              rating_id: []
+            }
           ]
         }
       },
