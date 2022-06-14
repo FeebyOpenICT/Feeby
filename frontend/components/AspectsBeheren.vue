@@ -22,6 +22,7 @@
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
 
+              <!-- V-card text -->
               <v-card-text>
                 <AspectsForm
                   :title.sync="edit_aspect.title"
@@ -91,6 +92,7 @@
 
 <script>
 export default {
+  // data variables
   data: () => ({
     edit_aspect_dialog: false,
     new_aspect_dialog: false,
@@ -114,29 +116,36 @@ export default {
     editedIndex: -1,
   }),
 
+  // changes title of dialog form to either New Aspect or Edit Aspect
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? 'New Aspect' : 'Edit Aspect'
     },
   },
 
+  // watch dialog for changes
   watch: {
     dialog(val) {
       val || this.close()
     },
   },
+
   fetchOnServer: true,
+
+  // async fetch for aspects and ratings
   async fetch() {
     this.aspects = await this.$axios.$get(`/aspects`)
     this.aspectsRatings = await this.$axios.$get(`/ratings`)
   },
   methods: {
+    // wich item is being edited, method/function
     editItem(item) {
       this.editedIndex = this.aspects.indexOf(item)
       this.edit_aspect = Object.assign({}, item)
       this.edit_aspect_dialog = true
     },
 
+    // closes dialog and resets parameters, method/function
     close() {
       this.edit_aspect_dialog = false
       this.new_aspect_dialog = false
@@ -152,6 +161,7 @@ export default {
       })
     },
 
+    // chanching ratings array into string method/function
     getRatingNames: (ratings) => {
       return ratings
         .map((rating) => rating.title)
@@ -159,15 +169,17 @@ export default {
         .toString()
     },
 
+    // Post method/function
     async submitForm() {
       this.aspects.push(await this.$axios.$post('/aspects', this.edit_aspect))
       this.close()
     },
 
+    // patch/update method/function
     async updateForm() {
       if (this.editedIndex > -1) {
         await this.$axios.$patch(
-          `/aspects/${this.ratings[this.editedIndex].id}`,
+          `/aspects/${this.aspects[this.editedIndex].id}`,
           this.edit_aspect
         )
         Object.assign(this.aspects[this.editedIndex], this.edit_aspect)
