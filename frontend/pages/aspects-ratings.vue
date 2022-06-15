@@ -9,7 +9,10 @@
 import AspectsRatingsInzien from '~/components/RatingsTableCard.vue'
 export default {
   name: 'aspects-ratings',
-  middleware: ['authenticated'],
+  middleware: ['authenticated', 'authorization'],
+  meta: {
+    roles: ['admin'],
+  },
   components: { AspectsRatingsInzien },
 }
 </script>

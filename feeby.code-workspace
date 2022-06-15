@@ -5,11 +5,7 @@
       "path": "."
     },
     {
-      "name": "Frontend OLD",
-      "path": "./frontend-old"
-    },
-    {
-      "name": "Frontend NEW",
+      "name": "Frontend",
       "path": "./frontend"
     },
     {
