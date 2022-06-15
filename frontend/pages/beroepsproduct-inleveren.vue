@@ -123,7 +123,7 @@
           <v-stepper-content step="3" class="pa-5">
             <v-card>
               <v-data-table
-                v-model="form.revision.feedback"
+                v-model="feedbackList"
                 @input="clickSelectedAspects()"
                 :items="aspects"
                 :headers="headers"
@@ -132,6 +132,16 @@
               >
                 <template #[`item.explanation`]="props">
                   <v-textarea v-model="props.item.explanation" outlined class="pa-5"></v-textarea>
+                </template>
+
+                <template #[`item.ratings`]="{ item }">
+                  <v-select
+                    v-model="item.rating_id"
+                    :items="item.ratings"
+                    item-text="title"
+                    item-value="id"
+                    :key="ratings"
+                  ></v-select>
                 </template>
               </v-data-table>
               <v-card-actions>
@@ -145,6 +155,11 @@
                   color="primary"
                 >
                   Verstuur
+                </v-btn>
+                <v-btn
+                @click="viewLogs"
+                >
+                  Log bekijken
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -160,8 +175,16 @@ export default {
   data() {
     return {
       aspects: [],
+      ratings: '',
+      select: '',
+      items: [
+        { state: 'Florida', abbr: 'FL' },
+        { state: 'Georgia', abbr: 'GA' },
+        { state: 'Nebraska', abbr: 'NE' },
+        { state: 'California', abbr: 'CA' },
+        { state: 'New York', abbr: 'NY' },
+      ],
       dialog: false,
-      selectedAspects: '',
       visible: true,
       isHidden: true,
       valid: true,
@@ -175,46 +198,46 @@ export default {
         v => !!v || 'Beschrijving is verplicht'
       ],
       form: {
-      title: '',
-      description: '',
-      revision: {
-      description: '',
-        feedback: [
-        {
+        title: '',
+        description: '',
+        revision: {
           description: '',
-          aspect_id: 1,
-          rating_id: 1
+          feedback: []
         }
-      ]
-    }
       },
+      feedbackList: [],
       headers: [
         {text: 'Titel', value: 'title'},
+        {aspect: 'ID', value: 'aspects'},
         {text: 'Korte Beschrijving', value: 'short_description'},
         {text: 'Beschrijving', value: 'description'},
-        {text: 'Jou geschreven toelichting', value: 'explanation'},
-        {text: 'rating', value: 'selectRating'}
+        {text: 'Toelichting', value: 'explanation'},
+        {text: 'rating', value: 'ratings'}
       ]
     }
   },
-
-
   async fetch() {
     this.aspects = await this.$axios.$get('aspects')
     console.log(this.aspects)
-    this.user = this.$axios.$get('/api/v1/users/self')
-    .then(response => (this.user = response.data))
-    .finally(this.initialize)
   },
   methods: {
-    submitForm() {
-      this.form = this.$axios.$post('users/1/posts', this.form)
+    async submitForm() {
+      this.feedbackList.map(e => e.feedback)
+      console.log(this.feedbackList)
+      this.form = await this.$axios.$post('users/1/posts', this.form)
     },
     clickSelectedAspects() {
-      console.log(this.form.revision.feedback.map(e => e.description))
+      console.log(this.form.revision.feedback.map(e => e.aspect_id))
+    },
+    viewLogs() {
+      console.log(this.feedbackList)
     }
-
-  }
+  },
+  computed: {
+    user() {
+      return this.$store.state.auth.user
+    },
+  },
 }
 
 </script>
