@@ -46,6 +46,22 @@
           <v-list-item-title>Gedeeld</v-list-item-title>
         </v-list-item>
       </v-list>
+
+      <!-- Admin only links -->
+      <template v-if="isAdmin">
+        <v-divider></v-divider>
+        <v-list nav dense>
+          <v-list-item-content>
+            <v-list-item-title> Admin only </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item link to="/aspects-ratings">
+            <v-list-item-icon>
+              <v-icon>mdi-comment-quote</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Aspecten & Ratings</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
 
     <!-- Main content -->
@@ -61,6 +77,9 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'DefaultLayout',
+  created() {
+    console.log(this.user)
+  },
   data() {
     return {
       drawer: false,
@@ -70,6 +89,9 @@ export default {
     ...mapGetters('auth', ['isAuthenticated']),
     user() {
       return this.$store.state.auth.user
+    },
+    isAdmin() {
+      return this.user.roles.map((role) => role.title).includes('admin')
     },
   },
 }
