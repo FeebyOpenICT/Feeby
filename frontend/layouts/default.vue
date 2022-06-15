@@ -77,9 +77,6 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'DefaultLayout',
-  created() {
-    console.log(this.user)
-  },
   data() {
     return {
       drawer: false,
