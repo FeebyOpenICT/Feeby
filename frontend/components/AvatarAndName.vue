@@ -2,7 +2,7 @@
   <v-list>
     <v-list-item :link="link" :to="to" class="px-2">
       <v-list-item-avatar color="blue">
-        <!-- Show first to letters, implemt canvas image later -->
+        <!-- Show first to letters, implement canvas image later -->
         <span class="white--text text-h5">{{
           first_two_letters_from_fullname
         }}</span>
