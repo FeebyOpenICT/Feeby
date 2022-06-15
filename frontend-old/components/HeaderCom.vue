@@ -52,17 +52,17 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item
-          to="/adminpagina"
+          to="/AdminPagina"
           nuxt
           link
         >
-          <v-list-item-icon>
+          <v-list-icon>
             <v-icon>mdi-pencil</v-icon>
-          </v-list-item-icon>
+          </v-list-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>Admin Pagina</v-list-item-title>
-          </v-list-item-content>
+          <v-list-content>
+            <v-list-item-title>Aspect Inzien</v-list-item-title>
+          </v-list-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

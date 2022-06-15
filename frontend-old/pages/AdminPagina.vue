@@ -1,15 +1,15 @@
 <template>
   <div>
     <HeaderCom />
-    <AspectInzien />
+    <AspectRatingInzien />
   </div>
 </template>
 
 <script>
-import AspectInzien from '~/components/AspectCards/AspectInzien'
+import AspectRatingInzien from '~/components/AspectCards/AspectRatingInzien.vue'
 import HeaderCom from '~/components/HeaderCom.vue'
 export default {
   name: 'AdminPagina',
-  components: { AspectInzien, HeaderCom }
+  components: { AspectRatingInzien, HeaderCom }
 }
 </script>
