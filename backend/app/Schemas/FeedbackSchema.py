@@ -8,7 +8,6 @@ class Feedback(BaseModel):
 
 
 class CreateFeedback(Feedback):
-    reviewed_feedback_id: Optional[int]
     aspect_id: int
     rating_id: int
 
@@ -16,4 +15,6 @@ class CreateFeedback(Feedback):
 class FeedbackInDB(CreateFeedback):
     id: int
     time_created: datetime
-    time_updated: datetime
+
+    class Config:
+        orm_mode = True

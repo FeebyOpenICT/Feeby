@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import HTTPException, status
-from Exceptions import DuplicateKey
+from Exceptions import DuplicateKey, NoPermissions
 
 from Models import UserAccessPostModel
 from sqlalchemy.orm import Session
@@ -12,6 +12,14 @@ from Services import PostService, UserService
 
 
 class UserAccessPostService:
+    @staticmethod
+    def check_access_to_post_or_fail(post_id: int, user_id: int, db: Session):
+        result = UserAccessPostRepository.get_by_id(
+            post_id=post_id, user_id=user_id, db=db)
+
+        if not result:
+            raise NoPermissions(resource="post", id=post_id)
+
     @staticmethod
     def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
         """grant access to post whilst checking for errors

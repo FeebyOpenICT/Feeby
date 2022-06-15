@@ -6,3 +6,5 @@ from .RoleService import RoleService
 from .UserAccessPostService import UserAccessPostService
 from .AspectRatingService import AspectRatingService
 from .FeedbackService import FeedbackService
+from .FileService import FileService
+from .RevisionService import RevisionService

@@ -113,6 +113,8 @@ def client(db) -> TestClient:
 
     app.include_router(RatingsRouter)
 
+    app.include_router(RevisionRouter)
+
     app.dependency_overrides[get_db_connection] = override_get_db
 
     app.dependency_overrides[get_current_active_user] = override_get_current_active_user

@@ -1,10 +1,16 @@
-from typing import List
+from typing import List, Optional
 from Models.UserAccessPostModel import UserAccessPostModel
 from sqlalchemy.orm import Session
 from Exceptions import UnexpectedInstanceError
 
 
 class UserAccessPostRepository:
+    @staticmethod
+    def get_by_id(post_id: int, user_id: int, db: Session) -> Optional[UserAccessPostModel]:
+        result = db.query(UserAccessPostModel).filter(
+            UserAccessPostModel.post_id == post_id, UserAccessPostModel.user_id == user_id).first()
+        return result
+
     @staticmethod
     def save(user_access_post_model: UserAccessPostModel, db: Session) -> UserAccessPostModel:
         """save user access post model
