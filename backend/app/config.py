@@ -3,11 +3,11 @@ import os
 
 def get_secret(key, default):
     try:
-        with open(f'/run/secrets/{key}') as secret_file:
-            return secret_file.read()
+        return os.environ[key]
     except:
         try:
-            return os.environ[key]
+            with open(f'/run/secrets/{key}') as secret_file:
+                return secret_file.read()
         except:
             return default
 

@@ -7,3 +7,5 @@ from .RatingRepository import RatingRepository
 from .FeedbackRepository import FeedbackRepository
 from .AspectRatingRepository import AspectRatingRepository
 from .RevisionRepository import RevisionRepository
+from .FileRepository import FileRepository
+

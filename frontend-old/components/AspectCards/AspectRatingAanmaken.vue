@@ -5,7 +5,6 @@
         <h2 class="textBoxTitle">
           Titel
         </h2>
-        <v-hover />
         <v-textarea
           id="AspectRatingTitel"
           v-model="ratings.title"
@@ -20,11 +19,10 @@
           max. 255 characters
         </div>
       </div>
-      <div id="productTextContainer" class="container">
+      <div class="productTextContainer">
         <h2 class="textBoxTitle">
           Beschrijving
         </h2>
-        <v-hover />
         <v-textarea
           id="AspectRatingBeschrijving"
           v-model="ratings.description"
@@ -35,15 +33,14 @@
           placeholder="Schrijf hier je beschrijving over dit aspect rating..."
         />
 
-        <div id="characterLimit">
+        <div class="characterLimit">
           max. 1000 characters
         </div>
       </div>
-      <div id="productTextContainer" class="container">
+      <div class="productTextContainer">
         <h2 class="textBoxTitle">
           Korte Beschrijving
         </h2>
-        <v-hover />
         <v-textarea
           id="AspectRatingKorteBeschrijving"
           v-model="ratings.short_description"
@@ -54,7 +51,7 @@
           placeholder="Schrijf hier je korte beschrijving over dit aspect rating..."
         />
 
-        <div id="characterLimit">
+        <div class="characterLimit">
           max. 255 characters
         </div>
       </div>

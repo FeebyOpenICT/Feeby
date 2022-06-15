@@ -1,11 +1,12 @@
 <template>
-  <v-container fluid>
-    <form method="post" @submit.prevent="submitForm">
+    <form
+      method="post"
+      @submit.prevent="submitForm"
+    >
       <div id="productTextContainer" class="container">
         <h1 class="textBoxTitle">
           Titel
         </h1>
-        <v-hover />
         <v-text-field
           id="aspectTitel"
           v-model="values.title"
@@ -26,7 +27,6 @@
         <h1 class="textBoxTitle">
           Korte Beschrijving
         </h1>
-        <v-hover />
         <v-textarea
           id="aspectKorteBeschrijving"
           v-model="values.short_description"
@@ -47,7 +47,6 @@
         <h1 class="textBoxTitle">
           Beschrijving
         </h1>
-        <v-hover />
         <v-textarea
           id="aspectBeschrijving"
           v-model="values.description"
@@ -68,7 +67,6 @@
         <h1 class="textBoxTitle">
           Link
         </h1>
-        <v-hover />
         <v-text-field
           id="aspectLink"
           v-model="values.external_url"
@@ -89,7 +87,6 @@
         <h1 class="textBoxTitle">
           Aspect Rating
         </h1>
-        <v-hover />
         <v-select
           v-model="values.rating_ids"
           :items="cards"
@@ -101,21 +98,27 @@
           chips
         />
 
-        <div id="AspectRatingToevoegen">
+      </div>
+      <v-dialog
+        v-model="modal"
+        scrollable
+        width="500px"
+      >
+        <template v-slot:activator="{ on, attrs }">
           <v-btn
-            class="Submit"
-            @click="overlay = !overlay"
+            v-bind="attrs"
+            v-on="on"
           >
             Aspect Rating Toevoegen
           </v-btn>
-          <v-overlay :absolute="absolute" :value="overlay" class="overlay">
-            <AspectRatingAanmaken />
-            <v-btn width="100%" @click="overlay = false">
-              Close
-            </v-btn>
-          </v-overlay>
+        </template>
+        <div>
+          <AspectRatingAanmaken />
+          <v-btn width="100%" @click="modal = false">
+            Close
+          </v-btn>
         </div>
-      </div>
+      </v-dialog>
 
       <v-btn
         type="submit"
@@ -124,15 +127,13 @@
         Submit
       </v-btn>
     </form>
-  </v-container>
 </template>
+
 <script>
 import { axiosInstance } from '../../lib/axiosInstance'
-import AspectRatingAanmaken from './AspectRatingAanmaken'
 
 export default {
   name: 'AspectAanmaken',
-  components: { AspectRatingAanmaken },
   data () {
     return {
       cards: [],
@@ -143,8 +144,7 @@ export default {
         external_url: '',
         rating_ids: []
       },
-      overlay: false,
-      absolute: true
+      modal: false
     }
   },
   mounted () {
@@ -169,6 +169,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 @import '.css/styles.css';
 #characterLimit{

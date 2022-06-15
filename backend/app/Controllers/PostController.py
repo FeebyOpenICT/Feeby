@@ -21,22 +21,11 @@ router = InferringRouter(
 
 @cbv(router)
 class PostController:
-    def __init__(
-        self,
-        user_id: int,
-        db: Session = Depends(get_db_connection),
-        current_active_user: UserModel = Depends(get_current_active_user)
-    ) -> None:
-        self.user_id = user_id
-        self.db = db
-        self.current_active_user = current_active_user
-
-        if user_id != current_active_user.id:
-            user = UserService.get_active_user_by_id_or_fail(id=user_id, db=db)
-            self.user = user
+    user_id: int
+    db: Session = Depends(get_db_connection)
 
     @router.get('/users/{user_id}/posts',  response_model=List[PostInDB])
-    async def get_posts(self):
+    async def get_posts(self, current_active_user: UserModel = Depends(get_current_active_user)):
         """Get all posts from database
 
         Args:
@@ -46,12 +35,12 @@ class PostController:
         - All
         """
         result = PostService.get_posts_from_user_by_id_and_current_user_id(
-            user_id=self.user_id, current_user_id=self.current_active_user.id, db=self.db)
+            user_id=self.user_id, current_user_id=current_active_user.id, db=self.db)
 
         return result
 
     @router.post('/users/{user_id}/posts', response_model=PostInDB, status_code=status.HTTP_201_CREATED)
-    async def create_post(self, body: CreatePost, current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
+    async def create_post(self, body: CreatePost, current_active_self: UserModel = Depends(get_current_active_user_that_is_self)):
         """Create post
 
         Args:
@@ -60,12 +49,12 @@ class PostController:
         Allowed roles:
         - All
         """
-        post = PostService.create_post_for_user(title=body.title, description=body.description,
-                                                user=current_self_user, db=self.db)
+        post = PostService.create_post_for_user(body=body,
+                                                user=current_active_self, db=self.db)
         return post
 
     @router.post('/users/{user_id}/posts/{post_id}/grant-access', response_model=List[UserAccessPostInDB], status_code=status.HTTP_201_CREATED)
-    async def grant_access_to_post(self, post_id: int, body: UserIdList, current_self_user: UserModel = Depends(get_current_active_user_that_is_self)):
+    async def grant_access_to_post(self, post_id: int, body: UserIdList, current_active_self: UserModel = Depends(get_current_active_user_that_is_self)):
         """Grant access to users on own post
 
         Args:
@@ -76,6 +65,6 @@ class PostController:
         - All
         """
         accessList = UserAccessPostService.grant_access_to_post(
-            post_id=post_id, user_id=current_self_user.id, user_ids=body.user_ids, db=self.db)
+            post_id=post_id, user_id=current_active_self.id, user_ids=body.user_ids, db=self.db)
 
         return accessList

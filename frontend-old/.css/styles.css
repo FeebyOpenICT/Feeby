@@ -1,3 +1,12 @@
+.textField {
+  min-height: 75px;
+  padding: 15px;
+  opacity: 100%;
+  margin: 25px 15px;
+  border-style: solid;
+  border-color: lightgray;
+}
+
 .container {
   margin: 0 auto;
 }
@@ -12,9 +21,11 @@
   border-style: solid;
   margin: 15px auto;
 }
+
 .form-buttons {
   margin: 0 auto;
 }
+
 .pageTitle {
   font-size: 32px;
   font-weight: bold;
@@ -22,11 +33,12 @@
 }
 
 .textBoxTitle {
-  font-size: 28px;
+  font-size: 18px;
 }
 
 #aspectCheck {
-  background-color: #0079cf;
+  background-color: #0079CF;
+  font-size: 28px;
 }
 
 .underlineContent {
@@ -38,6 +50,16 @@
 .checkBoxContainer {
   max-width: 90%;
   margin: 0 auto;
+}
+
+#productTextContainer {
+  margin-bottom: 50px;
+}
+
+.underlineContent {
+  display: inline-block;
+  width: 90%;
+  border: 1px solid #0079CF;
 }
 
 #textFieldContainer {
@@ -63,15 +85,18 @@
   width: 50vw;
   height: auto;
   margin: 5px auto;
-  max-height: 100%;
-  min-height: 75%;
-  max-width: 90%;
-  min-width: 30%;
+  max-height: 800px;
+  min-height: 400px;
+  max-width: 600px;
+  min-width: 300px;
   border-radius: 15px;
+  position: relative;
+  top: 500px;
+  overflow: auto;
 }
 
-.overlay {
-  position: fixed;
+.v-overlay__content {
+  z-index: 20;
 }
 
 .overlay__scrim {
@@ -113,4 +138,16 @@
 
 .v-menu {
   display: flex;
+}
+
+#submitButton {
+  position: relative;
+  left: 45%;
+}
+
+.RatingUpdateCard {
+  min-width: 40%;
+  max-width: 90%;
+  margin: 5%;
+  padding: 15px;
 }
