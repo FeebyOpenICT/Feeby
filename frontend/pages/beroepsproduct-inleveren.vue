@@ -154,12 +154,7 @@
                   v-on:click.prevent="submitForm()" class="btn btn-primary"
                   color="primary"
                 >
-                  Verstuur
-                </v-btn>
-                <v-btn
-                @click="viewLogs"
-                >
-                  Log bekijken
+                  Inleveren
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -222,15 +217,18 @@ export default {
   },
   methods: {
     async submitForm() {
-      this.feedbackList.map(e => e.feedback)
-      console.log(this.feedbackList)
-      this.form = await this.$axios.$post('users/1/posts', this.form)
+      this.form.revision.feedback = this.feedbackList.map(e => {
+        return {
+          "description": e.explanation,
+          "aspect_id": e.id,
+          "rating_id": e.rating_id
+        }
+      })
+      await this.$axios.$post('users/1/posts', this.form)
+      window.location.href = "/"
     },
     clickSelectedAspects() {
       console.log(this.form.revision.feedback.map(e => e.aspect_id))
-    },
-    viewLogs() {
-      console.log(this.feedbackList)
     }
   },
   computed: {
@@ -239,10 +237,4 @@ export default {
     },
   },
 }
-
 </script>
-<style scoped>
-.btn {
-  margin: 15px;
-}
-</style>
