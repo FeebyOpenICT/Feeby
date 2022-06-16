@@ -20,7 +20,7 @@
       fixed
       bottom
       right
-      to="/beroepsproduct-inleveren"
+      to="/beroepsproduct/inleveren"
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>

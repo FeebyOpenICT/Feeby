@@ -67,6 +67,11 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
+                  @click="$router.go(-1)"
+                >
+                  Annuleren
+                </v-btn>
+                <v-btn
                   :disabled="!valid"
                   color="primary"
                   @click="e1 = 2"
