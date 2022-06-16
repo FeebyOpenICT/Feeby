@@ -88,7 +88,9 @@ export default {
       return this.$store.state.auth.user
     },
     isAdmin() {
-      return this.user.roles.map((role) => role.title).includes('admin')
+      if (this.isAuthenticated) {
+        return this.user.roles.map((role) => role.title).includes('admin')
+      }
     },
   },
 }
