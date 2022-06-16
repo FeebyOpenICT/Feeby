@@ -1,12 +1,12 @@
 from typing import List
 from pydantic import BaseModel, constr
 from datetime import datetime
-from Schemas.RevisionSchema import CreateInitialRevision
+from Schemas.RevisionSchema import CreateInitialRevision, RevisionInDB
 
 
 class Post(BaseModel):
     title: constr(max_length=255)
-    description:  constr(max_length=1000)
+    description: constr(max_length=1000)
 
 
 class CreatePost(Post):
@@ -21,6 +21,10 @@ class PostInDB(Post):
 
     class Config:
         orm_mode = True
+
+
+class PostInDBFull(PostInDB):
+    revision: RevisionInDB
 
 
 class PostInDBPublic(BaseModel):

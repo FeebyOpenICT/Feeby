@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 from pydantic import BaseModel, constr
 from typing import List, Optional
-from Schemas.FeedbackSchema import CreateFeedback
+from Schemas.FeedbackSchema import CreateFeedback, Feedback, FeedbackInDB
 
 
 class Revision(BaseModel):
@@ -16,6 +16,10 @@ class RevisionInDB(Revision):
 
     class Config:
         orm_mode = True
+
+
+class RevisionInDBFull(RevisionInDB):
+    feedback: List[FeedbackInDB]
 
 
 class CreateInitialRevision(Revision):
