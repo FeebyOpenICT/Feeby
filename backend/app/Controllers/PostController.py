@@ -5,7 +5,7 @@ from Services import UserAccessPostService
 from Services.PostService import PostService
 from Auth.validate_user import get_current_active_user, get_current_active_user_that_is_self
 from sqlalchemy.orm import Session
-from Schemas.PostSchema import CreatePost
+from Schemas.PostSchema import CreatePost, PostInDBFull
 from Schemas.UserIdListSchema import UserIdList
 from database import get_db_connection
 from Models.UserModel import UserModel
@@ -52,6 +52,19 @@ class PostController:
         post = PostService.create_post_for_user(body=body,
                                                 user=current_active_self, db=self.db)
         return post
+
+    @router.get('/users/{user_id)/posts/{post_id}', response_model=PostInDBFull, status_code=status.HTTP_200_OK)
+    async def get_post_from_user(self, post_id: int, current_active_self: UserModel = Depends(get_current_active_user)):
+        """Get post with access from user
+
+        Args:
+        user_id (int): id of user in as saved in database
+        post_id (int): post id of user id that getting
+
+        Allowed roles:
+        - All
+        """
+        pass
 
     @router.post('/users/{user_id}/posts/{post_id}/grant-access', response_model=List[UserAccessPostInDB], status_code=status.HTTP_201_CREATED)
     async def grant_access_to_post(self, post_id: int, body: UserIdList, current_active_self: UserModel = Depends(get_current_active_user_that_is_self)):
