@@ -5,3 +5,4 @@ from .NotFoundException import NotFoundException, not_found_exception_handler
 from .DisabledResourceException import DisabledResourceException, disabled_resource_exception_handler
 from .UnexpectedInstanceError import UnexpectedInstanceError
 from .NoPermissions import NoPermissions, no_permissions_exception_handler
+from .DoesNotBelongTo import DoesNotBelongTo, does_not_belong_to_exception_handler

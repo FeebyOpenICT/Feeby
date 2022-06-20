@@ -2,8 +2,11 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from Exceptions import NotFoundException
 from Exceptions.NoPermissions import NoPermissions
-from Models import PostModel, UserModel
-from Repositories import PostRepository
+from Models import FeedbackModel, PostModel, RevisionModel, UserModel
+from Repositories import PostRepository, RevisionRepository, FeedbackRepository
+from Schemas import CreatePost
+from Services import AspectService, RatingService
+from .AspectRatingService import AspectRatingService
 
 
 class PostService:
@@ -63,20 +66,38 @@ class PostService:
         return posts
 
     @staticmethod
-    def create_post_for_user(title: str, description: str, user: UserModel, db: Session) -> PostModel:
+    def create_post_for_user(body: CreatePost, user: UserModel, db: Session) -> PostModel:
         """Create post for user
 
         Args:
-            title (str): title of post  
-            description (str): description of post
+            body (CreatePost): body of create post call that has 
             user (UserModel): user model class as saved in database
             db (Session): database session
 
         Returns:
             PostModel: post as saved in database
         """
-        post = PostRepository.save(post=PostModel(
-            title=title, description=description, user=user), db=db)
+        post = PostModel(title=body.title,
+                         description=body.description, user=user)
+        PostRepository.save(post=post, db=db)
+
+        revision = RevisionModel(
+            description=body.revision.description, post=post)
+        RevisionRepository.save(revision=revision, db=db)
+
+        for item in body.revision.feedback:
+            # check if aspect and rating are matched
+            AspectRatingService.get_aspect_rating_or_fail(
+                aspect_id=item.aspect_id, rating_id=item.rating_id, db=db)
+
+            rating = RatingService.get_rating_by_id_or_fail(
+                db=db, id=item.rating_id)
+            aspect = AspectService.get_aspect_by_id_or_fail(
+                id=item.aspect_id, db=db)
+
+            feedback = FeedbackModel(
+                description=item.description, aspect=aspect, rating=rating, revision=revision, reviewer=user)
+            FeedbackRepository.save(feedback=feedback, db=db)
 
         return post
 

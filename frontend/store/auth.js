@@ -9,6 +9,9 @@ export const getters = {
   userId: (state) => {
     return state.user.id
   },
+  roles: (state) => {
+    return state.user.roles.map(role => role.title)
+  }
 }
 
 export const mutations = {
