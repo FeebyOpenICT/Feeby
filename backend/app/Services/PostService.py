@@ -1,5 +1,7 @@
 from typing import List, Optional
+
 from sqlalchemy.orm import Session
+
 from Exceptions import NotFoundException
 from Exceptions.NoPermissions import NoPermissions
 from Models import FeedbackModel, PostModel, RevisionModel, UserModel
@@ -46,7 +48,8 @@ class PostService:
         return result
 
     @staticmethod
-    def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[PostModel]:
+    def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[
+        PostModel]:
         """get posts from user that current user has access to whilst checking if user is self
 
         Args:
@@ -162,4 +165,11 @@ class PostService:
         if not post:
             raise NoPermissions(resource="post", id=post_id)
 
+        return post
+
+    @staticmethod
+    def get_complete_post_with_access_or_fail(current_user_id: int, post_id: int, db: Session):
+        post = PostRepository.get_complete_post_with_access(current_user_id, post_id, db)
+        if not post:
+            raise NoPermissions(resource="post", id=post_id)
         return post

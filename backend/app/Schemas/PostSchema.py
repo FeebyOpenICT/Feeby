@@ -1,6 +1,8 @@
-from typing import List
-from pydantic import BaseModel, constr
 from datetime import datetime
+from typing import List
+
+from pydantic import BaseModel, constr
+
 from Schemas.RevisionSchema import CreateInitialRevision, RevisionInDB
 
 
@@ -24,7 +26,7 @@ class PostInDB(Post):
 
 
 class PostInDBFull(PostInDB):
-    revision: RevisionInDB
+    revisions: List[RevisionInDB]
 
 
 class PostInDBPublic(BaseModel):

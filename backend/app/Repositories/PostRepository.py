@@ -1,9 +1,10 @@
 from typing import List, Optional
-from sqlalchemy.orm import Session
-from sqlalchemy import and_
 
-from Models import PostModel, UserAccessPostModel, UserModel
+from sqlalchemy import and_, or_
+from sqlalchemy.orm import Session
+
 from Exceptions import UnexpectedInstanceError
+from Models import PostModel, UserAccessPostModel, RevisionModel, FeedbackModel
 from .RepositoryBase import RepositoryBase
 
 
@@ -85,10 +86,10 @@ class PostRepository(RepositoryBase):
         result = db.query(PostModel).join(
             UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
         ).where(
-            and_(
+            or_(and_(
                 UserAccessPostModel.user_id == current_user_id,
                 UserAccessPostModel.post_id == post_id
-            )
+            ), and_(PostModel.user_id == current_user_id, PostModel.id == post_id))
         ).first()
         return result
 
@@ -110,4 +111,19 @@ class PostRepository(RepositoryBase):
             UserAccessPostModel.user_id == current_user_id,
             PostModel.user_id == user_id
         ).all()
+        return result
+
+    @staticmethod
+    def get_complete_post_with_access(current_user_id: int, post_id: int, db: Session):
+        result = db.query(PostModel).join(UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id,
+                                          isouter=True) \
+            .join(RevisionModel, PostModel.id == RevisionModel.post_id) \
+            .join(FeedbackModel, RevisionModel.id == FeedbackModel.revision_id) \
+            .where(
+            or_(and_(
+                UserAccessPostModel.user_id == current_user_id,
+                UserAccessPostModel.post_id == post_id
+            ), PostModel.user_id == current_user_id)
+        )
+        print(result)
         return result
