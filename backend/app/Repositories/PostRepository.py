@@ -4,7 +4,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
 from Exceptions import UnexpectedInstanceError
-from Models import PostModel, UserAccessPostModel
+from Models import PostModel, UserAccessPostModel, AspectModel, RatingModel
 from Models.FeedbackModel import FeedbackModel
 from Models.RevisionModel import RevisionModel
 from .RepositoryBase import RepositoryBase
@@ -27,7 +27,7 @@ class PostRepository(RepositoryBase):
         Returns:
             List[PostModel]: list of all posts in database made by the user
         """
-        result = db.query(PostModel).filter(PostModel.user_id == user_id).all()
+        result = db.query(PostModel).filter(PostModel.user_id == user_id).order_by(PostModel.time_created.desc()).all()
         return result
 
     @staticmethod
@@ -112,7 +112,7 @@ class PostRepository(RepositoryBase):
         ).where(
             UserAccessPostModel.user_id == current_user_id,
             PostModel.user_id == user_id
-        ).all()
+        ).order_by(PostModel.time_created.desc()).all()
         return result
 
     @staticmethod
@@ -121,14 +121,18 @@ class PostRepository(RepositoryBase):
             .join(UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id, isouter=True) \
             .join(RevisionModel, RevisionModel.post_id == PostModel.id) \
             .join(FeedbackModel, FeedbackModel.revision_id == RevisionModel.id) \
-            .where(or_(
-            and_(
-                UserAccessPostModel.user_id == current_user_id,
-                UserAccessPostModel.post_id == post_id
-            ),
-            and_(
-                PostModel.user_id == current_user_id,
-                PostModel.id == post_id
+            .join(AspectModel, FeedbackModel.aspect_id == AspectModel.id) \
+            .join(RatingModel, FeedbackModel.rating_id == RatingModel.id) \
+            .filter(
+            or_(
+                and_(
+                    UserAccessPostModel.user_id == current_user_id,
+                    UserAccessPostModel.post_id == post_id
+                ),
+                and_(
+                    PostModel.user_id == current_user_id,
+                    PostModel.id == post_id
+                )
             )
-        )).first()
+        ).first()
         return result
