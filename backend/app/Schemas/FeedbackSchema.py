@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, constr
 
-from Schemas import RatingInDB, AspectInDB
+from Schemas import RatingInDB, AspectInDB, UserPublicInDB
 
 
 class Feedback(BaseModel):
@@ -19,6 +19,7 @@ class FeedbackInDB(Feedback):
     time_created: datetime
     rating: RatingInDB
     aspect: AspectInDB
+    reviewer: UserPublicInDB
 
     class Config:
         orm_mode = True

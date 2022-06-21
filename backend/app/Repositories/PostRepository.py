@@ -1,10 +1,10 @@
 from typing import List, Optional
 
 from sqlalchemy import and_, or_
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from Exceptions import UnexpectedInstanceError
-from Models import PostModel, UserAccessPostModel, AspectModel, RatingModel
+from Models import PostModel, UserAccessPostModel, AspectModel, RatingModel, UserModel
 from Models.FeedbackModel import FeedbackModel
 from Models.RevisionModel import RevisionModel
 from .RepositoryBase import RepositoryBase
@@ -117,12 +117,15 @@ class PostRepository(RepositoryBase):
 
     @staticmethod
     def get_complete_post_with_access(current_user_id: int, post_id: int, db: Session):
+        reviewer_alias = aliased(UserModel)
         result = db.query(PostModel) \
             .join(UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id, isouter=True) \
             .join(RevisionModel, RevisionModel.post_id == PostModel.id) \
             .join(FeedbackModel, FeedbackModel.revision_id == RevisionModel.id) \
             .join(AspectModel, FeedbackModel.aspect_id == AspectModel.id) \
             .join(RatingModel, FeedbackModel.rating_id == RatingModel.id) \
+            .join(UserModel, PostModel.user_id == UserModel.id) \
+            .join(reviewer_alias, FeedbackModel.reviewer_id == reviewer_alias.id) \
             .filter(
             or_(
                 and_(
