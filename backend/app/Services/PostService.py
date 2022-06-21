@@ -150,7 +150,7 @@ class PostService:
             db (Session): database session
 
         Returns:
-            Optional[PostModel]: returns post if post exists and current user has access or None 
+            Optional[PostModel]: returns post if post exists and current user has access or None
         """
         post = PostRepository.get_post_with_access(
             current_user_id=current_user_id, post_id=post_id, db=db)
@@ -169,7 +169,7 @@ class PostService:
 
     @staticmethod
     def get_complete_post_with_access_or_fail(current_user_id: int, post_id: int, db: Session) -> PostInDBFull:
-        post = PostRepository.get_complete_post_with_access(current_user_id, post_id, db)
+        post = PostRepository.get_complete_post_with_access(current_user_id=current_user_id, post_id=post_id, db=db)
         if not post:
             raise NoPermissions(resource="post", id=post_id)
         return post
