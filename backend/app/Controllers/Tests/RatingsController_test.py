@@ -57,3 +57,23 @@ def test_create_faulty_rating(client):
     response = client.post('/ratings', json=rating)
 
     assert response.status_code == 422
+
+
+def test_patch_rating(client, db: Session):
+    new_rating_json = {
+        "title": "test",
+        "short_description": "testshort",
+        "description": "testdesc",
+    }
+    new_rating = RatingModel(**new_rating_json)
+
+    db.add(new_rating)
+    db.commit()
+
+    data = {
+        "title": "test2"
+    }
+
+    response = client.patch("/ratings/1", json=data)
+    assert response.status_code == 200
+    assert response.json()['title'] == data['title']
