@@ -15,6 +15,8 @@ class RevisionModel(Base):
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
     post = relationship("PostModel", back_populates="revisions")
 
+    feedback = relationship("FeedbackModel")
+
     def __init__(self, description: str, post: PostModel) -> None:
         self.description = description
         self.post = post

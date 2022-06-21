@@ -178,11 +178,11 @@ export default {
       ratings: '',
       select: '',
       items: [
-        { state: 'Florida', abbr: 'FL' },
-        { state: 'Georgia', abbr: 'GA' },
-        { state: 'Nebraska', abbr: 'NE' },
-        { state: 'California', abbr: 'CA' },
-        { state: 'New York', abbr: 'NY' },
+        {state: 'Florida', abbr: 'FL'},
+        {state: 'Georgia', abbr: 'GA'},
+        {state: 'Nebraska', abbr: 'NE'},
+        {state: 'California', abbr: 'CA'},
+        {state: 'New York', abbr: 'NY'},
       ],
       dialog: false,
       visible: true,
@@ -217,8 +217,7 @@ export default {
     }
   },
   async fetch() {
-    this.aspects = await this.$axios.$get('aspects')
-    console.log(this.aspects)
+    this.aspects = await this.$axios.$get('/aspects')
   },
   methods: {
     async submitForm() {
@@ -229,7 +228,7 @@ export default {
           "rating_id": e.rating_id
         }
       })
-      await this.$axios.$post('users/1/posts', this.form)
+      await this.$axios.$post('/posts', this.form)
       window.location.href = "/"
     },
     clickSelectedAspects() {

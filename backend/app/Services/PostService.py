@@ -6,7 +6,7 @@ from Exceptions import NotFoundException
 from Exceptions.NoPermissions import NoPermissions
 from Models import FeedbackModel, PostModel, RevisionModel, UserModel
 from Repositories import PostRepository, RevisionRepository, FeedbackRepository
-from Schemas import CreatePost
+from Schemas import CreatePost, PostInDBFull
 from Services import AspectService, RatingService
 from .AspectRatingService import AspectRatingService
 
@@ -168,7 +168,7 @@ class PostService:
         return post
 
     @staticmethod
-    def get_complete_post_with_access_or_fail(current_user_id: int, post_id: int, db: Session):
+    def get_complete_post_with_access_or_fail(current_user_id: int, post_id: int, db: Session) -> PostInDBFull:
         post = PostRepository.get_complete_post_with_access(current_user_id, post_id, db)
         if not post:
             raise NoPermissions(resource="post", id=post_id)

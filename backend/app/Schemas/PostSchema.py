@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel, constr
 
-from Schemas.RevisionSchema import CreateInitialRevision, RevisionInDB
+from Schemas.RevisionSchema import CreateInitialRevision, RevisionInDB, RevisionInDBFull
 
 
 class Post(BaseModel):
@@ -26,7 +26,7 @@ class PostInDB(Post):
 
 
 class PostInDBFull(PostInDB):
-    revisions: List[RevisionInDB]
+    revisions: List[RevisionInDBFull]
 
 
 class PostInDBPublic(BaseModel):
