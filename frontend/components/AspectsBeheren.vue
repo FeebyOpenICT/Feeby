@@ -135,8 +135,9 @@ export default {
   // async fetch for aspects and ratings
   async fetch() {
     this.aspects = await this.$axios.$get(`/aspects`)
-    this.aspectsRatings = await this.$axios.$get(`/ratings`)
   },
+
+  // Methods/Functions
   methods: {
     // wich item is being edited, method/function
     editItem(item) {

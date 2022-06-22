@@ -1,7 +1,7 @@
 <template>
   <v-row>
-    <v-col> <AspectsRatingsInzien /> </v-col>
     <v-col> <AspectsBeheren /> </v-col>
+    <v-col> <AspectsRatingsInzien /> </v-col>
   </v-row>
 </template>
 

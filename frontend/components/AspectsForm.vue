@@ -46,7 +46,7 @@
       />
     </v-row>
     <v-row>
-      <!-- Ratings Select -->
+      <!-- Rating_ids Select -->
       <v-select
         :value="rating_ids"
         @input="$emit('update:rating_ids', $event)"
