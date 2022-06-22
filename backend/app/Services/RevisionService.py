@@ -1,13 +1,12 @@
 from typing import List, Optional
+
 from fastapi import HTTPException, status
-from typing import List, Optional
-from fastapi import HTTPException, status, UploadFile
 from sqlalchemy.orm import Session
+
+from Exceptions import NotFoundException
 from Models import UserModel, PostModel, RevisionModel
 from Repositories import RevisionRepository
-from Exceptions import NotFoundException, NoPermissions
 from Schemas import CreateRevision
-from Services import FileService
 
 
 class RevisionService:
@@ -16,6 +15,7 @@ class RevisionService:
         """create revision
 
         Args:
+            user (UserModel): user that is trying to create revision on post
             body (CreateRevision): description of revision
             post (PostModel): post as saved in database
             db (Session): database session
@@ -27,8 +27,8 @@ class RevisionService:
             RevisionModel: created revision as saved in database (transactional)
         """
         if post.user_id != user.id:
-            raise NoPermissions(resource="post", id=post.id)
-
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                                detail="Not allowed to create a revision on someone else's post")
         revision = RevisionModel(description=body.description, post=post)
         revision = RevisionRepository.save(db=db, revision=revision)
         return revision

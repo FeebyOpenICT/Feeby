@@ -1,8 +1,10 @@
 from typing import List
+
 from sqlalchemy.orm import Session
+
 from Exceptions import UnexpectedInstanceError
+from Models import FeedbackModel, RevisionModel
 from .RepositoryBase import RepositoryBase
-from Models import FeedbackModel, PostModel
 
 
 class FeedbackRepository(RepositoryBase):
@@ -23,8 +25,8 @@ class FeedbackRepository(RepositoryBase):
 
     @staticmethod
     def save(
-        feedback: FeedbackModel,
-        db: Session
+            feedback: FeedbackModel,
+            db: Session
     ) -> FeedbackModel:
         """Create feedback in db
 
@@ -50,6 +52,12 @@ class FeedbackRepository(RepositoryBase):
     @staticmethod
     def get_all(db: Session) -> List[FeedbackModel]:
         result = db.query(FeedbackModel).all()
+        return result
+
+    @staticmethod
+    def get_all_from_revision(db: Session, revision_id: int) -> List[FeedbackModel]:
+        result = db.query(FeedbackModel).join(RevisionModel, RevisionModel.id == FeedbackModel.revision_id).filter(
+            RevisionModel.id == revision_id).all()
         return result
 
     @staticmethod
