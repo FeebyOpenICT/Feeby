@@ -68,7 +68,7 @@ class PostController:
                                                                  post_id=post_id, db=self.db)
         return post
 
-    @router.post('/posts/{post_id}/grant-access', response_model=List[UserAccessPostInDB],
+    @router.post('/posts/{post_id}/access', response_model=List[UserAccessPostInDB],
                  status_code=status.HTTP_201_CREATED)
     async def grant_access_to_post(self, post_id: int, body: UserIdList,
                                    current_active_user: UserModel = Depends(get_current_active_user)):
