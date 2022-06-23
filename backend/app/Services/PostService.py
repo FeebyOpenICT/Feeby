@@ -1,10 +1,12 @@
 from typing import List, Optional
+
 from sqlalchemy.orm import Session
+
 from Exceptions import NotFoundException
 from Exceptions.NoPermissions import NoPermissions
 from Models import FeedbackModel, PostModel, RevisionModel, UserModel
 from Repositories import PostRepository, RevisionRepository, FeedbackRepository
-from Schemas import CreatePost
+from Schemas import CreatePost, PostInDBFull
 from Services import AspectService, RatingService
 from .AspectRatingService import AspectRatingService
 
@@ -46,7 +48,8 @@ class PostService:
         return result
 
     @staticmethod
-    def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[PostModel]:
+    def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[
+        PostModel]:
         """get posts from user that current user has access to whilst checking if user is self
 
         Args:
@@ -147,7 +150,7 @@ class PostService:
             db (Session): database session
 
         Returns:
-            Optional[PostModel]: returns post if post exists and current user has access or None 
+            Optional[PostModel]: returns post if post exists and current user has access or None
         """
         post = PostRepository.get_post_with_access(
             current_user_id=current_user_id, post_id=post_id, db=db)
@@ -162,4 +165,11 @@ class PostService:
         if not post:
             raise NoPermissions(resource="post", id=post_id)
 
+        return post
+
+    @staticmethod
+    def get_complete_post_with_access_or_fail(current_user_id: int, post_id: int, db: Session) -> PostInDBFull:
+        post = PostRepository.get_complete_post_with_access(current_user_id=current_user_id, post_id=post_id, db=db)
+        if not post:
+            raise NoPermissions(resource="post", id=post_id)
         return post

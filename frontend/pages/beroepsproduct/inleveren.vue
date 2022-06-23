@@ -67,6 +67,11 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
+                  @click="$router.go(-1)"
+                >
+                  Annuleren
+                </v-btn>
+                <v-btn
                   :disabled="!valid"
                   color="primary"
                   @click="e1 = 2"
@@ -212,8 +217,7 @@ export default {
     }
   },
   async fetch() {
-    this.aspects = await this.$axios.$get('aspects')
-    console.log(this.aspects)
+    this.aspects = await this.$axios.$get('/aspects')
   },
   methods: {
     async submitForm() {
@@ -224,7 +228,7 @@ export default {
           "rating_id": e.rating_id
         }
       })
-      await this.$axios.$post('users/1/posts', this.form)
+      await this.$axios.$post('/posts', this.form)
       window.location.href = "/"
     },
     clickSelectedAspects() {

@@ -1,13 +1,14 @@
+from typing import List
+
 from fastapi import APIRouter, Security, Depends
 from sqlalchemy.orm import Session
+
 from Auth.validate_user import get_current_active_user
-from Exceptions.NotFoundException import NotFoundException
 from Models.UserModel import UserModel
-from Schemas.UserSchema import UserPublicInDB, UserInDB
 from Schemas.RolesEnum import RolesEnum
+from Schemas.UserSchema import UserPublicInDB, UserInDB
 from Services.UserService import UserService
 from database import get_db_connection
-from typing import List
 
 router = APIRouter(
     prefix="/users",
@@ -17,9 +18,9 @@ router = APIRouter(
 
 @router.get('', response_model=List[UserPublicInDB])
 async def search_through_users(
-    q: str = '',
-    db: Session = Depends(get_db_connection),
-    current_active_user: UserModel = Depends(get_current_active_user)
+        q: str = '',
+        db: Session = Depends(get_db_connection),
+        current_active_user: UserModel = Depends(get_current_active_user)
 ):
     """Search through all active users in the database with public info
 
@@ -35,7 +36,7 @@ async def search_through_users(
 
 @router.get('/self', response_model=UserInDB)
 async def get_user_self(
-    current_active_user: UserModel = Depends(get_current_active_user)
+        current_active_user: UserModel = Depends(get_current_active_user)
 ):
     """Get current self
 
@@ -46,17 +47,13 @@ async def get_user_self(
     return current_active_user
 
 
-@router.get('/{user_id}', response_model=UserInDB)
+@router.get('/{user_id}', response_model=UserPublicInDB)
 async def get_user_by_id(
-    user_id: int,
-    current_active_user: UserModel = Security(
-        get_current_active_user,
-        scopes=[
-        RolesEnum.ADMIN,
-        RolesEnum.INSTRUCTOR,
-        ]
-    ),
-    db: Session = Depends(get_db_connection)
+        user_id: int,
+        current_active_user: UserModel = Depends(
+            get_current_active_user,
+        ),
+        db: Session = Depends(get_db_connection)
 ):
     """Get user by id
 
@@ -70,15 +67,15 @@ async def get_user_by_id(
 
 @router.get('/{user_id}/canvas', response_model=UserInDB)
 async def get_user_by_canvas_id(
-    user_id: int,
-    current_active_user: UserModel = Security(
-        get_current_active_user,
-        scopes=[
-        RolesEnum.ADMIN,
-        RolesEnum.INSTRUCTOR,
-        ]
-    ),
-    db: Session = Depends(get_db_connection)
+        user_id: int,
+        current_active_user: UserModel = Security(
+            get_current_active_user,
+            scopes=[
+                RolesEnum.ADMIN,
+                RolesEnum.INSTRUCTOR,
+            ]
+        ),
+        db: Session = Depends(get_db_connection)
 ):
     """Get user by their canvas id
 

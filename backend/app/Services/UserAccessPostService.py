@@ -1,13 +1,12 @@
 from typing import List
 
 from fastapi import HTTPException, status
-from Exceptions import DuplicateKey, NoPermissions
-
-from Models import UserAccessPostModel
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from Repositories import UserAccessPostRepository
+from sqlalchemy.orm import Session
 
+from Exceptions import DuplicateKey, NoPermissions
+from Models import UserAccessPostModel, UserModel
+from Repositories import UserAccessPostRepository
 from Services import PostService, UserService
 
 
@@ -21,7 +20,8 @@ class UserAccessPostService:
             raise NoPermissions(resource="post", id=post_id)
 
     @staticmethod
-    def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Session) -> List[UserAccessPostModel]:
+    def grant_access_to_post(post_id: int, user: UserModel, user_ids: List[int], db: Session) -> List[
+        UserAccessPostModel]:
         """grant access to post whilst checking for errors
 
         Args:
@@ -39,12 +39,12 @@ class UserAccessPostService:
         Returns:
             List[UserAccessPostModel]: list of access to user 
         """
-        if user_id in user_ids:
+        if user.id in user_ids:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Can't grant access to self")
 
         post = PostService.get_post_by_id_from_user_id_or_fail(
-            post_id=post_id, user_id=user_id, db=db)
+            post_id=post_id, user_id=user.id, db=db)
 
         users = [UserService.get_active_user_by_id_or_fail(
             id=id, db=db) for id in user_ids]
