@@ -1,6 +1,12 @@
 <template>
   <v-card>
-    <v-card-title class="ml-2 pr-2">{{ post.title }}</v-card-title>
+    <v-card-title class="ml-2 pr-2">
+      {{ post.title }}
+      <v-spacer></v-spacer>
+      <v-btn @click.prevent="() => {}" icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-card-title>
     <v-card-subtitle class="ml-2 pr-2">
       <table>
         <tr>
