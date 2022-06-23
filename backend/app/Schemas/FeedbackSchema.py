@@ -1,6 +1,8 @@
 from datetime import datetime
-from typing import Optional
+
 from pydantic import BaseModel, constr
+
+from Schemas import RatingInDB, AspectInDB, UserPublicInDB
 
 
 class Feedback(BaseModel):
@@ -12,9 +14,12 @@ class CreateFeedback(Feedback):
     rating_id: int
 
 
-class FeedbackInDB(CreateFeedback):
+class FeedbackInDB(Feedback):
     id: int
     time_created: datetime
+    rating: RatingInDB
+    aspect: AspectInDB
+    reviewer: UserPublicInDB
 
     class Config:
         orm_mode = True

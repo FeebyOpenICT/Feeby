@@ -1,23 +1,24 @@
 from typing import List, Optional
+
 from fastapi import HTTPException, status
-from typing import List, Optional
-from fastapi import HTTPException, status, UploadFile
 from sqlalchemy.orm import Session
-from Models import UserModel, PostModel, RevisionModel
+
+from Exceptions import NotFoundException
+from Models import UserModel, RevisionModel
 from Repositories import RevisionRepository
-from Exceptions import NotFoundException, NoPermissions
 from Schemas import CreateRevision
-from Services import FileService
+from Services import PostService
 
 
 class RevisionService:
     @staticmethod
-    def create_revision(post: PostModel, user: UserModel, body: CreateRevision, db: Session) -> RevisionModel:
+    def create_revision(post_id: int, user: UserModel, body: CreateRevision, db: Session) -> RevisionModel:
         """create revision
 
         Args:
+            user (UserModel): user that is trying to create revision on post
             body (CreateRevision): description of revision
-            post (PostModel): post as saved in database
+            post_id (int): id of post as saved in database
             db (Session): database session
 
         Raises:
@@ -26,9 +27,11 @@ class RevisionService:
         Returns:
             RevisionModel: created revision as saved in database (transactional)
         """
-        if post.user_id != user.id:
-            raise NoPermissions(resource="post", id=post.id)
+        post = PostService.get_post_by_id_or_fail(post_id=post_id, db=db)
 
+        if post.user_id != user.id:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                                detail="Not allowed to create a revision on someone else's post")
         revision = RevisionModel(description=body.description, post=post)
         revision = RevisionRepository.save(db=db, revision=revision)
         return revision

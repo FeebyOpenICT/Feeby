@@ -1,41 +1,38 @@
+import collections
 from typing import List
+
 from fastapi import HTTPException, status
-from Exceptions import NoPermissions, NotFoundException, DoesNotBelongTo
 from sqlalchemy.orm import Session
-from Models import FeedbackModel, PostModel, RevisionModel, UserModel
+
+from Exceptions import NotFoundException
+from Models import FeedbackModel, RevisionModel, UserModel
 from Repositories import FeedbackRepository
 from Schemas import CreateFeedback
-from Services import PostService, RevisionService, AspectRatingService, AspectService, RatingService, UserAccessPostService
-import collections
+from Services import AspectRatingService, AspectService, RatingService, \
+    UserAccessPostService
 
 
 class FeedbackService:
     @staticmethod
     def create_feedback(
-        reviewer: UserModel,
-        owner: UserModel,
-        post: PostModel,
-        revision: RevisionModel,
-        body: List[CreateFeedback],
-        db: Session
+            reviewer: UserModel,
+            revision: RevisionModel,
+            body: List[CreateFeedback],
+            db: Session
     ) -> List[FeedbackModel]:
-        if reviewer.id == owner.id:
+        if reviewer.id == revision.post.user_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not allowed to give oneself feedback")
 
         UserAccessPostService.check_access_to_post_or_fail(
-            post_id=post.id, user_id=reviewer.id, db=db)
+            post_id=revision.post.id, user_id=reviewer.id, db=db)
 
-        if post.user_id != owner.id:
-            raise DoesNotBelongTo(
-                parentResource="post", parentId=post.id, resource="user", id=owner.id)
-
-        if revision.post_id != post.id:
-            raise DoesNotBelongTo(
-                parentResource="revision", parentId=revision.id, resource="post", id=post.id)
+        for feedback in revision.feedback:
+            if feedback.reviewer.id == reviewer.id:
+                raise HTTPException(status.HTTP_409_CONFLICT, "User has already given feedback on this revision")
 
         baseline_measurement_aspect_ids = [
-            fb.aspect_id for fb in FeedbackRepository.get_baseline_measurement(post_id=post.id, db=db)]
+            fb.aspect_id for fb in FeedbackRepository.get_baseline_measurement(post_id=revision.post.id, db=db)]
 
         sent_aspect_ids = [fb.aspect_id for fb in body]
 

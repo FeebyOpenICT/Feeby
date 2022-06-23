@@ -1,9 +1,12 @@
 from typing import List, Optional
-from sqlalchemy.orm import Session
-from sqlalchemy import and_
 
-from Models import PostModel, UserAccessPostModel, UserModel
+from sqlalchemy import and_, or_
+from sqlalchemy.orm import Session, aliased
+
 from Exceptions import UnexpectedInstanceError
+from Models import PostModel, UserAccessPostModel, AspectModel, RatingModel, UserModel
+from Models.FeedbackModel import FeedbackModel
+from Models.RevisionModel import RevisionModel
 from .RepositoryBase import RepositoryBase
 
 
@@ -24,7 +27,7 @@ class PostRepository(RepositoryBase):
         Returns:
             List[PostModel]: list of all posts in database made by the user
         """
-        result = db.query(PostModel).filter(PostModel.user_id == user_id).all()
+        result = db.query(PostModel).filter(PostModel.user_id == user_id).order_by(PostModel.time_created.desc()).all()
         return result
 
     @staticmethod
@@ -85,10 +88,10 @@ class PostRepository(RepositoryBase):
         result = db.query(PostModel).join(
             UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
         ).where(
-            and_(
+            or_(and_(
                 UserAccessPostModel.user_id == current_user_id,
                 UserAccessPostModel.post_id == post_id
-            )
+            ), and_(PostModel.user_id == current_user_id, PostModel.id == post_id))
         ).first()
         return result
 
@@ -109,5 +112,30 @@ class PostRepository(RepositoryBase):
         ).where(
             UserAccessPostModel.user_id == current_user_id,
             PostModel.user_id == user_id
-        ).all()
+        ).order_by(PostModel.time_created.desc()).all()
+        return result
+
+    @staticmethod
+    def get_complete_post_with_access(current_user_id: int, post_id: int, db: Session):
+        reviewer_alias = aliased(UserModel)
+        result = db.query(PostModel) \
+            .join(UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id, isouter=True) \
+            .join(RevisionModel, RevisionModel.post_id == PostModel.id) \
+            .join(FeedbackModel, FeedbackModel.revision_id == RevisionModel.id) \
+            .join(AspectModel, FeedbackModel.aspect_id == AspectModel.id) \
+            .join(RatingModel, FeedbackModel.rating_id == RatingModel.id) \
+            .join(UserModel, PostModel.user_id == UserModel.id) \
+            .join(reviewer_alias, FeedbackModel.reviewer_id == reviewer_alias.id) \
+            .filter(
+            or_(
+                and_(
+                    UserAccessPostModel.user_id == current_user_id,
+                    UserAccessPostModel.post_id == post_id
+                ),
+                and_(
+                    PostModel.user_id == current_user_id,
+                    PostModel.id == post_id
+                )
+            )
+        ).first()
         return result
