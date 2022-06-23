@@ -9,7 +9,6 @@
         counter
         maxlength="255"
         label="Aspect Title"
-        outlined
       />
     </v-row>
     <v-row>
@@ -20,7 +19,6 @@
         counter
         maxlength="255"
         label="Korte Beschrijving"
-        outlined
       />
     </v-row>
     <v-row>
@@ -31,7 +29,6 @@
         counter
         maxlength="1000"
         label="Beschrijving"
-        outlined
       />
     </v-row>
     <v-row>
@@ -42,7 +39,6 @@
         counter
         maxlength="2000"
         label="Link"
-        outlined
       />
     </v-row>
     <v-row>
@@ -51,13 +47,13 @@
         :value="rating_ids"
         @input="$emit('update:rating_ids', $event)"
         :items="aspectsRatings"
-        label="Rating"
+        v-model="default_ratings"
+        label="Ratings"
         multiple
         counter
         item-text="title"
         item-value="id"
         chips
-        outlined
       />
     </v-row>
   </v-container>
@@ -75,6 +71,7 @@ export default {
     description: { type: String, required: true },
     external_url: { type: String, required: true },
     rating_ids: { type: String, Array, required: true },
+    default_ratings: { type: Array, required: false, default: [] },
   },
 
   // Data Variable
@@ -92,8 +89,6 @@ export default {
     'update:external_url',
     'update:rating_ids',
   ],
-
-  fetchOnServer: true,
 
   // Async Fetch for Ratings
   async fetch() {

@@ -4,9 +4,13 @@
     <v-card-text>
       <!-- Data Tabel -->
       <v-data-table :headers="headers" :items="aspects" sort-by="title">
-        <!-- Rating Array To String Method -->
+        <!-- Ratings In Chips In Table -->
         <template #[`item.ratings`]="{ item }">
-          <td>{{ getRatingNames(item.ratings) }}</td>
+          <v-chip-group>
+            <v-chip v-for="rating in item.ratings" :key="rating">{{
+              rating.title
+            }}</v-chip>
+          </v-chip-group>
         </template>
 
         <template #top>
@@ -25,6 +29,7 @@
               <!-- V-card text -->
               <v-card-text>
                 <AspectsForm
+                  :default_ratings="edit_aspect.default_ratings"
                   :title.sync="edit_aspect.title"
                   :short_description.sync="edit_aspect.short_description"
                   :description.sync="edit_aspect.description"
@@ -70,6 +75,7 @@
           </v-card-title>
           <!-- V-card text -->
           <v-card-text>
+            <!-- Form In AspectsForm File -->
             <AspectsForm
               :title.sync="edit_aspect.title"
               :short_description.sync="edit_aspect.short_description"
@@ -101,7 +107,7 @@ export default {
       { text: 'Korte Beschrijving', value: 'short_description' },
       { text: 'Beschrijving', value: 'description' },
       { text: 'Link', value: 'external_url' },
-      { text: 'Rating', value: 'ratings' },
+      { text: 'Ratings', value: 'ratings' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     aspects: [],
@@ -112,6 +118,7 @@ export default {
       description: '',
       external_url: '',
       rating_ids: '',
+      default_ratings: [],
     },
     editedIndex: -1,
   }),
@@ -130,8 +137,6 @@ export default {
     },
   },
 
-  fetchOnServer: true,
-
   // async fetch for aspects and ratings
   async fetch() {
     this.aspects = await this.$axios.$get(`/aspects`)
@@ -144,6 +149,7 @@ export default {
       this.editedIndex = this.aspects.indexOf(item)
       this.edit_aspect = Object.assign({}, item)
       this.edit_aspect_dialog = true
+      this.edit_aspect.default_ratings = item.ratings
     },
 
     // closes dialog and resets parameters, method/function
@@ -156,18 +162,11 @@ export default {
         description: '',
         external_url: '',
         rating_ids: '',
+        default_ratings: [],
       }
       this.$nextTick(() => {
         this.editedIndex = -1
       })
-    },
-
-    // chanching ratings array into string method/function
-    getRatingNames: (ratings) => {
-      return ratings
-        .map((rating) => rating.title)
-        .join(', ')
-        .toString()
     },
 
     // Post method/function
@@ -178,15 +177,11 @@ export default {
 
     // patch/update method/function
     async updateForm() {
-      if (this.editedIndex > -1) {
-        await this.$axios.$patch(
-          `/aspects/${this.aspects[this.editedIndex].id}`,
-          this.edit_aspect
-        )
-        Object.assign(this.aspects[this.editedIndex], this.edit_aspect)
-      } else {
-        this.aspects.push(this.edit_aspect)
-      }
+      const editet_aspect = await this.$axios.$patch(
+        `/aspects/${this.aspects[this.editedIndex].id}`,
+        this.edit_aspect
+      )
+      this.aspects.splice(this.editedIndex, 1, editet_aspect)
       this.close()
     },
   },
