@@ -55,8 +55,8 @@ class PostController:
     @router.get('/posts/{post_id}',
                 response_model=PostInDBFull,
                 status_code=status.HTTP_200_OK)
-    async def get_post_from_user(self, post_id: int, current_active_user: UserModel = Depends(get_current_active_user)):
-        """Get post with access from user
+    async def get_post_by_id(self, post_id: int, current_active_user: UserModel = Depends(get_current_active_user)):
+        """Get post with access by id
 
         Args:
         post_id (int): id of post as saved in database
