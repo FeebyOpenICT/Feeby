@@ -8,8 +8,9 @@
         <template #[`item.ratings`]="{ item }">
           <v-chip-group>
             <v-chip v-for="rating in item.ratings" :key="rating">{{
-              rating.title
-            }}</v-chip>
+                rating.title
+              }}
+            </v-chip>
           </v-chip-group>
         </template>
 
@@ -19,6 +20,7 @@
             @click:outside="close"
             v-model="edit_aspect_dialog"
             max-width="800"
+            persistent
           >
             <!-- V-card Form -->
             <v-card>
@@ -40,8 +42,8 @@
 
               <!-- V-card acties -->
               <v-card-actions>
-                <v-btn @click="close"> Cancel </v-btn>
-                <v-btn color="primary" @click="updateForm"> Save </v-btn>
+                <v-btn @click="close"> Cancel</v-btn>
+                <v-btn color="primary" @click="updateForm"> Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -87,8 +89,8 @@
 
           <!-- V-card acties -->
           <v-card-actions>
-            <v-btn @click="close"> Cancel </v-btn>
-            <v-btn color="primary" @click="submitForm"> Save </v-btn>
+            <v-btn @click="close"> Cancel</v-btn>
+            <v-btn color="primary" @click="submitForm"> Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -103,12 +105,12 @@ export default {
     edit_aspect_dialog: false,
     new_aspect_dialog: false,
     headers: [
-      { text: 'Titel', value: 'title' },
-      { text: 'Korte Beschrijving', value: 'short_description' },
-      { text: 'Beschrijving', value: 'description' },
-      { text: 'Link', value: 'external_url' },
-      { text: 'Ratings', value: 'ratings' },
-      { text: 'Actions', value: 'actions', sortable: false },
+      {text: 'Titel', value: 'title'},
+      {text: 'Korte Beschrijving', value: 'short_description'},
+      {text: 'Beschrijving', value: 'description'},
+      {text: 'Link', value: 'external_url'},
+      {text: 'Ratings', value: 'ratings'},
+      {text: 'Actions', value: 'actions', sortable: false},
     ],
     aspects: [],
     aspectsRatings: [],

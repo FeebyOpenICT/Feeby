@@ -81,13 +81,15 @@ services:
     image: postgres
     ports:
       - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=feeby
       - POSTGRES_PASSWORD_FILE=/run/secrets/POSTGRES_PASSWORD
     secrets:
       - POSTGRES_PASSWORD
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U feeby"]
+      test: [ "CMD-SHELL", "pg_isready -U feeby" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -107,6 +109,9 @@ services:
       traefik.http.routers.adminer.rule: Host(`adminer.localhost`)
       traefik.http.routers.adminer.entrypoints: web
       traefik.http.services.adminer.loadbalancer.server.port: 8080
+
+volumes:
+  postgres-data:
 
 secrets:
   CANVAS_CLIENT_ID:

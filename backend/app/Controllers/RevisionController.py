@@ -7,8 +7,8 @@ from sqlalchemy.orm import Session
 
 from Auth.validate_user import get_current_active_user
 from Models.UserModel import UserModel
-from Schemas import RevisionInDB, FileInDB
-from Schemas.RevisionSchema import CreateRevision
+from Schemas import FileInDB
+from Schemas.RevisionSchema import CreateRevision, RevisionInDBFull
 from Services import FileService
 from Services.RevisionService import RevisionService
 from database import get_db_connection
@@ -29,7 +29,7 @@ class RevisionController:
         self.current_active_user = current_active_user
 
     @router.post('/posts/{post_id}/revisions', status_code=status.HTTP_201_CREATED,
-                 response_model=RevisionInDB)
+                 response_model=RevisionInDBFull)
     async def create_revision(self, post_id: int, body: CreateRevision):
         """Create revision
 
