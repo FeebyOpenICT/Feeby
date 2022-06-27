@@ -10,3 +10,4 @@ JWT_SECRET.txt
 POSTGRES_PASSWORD.txt
 POSTGRES_USER.txt
 *_log.txt
+*.DS_Store
