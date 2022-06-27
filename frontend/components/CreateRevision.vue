@@ -24,27 +24,23 @@
             v-model="form.description"
             maxlength="1000"
             :rules="[rules.required, rules.counter]"
-            counter
+            counter="1000"
             label="Beschrijving"
             required
           >
           </v-textarea>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
           <v-btn
-            color="blue darken-1"
-            text
             @click="dialog = false"
           >
             Close
           </v-btn>
           <v-btn
-            color="blue darken-1"
-            text
+            color="primary"
             @click="submit"
           >
-            Save
+            Submit
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -80,7 +76,6 @@ export default Vue.extend({
         required: (value: any) => !!value || 'Required.',
         counter: (value: string | any[]) => value.length <= 1000 || 'Max 1000 characters',
       },
-      formHasErrors: false,
       dialog: false,
       snackbar: false,
       snackbar_text: "",
@@ -93,10 +88,9 @@ export default Vue.extend({
     postId: Number
   },
   methods: {
-
     async submit() {
-      this.dialog = false
       try {
+        this.dialog = false
         const revision = await this.$axios.$post<CreateRevision>(`/posts/${this.postId}/revisions`, this.form)
         this.$emit('revision-created', revision)
         this.form = {
