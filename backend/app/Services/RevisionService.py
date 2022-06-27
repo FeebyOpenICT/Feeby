@@ -32,8 +32,8 @@ class RevisionService:
         if post.user_id != user.id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not allowed to create a revision on someone else's post")
-        revision = RevisionModel(description=body.description, post=post)
-        revision = RevisionRepository.save(db=db, revision=revision)
+
+        revision = RevisionRepository.save(db=db, revision=RevisionModel(description=body.description, post=post))
         return revision
 
     @staticmethod

@@ -37,6 +37,10 @@
       <v-expansion-panel>
         <v-expansion-panel-header class="text-h6">Nulmeting</v-expansion-panel-header>
         <v-expansion-panel-content>
+          <v-card-text class="text--secondary">
+            De nulmeting is de beoordeling die de student aan zichzelf gegeven heeft.
+          </v-card-text>
+
           <feedback-data-table :feedback="nulmeting"/>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -54,6 +58,7 @@
           :feedback="filterOutNulmeting(revision.feedback)"
           :index="index"
         />
+        <create-revision v-if="userIsOwner" :post-id="post.id" @revision-created="addRevision"/>
       </v-timeline>
     </v-card-text>
 
@@ -62,8 +67,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Feedback, GetPostByID} from "~/types/GetPostByID";
+import {Feedback, GetPostByID, Revision} from "~/types/GetPostByID";
 import {DateTime} from "luxon";
+import {mapGetters} from "vuex";
 
 export default Vue.extend({
   name: "BeroepsProduct",
@@ -89,11 +95,19 @@ export default Vue.extend({
     filterOutNulmeting(feedback: Feedback[]): Feedback[] {
       return feedback.filter(f => f.reviewer.id !== this.post.user_id)
     },
+    addRevision(revision: Revision) {
+      console.log(revision, 'new')
+      this.post.revisions.push(revision)
+    }
   },
   computed: {
-    nulmeting() {
+    nulmeting(): Feedback[] {
       return this.post.revisions[0].feedback.filter((f: Feedback) => f.reviewer.id === this.post.user_id)
     },
+    ...mapGetters('auth', ['userId']),
+    userIsOwner(): boolean {
+      return this.post.user_id == this.userId
+    }
   },
 })
 </script>
