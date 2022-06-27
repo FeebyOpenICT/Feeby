@@ -91,7 +91,7 @@ export default Vue.extend({
     },
   },
   computed: {
-    nulmeting() {
+    nulmeting(): Feedback[] {
       return this.post.revisions[0].feedback.filter((f: Feedback) => f.reviewer.id === this.post.user_id)
     },
   },
