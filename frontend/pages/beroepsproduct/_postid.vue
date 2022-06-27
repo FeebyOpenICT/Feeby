@@ -37,7 +37,10 @@
       <v-expansion-panel>
         <v-expansion-panel-header class="text-h6">Nulmeting</v-expansion-panel-header>
         <v-expansion-panel-content>
-          De nulmeting is de beoordeling die de student aan zichzelf gegeven heeft.
+          <v-card-text class="text--secondary">
+            De nulmeting is de beoordeling die de student aan zichzelf gegeven heeft.
+          </v-card-text>
+
           <feedback-data-table :feedback="nulmeting"/>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -55,7 +58,7 @@
           :feedback="filterOutNulmeting(revision.feedback)"
           :index="index"
         />
-        <create-revision-button v-if="userIsOwner" :post-id="post.id" @revision-created="addRevision"/>
+        <create-revision v-if="userIsOwner" :post-id="post.id" @revision-created="addRevision"/>
       </v-timeline>
     </v-card-text>
 
