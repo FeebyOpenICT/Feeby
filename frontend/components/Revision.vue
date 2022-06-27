@@ -14,6 +14,9 @@
         {{ revision.description }}
       </v-card-text>
       <feedback-data-table :feedback="feedback"/>
+      <v-card-actions>
+        <request-feedback :revision-id="revision.id"></request-feedback>
+      </v-card-actions>
     </v-card>
   </v-timeline-item>
 </template>
