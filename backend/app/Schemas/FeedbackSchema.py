@@ -2,7 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, constr
 
-from Schemas import RatingInDB, AspectInDB, UserPublicInDB
+from Schemas import RatingInDB, AspectInDB
+from Schemas.UserSchema import UserPublicInDB
 
 
 class Feedback(BaseModel):

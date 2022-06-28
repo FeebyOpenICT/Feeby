@@ -4,7 +4,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session, aliased
 
 from Exceptions import UnexpectedInstanceError
-from Models import PostModel, UserAccessPostModel, AspectModel, RatingModel, UserModel
+from Models import PostModel, AspectModel, RatingModel, UserModel
 from Models.FeedbackModel import FeedbackModel
 from Models.RevisionModel import RevisionModel
 from .RepositoryBase import RepositoryBase
