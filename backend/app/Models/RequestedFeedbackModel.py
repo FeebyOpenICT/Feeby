@@ -20,10 +20,10 @@ class RequestedFeedbackModel(Base):
     time_opened = Column(DateTime(timezone=True))
     time_finished = Column(DateTime(timezone=True))
 
-    revision_id = Column(Integer, ForeignKey('revision.id'), nullable=False)
+    revision_id = Column(Integer, ForeignKey('revision.id'), primary_key=True, nullable=False)
     revision = relationship('RevisionModel')
 
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
     user = relationship('UserModel')
 
     def __init__(self, revision: RevisionModel, user: UserModel):

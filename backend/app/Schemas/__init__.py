@@ -4,6 +4,7 @@ from .FileSchema import *
 from .IdsInDBSchema import *
 from .PostSchema import *
 from .RatingSchema import *
+from .RequestedFeedbackSchema import *
 from .RevisionSchema import *
 from .RoleSchema import *
 from .RolesEnum import *

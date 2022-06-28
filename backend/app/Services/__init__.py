@@ -2,6 +2,7 @@ from .AspectRatingService import AspectRatingService
 from .AspectService import AspectService
 from .FeedbackService import FeedbackService
 from .FileService import FileService
+from .InviteService import InviteService
 from .PostService import PostService
 from .RatingService import RatingService
 from .RevisionService import RevisionService

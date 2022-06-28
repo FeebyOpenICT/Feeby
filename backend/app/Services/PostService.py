@@ -7,8 +7,9 @@ from Exceptions.NoPermissions import NoPermissions
 from Models import FeedbackModel, PostModel, RevisionModel, UserModel
 from Repositories import PostRepository, RevisionRepository, FeedbackRepository
 from Schemas import CreatePost, PostInDBFull
-from Services import AspectService, RatingService
 from .AspectRatingService import AspectRatingService
+from .AspectService import AspectService
+from .RatingService import RatingService
 
 
 class PostService:

@@ -4,6 +4,7 @@ from .FeedbackRepository import FeedbackRepository
 from .FileRepository import FileRepository
 from .PostRepository import PostRepository
 from .RatingRepository import RatingRepository
+from .RequestedFeedbackRepository import RequestedFeedbackRepository
 from .RevisionRepository import RevisionRepository
 from .RoleRepository import RoleRepository
 from .UserRepository import UserRepository
