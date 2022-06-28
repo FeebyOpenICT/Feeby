@@ -4,23 +4,41 @@
       <span>{{ index + 1 }}</span>
     </template>
     <v-card flat outlined>
-      <v-card-title>{{ title }}</v-card-title>
+      <v-card-title
+        ><span class="text-h4">{{ title }}</span></v-card-title
+      >
       <v-card-subtitle>{{ formattedCreationTime }}</v-card-subtitle>
       <v-card-text>
         {{ revision.description }}
       </v-card-text>
 
       <!--      Given feedback -->
-      <feedback-data-table
-        v-model:selectedUsers="selectedUsers"
-        :feedback="feedback"
-      />
 
       <!--      Requested feedback from -->
-      <requested-feedback-data-table
-        v-if="filteredInvites.length > 0"
-        :items="filteredInvites"
-      ></requested-feedback-data-table>
+      <v-expansion-panels flat hover multiple>
+        <v-expansion-panel>
+          <v-expansion-panel-header
+            ><span class="text-button">feedback</span></v-expansion-panel-header
+          >
+          <v-expansion-panel-content>
+            <feedback-data-table
+              v-model:selectedUsers="selectedUsers"
+              :feedback="feedback"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+
+        <v-expansion-panel v-if="filteredInvites.length > 0">
+          <v-expansion-panel-header
+            ><span class="text-button">status</span></v-expansion-panel-header
+          >
+          <v-expansion-panel-content>
+            <requested-feedback-data-table
+              :items="filteredInvites"
+            ></requested-feedback-data-table>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
 
       <v-card-actions>
         <request-feedback

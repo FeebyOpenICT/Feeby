@@ -1,6 +1,5 @@
 <template>
   <v-card flat>
-    <v-card-title>Feedback status</v-card-title>
     <v-data-table :headers="headers" :items="items" :items-per-page="5">
       <template v-slot:item.status="{ item }">
         {{ calculateStatus(item) }}
@@ -17,7 +16,8 @@ export default Vue.extend({
   data() {
     return {
       headers: [
-        { text: 'Gebruiker', value: 'user.fullname' },
+        { text: 'Naam', value: 'user.fullname' },
+        { text: 'E-mail', value: 'user.canvas_email' },
         { text: 'Status', value: 'status' },
       ],
     }

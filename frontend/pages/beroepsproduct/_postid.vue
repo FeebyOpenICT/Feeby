@@ -35,7 +35,7 @@
     <!--    Nulmeting-->
     <v-expansion-panels flat class="pa-0 my-n4 ml-2 pr-2">
       <v-expansion-panel>
-        <v-expansion-panel-header class="text-h6"
+        <v-expansion-panel-header class="text-button"
           >Nulmeting</v-expansion-panel-header
         >
         <v-expansion-panel-content>
