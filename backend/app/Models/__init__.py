@@ -4,6 +4,7 @@ from .FeedbackModel import FeedbackModel
 from .FileModel import FileModel
 from .PostModel import PostModel
 from .RatingModel import RatingModel
+from .RequestedFeedbackModel import RequestedFeedbackModel
 from .RevisionModel import RevisionModel
 from .RoleModel import RoleModel
 from .UserModel import UserModel
