@@ -7,19 +7,19 @@ from Exceptions import DuplicateKey
 from Exceptions.NoPermissions import NoPermissions
 from Models import UserModel, RequestedFeedbackModel
 from Repositories import RequestedFeedbackRepository
-from Schemas import UserPublicInDB
+from Schemas import UserPublicInDB, RequestedFeedbackInDB
 from .RevisionService import RevisionService
 from .UserService import UserService
 
 
 class InviteService:
     @staticmethod
-    def invite_users_on_revision(revision_id: int, owner_of_revision: UserModel,
+    def invite_users_on_revision(revision_id: int, potential_owner_of_revision: UserModel,
                                  users_to_invite: List[UserPublicInDB],
                                  db: Session):
         revision = RevisionService.get_revision_by_id_or_fail(revision_id=revision_id, db=db)
 
-        if revision.post.user_id is not owner_of_revision.id:
+        if revision.post.user_id is not potential_owner_of_revision.id:
             NoPermissions(resource="revision", id=revision_id)
 
         user_ids = [user.id for user in users_to_invite]
@@ -39,3 +39,23 @@ class InviteService:
             requested_feedback_models.append(requested_feedback)
 
         return requested_feedback_models
+
+    @staticmethod
+    def get_invited_users_on_revision(revision_id: int, potential_owner_of_revision: UserModel, db: Session) -> List[
+        RequestedFeedbackInDB]:
+        """Get invited users on revision
+
+        Args:
+            revision_id: id of revision
+            potential_owner_of_revision: owner of user
+            db: database session
+
+        Returns:
+            list of requested users
+        """
+        revision = RevisionService.get_revision_by_id_or_fail(revision_id=revision_id, db=db)
+
+        if revision.post.user_id is not potential_owner_of_revision.id:
+            raise NoPermissions('revision', revision_id)
+
+        return revision.requests

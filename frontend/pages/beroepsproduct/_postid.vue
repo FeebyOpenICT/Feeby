@@ -35,82 +35,92 @@
     <!--    Nulmeting-->
     <v-expansion-panels flat class="pa-0 my-n4 ml-2 pr-2">
       <v-expansion-panel>
-        <v-expansion-panel-header class="text-h6">Nulmeting</v-expansion-panel-header>
+        <v-expansion-panel-header class="text-h6"
+          >Nulmeting</v-expansion-panel-header
+        >
         <v-expansion-panel-content>
           <v-card-text class="text--secondary">
-            De nulmeting is de beoordeling die de student aan zichzelf gegeven heeft.
+            De nulmeting is de beoordeling die de student aan zichzelf gegeven
+            heeft.
           </v-card-text>
 
-          <feedback-data-table :feedback="nulmeting"/>
+          <feedback-data-table :feedback="nulmeting" />
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
 
     <v-card-text>
       <v-divider></v-divider>
-      <br/>
+      <br />
       <!--    Revisions and feedback-->
       <v-timeline dense>
         <revision
           v-for="(revision, index) in post.revisions"
+          :key="index"
           :revision="revision"
           :title="`Revisie ${index + 1}`"
           :feedback="filterOutNulmeting(revision.feedback)"
           :index="index"
         />
-        <create-revision v-if="userIsOwner" :post-id="post.id" @revision-created="addRevision"/>
+        <create-revision
+          v-if="userIsOwner"
+          :post-id="post.id"
+          @revision-created="addRevision"
+        />
       </v-timeline>
     </v-card-text>
-
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {Feedback, GetPostByID, Revision} from "~/types/GetPostByID";
-import {DateTime} from "luxon";
-import {mapGetters} from "vuex";
+import Vue from 'vue'
+import { Feedback, GetPostByID, Revision } from '~/types/GetPostByID'
+import { DateTime } from 'luxon'
+import { mapGetters } from 'vuex'
 
 export default Vue.extend({
-  name: "BeroepsProduct",
+  name: 'BeroepsProduct',
   data() {
     return {
       post: {} as GetPostByID,
-      formattedCreationTime: "" as string
+      formattedCreationTime: '' as string,
     }
   },
-  async asyncData({params, $axios}) {
+  async asyncData({ params, $axios }) {
     const post = await $axios.$get<GetPostByID>(`/posts/${params.postid}`)
-    const formattedCreationTime = DateTime.fromISO(post.time_created).toLocaleString({
+    const formattedCreationTime = DateTime.fromISO(
+      post.time_created
+    ).toLocaleString({
       day: 'numeric',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     })
     return {
       post,
-      formattedCreationTime
+      formattedCreationTime,
     }
   },
   methods: {
     filterOutNulmeting(feedback: Feedback[]): Feedback[] {
-      return feedback.filter(f => f.reviewer.id !== this.post.user_id)
+      return feedback.filter((f) => f.reviewer.id !== this.post.user_id)
     },
     addRevision(revision: Revision) {
       console.log(revision, 'new')
       this.post.revisions.push(revision)
-    }
+    },
   },
   computed: {
     nulmeting(): Feedback[] {
-      return this.post.revisions[0].feedback.filter((f: Feedback) => f.reviewer.id === this.post.user_id)
+      return this.post.revisions[0].feedback.filter(
+        (f: Feedback) => f.reviewer.id === this.post.user_id
+      )
     },
     ...mapGetters('auth', ['userId']),
     userIsOwner(): boolean {
       return this.post.user_id == this.userId
-    }
+    },
   },
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
