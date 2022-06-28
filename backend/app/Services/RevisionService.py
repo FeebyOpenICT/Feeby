@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -12,12 +12,13 @@ from Services import PostService
 
 class RevisionService:
     @staticmethod
-    def create_revision(post_id: int, user: UserModel, body: CreateRevision, db: Session) -> RevisionModel:
+    def create_revision(post_id: int, potential_owner_of_post: UserModel, revision_body: CreateRevision,
+                        db: Session) -> RevisionModel:
         """create revision
 
         Args:
-            user (UserModel): user that is trying to create revision on post
-            body (CreateRevision): description of revision
+            potential_owner_of_post (UserModel): user that is trying to create revision on post
+            revision_body (CreateRevision): description of revision
             post_id (int): id of post as saved in database
             db (Session): database session
 
@@ -29,11 +30,12 @@ class RevisionService:
         """
         post = PostService.get_post_by_id_or_fail(post_id=post_id, db=db)
 
-        if post.user_id != user.id:
+        if post.user_id != potential_owner_of_post.id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not allowed to create a revision on someone else's post")
 
-        revision = RevisionRepository.save(db=db, revision=RevisionModel(description=body.description, post=post))
+        revision = RevisionRepository.save(db=db,
+                                           revision=RevisionModel(description=revision_body.description, post=post))
         return revision
 
     @staticmethod
@@ -51,20 +53,6 @@ class RevisionService:
         revisions = RevisionRepository.get_revisions_from_post(
             post_id=post_id, db=db)
         return revisions
-
-    @staticmethod
-    def get_revision_by_id(id: int, db: Session) -> Optional[RevisionModel]:
-        """get revision by id
-
-        Args:
-            id (int): id of revision
-            db (Session): database session
-
-        Returns:
-            Optional[RevisionModel]: revision as saved in database or None
-        """
-        revision = RevisionRepository.get_by_id(id=id, db=db)
-        return revision
 
     @staticmethod
     def get_revision_by_id_or_fail(revision_id: int, db: Session) -> RevisionModel:

@@ -45,7 +45,7 @@ export default Vue.extend({
   },
   fetchOnServer: true,
   async fetch() {
-    this.posts = await this.$axios.$get<GetPosts>(`/users/${this.userId}/posts`)
+    this.posts = await this.$axios.$get<GetPosts>(`/posts`)
   },
   middleware: ['authenticated'],
 })

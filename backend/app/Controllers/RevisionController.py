@@ -42,7 +42,7 @@ class RevisionController:
         """
 
         result = RevisionService.create_revision(
-            user=self.current_active_user, body=body,
+            potential_owner_of_post=self.current_active_user, revision_body=body,
             post_id=post_id, db=self.db)
         return result
 
