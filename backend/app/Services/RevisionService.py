@@ -7,7 +7,7 @@ from Exceptions import NotFoundException
 from Models import UserModel, RevisionModel
 from Repositories import RevisionRepository
 from Schemas import CreateRevision
-from Services import PostService
+from .PostService import PostService
 
 
 class RevisionService:
