@@ -3,16 +3,25 @@
     <template v-slot:icon>
       <span>{{ index + 1 }}</span>
     </template>
-    <v-card flat>
+    <v-card flat outlined>
       <v-card-title>{{ title }}</v-card-title>
       <v-card-subtitle>{{ formattedCreationTime }}</v-card-subtitle>
       <v-card-text>
         {{ revision.description }}
       </v-card-text>
+
+      <!--      Given feedback -->
       <feedback-data-table
         v-model:selectedUsers="selectedUsers"
         :feedback="feedback"
       />
+
+      <!--      Requested feedback from -->
+      <requested-feedback-data-table
+        v-if="filteredInvites.length > 0"
+        :items="filteredInvites"
+      ></requested-feedback-data-table>
+
       <v-card-actions>
         <request-feedback
           :alreadySelectedUsers="selectedUsers"
@@ -64,6 +73,9 @@ export default Vue.extend({
     },
     selectedUsers(): User[] {
       return this.invites.map((invite) => invite.user)
+    },
+    filteredInvites(): GetInvitesOnRevision {
+      return this.invites.filter((invite) => !invite.time_finished)
     },
   },
   methods: {
