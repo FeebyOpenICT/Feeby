@@ -1,10 +1,7 @@
-from datetime import datetime
-from sqlalchemy import null
 from sqlalchemy.orm import Session
-from Models import PostModel, UserAccessPostModel, UserModel
-from Repositories import PostRepository, RoleRepository
-from Schemas import RolesEnum
-from Services import PostService, RoleService
+
+from Models import PostModel, UserModel
+from Repositories import PostRepository
 
 
 def test_get_posts_from_user_by_id(db: Session, current_active_user: UserModel):
@@ -21,6 +18,7 @@ def test_get_posts_from_user_by_id(db: Session, current_active_user: UserModel):
     assert len(posts) == 2
     assert posts[0] == post1
     assert posts[1] == post2
+
 
 '''
 def test_create_post_for_user(db: Session, current_active_user: UserModel):
