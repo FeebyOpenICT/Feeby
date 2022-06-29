@@ -1,6 +1,5 @@
 from typing import List
 
-from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from Exceptions import NotFoundException
@@ -28,11 +27,8 @@ class RevisionService:
         Returns:
             RevisionModel: created revision as saved in database (transactional)
         """
-        post = PostService.get_post_by_id_or_fail(post_id=post_id, db=db)
-
-        if post.user_id != potential_owner_of_post.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
-                                detail="Not allowed to create a revision on someone else's post")
+        post = PostService.get_post_with_access_or_fail(post_id=post_id, requesting_user_id=potential_owner_of_post.id,
+                                                        db=db)
 
         revision = RevisionRepository.save(db=db,
                                            revision=RevisionModel(description=revision_body.description, post=post))

@@ -1,9 +1,11 @@
 from typing import List, Optional
+
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
 from Exceptions import DuplicateKey, NotFoundException
 from Models import PostModel, UserAccessPostModel, UserModel
 from Repositories import PostRepository, UserAccessPostRepository, UserRepository
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
 
 def get_posts_from_user_by_id_and_current_user_id(user_id: int, current_user_id: int, db: Session) -> List[PostModel]:
@@ -73,14 +75,3 @@ def grant_access_to_post(post_id: int, user_id: int, user_ids: List[int], db: Se
                            id=error.params['user_id'])
 
     return accessList
-
-
-def get_post_with_access(current_user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
-    """
-    Get post that the current_user_id has access to
-
-    returns None if the user does not have access to that post
-    """
-    result = PostRepository.get_post_with_access(
-        current_user_id=current_user_id, post_id=post_id, db=db)
-    return result
