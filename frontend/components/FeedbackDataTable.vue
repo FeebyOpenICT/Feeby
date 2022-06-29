@@ -38,10 +38,16 @@ export default Vue.extend({
           align: 'start',
           sortable: false,
           value: 'reviewer',
+          width: '300px',
         },
         { text: 'Aspect', sortable: false, value: 'aspect.title' },
         { text: 'Rating', sortable: false, value: 'rating.title' },
-        { text: 'Review', sortable: false, value: 'description' },
+        {
+          text: 'Review',
+          sortable: false,
+          value: 'description',
+          width: '50%',
+        },
       ],
     }
   },
