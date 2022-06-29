@@ -1,8 +1,14 @@
 <template>
   <v-card flat>
-    <v-data-table :headers="headers" :items="items" :items-per-page="5">
+    <v-data-table
+      hide-default-footer
+      :headers="headers"
+      :items="items"
+      disable-pagination
+      :items-per-page="-1"
+    >
       <template v-slot:item.status="{ item }">
-        {{ calculateStatus(item) }}
+        {{ item.time_opened ? 'Begonnen' : 'Aangevraagd' }}
       </template>
     </v-data-table>
   </v-card>
@@ -10,7 +16,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import { GetInvitesOnRevision, Invite } from '~/types/GetInvitesOnRevision'
+import { GetInvitesOnRevision } from '~/types/GetInvitesOnRevision'
 export default Vue.extend({
   name: 'RequestedFeedbackDataTable',
   data() {
@@ -25,13 +31,6 @@ export default Vue.extend({
   props: {
     items: {
       type: Array as PropType<GetInvitesOnRevision>,
-    },
-  },
-  methods: {
-    calculateStatus(invite: Invite) {
-      if (invite.time_finished) return 'Klaar'
-      if (invite.time_opened) return 'Begonnen'
-      return 'Aangevraagd'
     },
   },
 })
