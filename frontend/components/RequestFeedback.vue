@@ -122,7 +122,7 @@ export default Vue.extend({
     async submit() {
       try {
         const response = await this.$axios.$post<InviteOnRevision>(
-          `/revisions/${this.revisionId}/invite`,
+          `/revisions/${this.revisionId}/invites`,
           { users: this.selectedUsers }
         )
         this.snackbar_text = 'Feedback succesvol aangevraagd'
