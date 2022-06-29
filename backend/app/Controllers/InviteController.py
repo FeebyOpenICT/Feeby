@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.post('/revisions/{revision_id}/invite', response_model=List[RequestedFeedbackInDB])
+@router.post('/revisions/{revision_id}/invites', response_model=List[RequestedFeedbackInDB], status_code=201)
 async def invite_on_revision(
         revision_id: int,
         body: CreateRequestedFeedback,
