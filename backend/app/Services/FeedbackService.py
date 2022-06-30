@@ -8,8 +8,7 @@ from Exceptions import NotFoundException
 from Models import FeedbackModel, RevisionModel, UserModel
 from Repositories import FeedbackRepository
 from Schemas import CreateFeedback
-from Services import AspectRatingService, AspectService, RatingService, \
-    UserAccessPostService
+from Services import AspectRatingService, AspectService, RatingService
 
 
 class FeedbackService:
@@ -23,9 +22,6 @@ class FeedbackService:
         if reviewer.id == revision.post.user_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Not allowed to give oneself feedback")
-
-        UserAccessPostService.check_access_to_post_or_fail(
-            post_id=revision.post.id, user_id=reviewer.id, db=db)
 
         for feedback in revision.feedback:
             if feedback.reviewer.id == reviewer.id:

@@ -1,6 +1,7 @@
-from database import Base
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import relationship
+
+from database import Base
 from .PostModel import PostModel
 
 
@@ -16,6 +17,8 @@ class RevisionModel(Base):
     post = relationship("PostModel", back_populates="revisions")
 
     feedback = relationship("FeedbackModel")
+
+    requests = relationship("RequestedFeedbackModel")
 
     def __init__(self, description: str, post: PostModel) -> None:
         self.description = description

@@ -1,19 +1,15 @@
 import uvicorn
 from fastapi import FastAPI
 
+from Auth import Authentication
+from Controllers import *
 # import all routers and exception handlers
 from Exceptions import *
-from Auth import Authentication
 from LTI import lti
-from Controllers import *
-
-
-# import all models that need to be initiated
-from Models import *
-
-
 # import database
 from database import engine, Base
+
+# import all models that need to be initiated
 
 # Create all tables in database
 Base.metadata.create_all(bind=engine)
@@ -57,6 +53,8 @@ app.include_router(RatingsRouter)
 app.include_router(RevisionRouter)
 
 app.include_router(FeedbackRouter)
+
+app.include_router(InviteRouter)
 
 if __name__ == "__main__":
     uvicorn.run("__main__:app", host="0.0.0.0",

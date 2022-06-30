@@ -1,10 +1,10 @@
 from typing import List, Optional
 
-from sqlalchemy import and_, or_
+from sqlalchemy import and_
 from sqlalchemy.orm import Session, aliased
 
 from Exceptions import UnexpectedInstanceError
-from Models import PostModel, UserAccessPostModel, AspectModel, RatingModel, UserModel
+from Models import PostModel, AspectModel, RatingModel, UserModel
 from Models.FeedbackModel import FeedbackModel
 from Models.RevisionModel import RevisionModel
 from .RepositoryBase import RepositoryBase
@@ -74,68 +74,15 @@ class PostRepository(RepositoryBase):
         return result
 
     @staticmethod
-    def get_post_with_access(current_user_id: int, post_id: int, db: Session) -> Optional[PostModel]:
-        """get post with access
-
-        Args:
-            current_user_id (int): current user id
-            post_id (int): id of post
-            db (Session): database session
-
-        Returns:
-            Optional[PostModel]: post or None if no access
-        """
-        result = db.query(PostModel).join(
-            UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
-        ).where(
-            or_(and_(
-                UserAccessPostModel.user_id == current_user_id,
-                UserAccessPostModel.post_id == post_id
-            ), and_(PostModel.user_id == current_user_id, PostModel.id == post_id))
-        ).first()
-        return result
-
-    @staticmethod
-    def get_posts_with_access(current_user_id: int, user_id: int, db: Session) -> List[PostModel]:
-        """get posts from user that current user has access to
-
-        Args:
-            current_user_id (int): id of current user that is requesting the posts from the user that they have access to
-            user_id (int): owner of all the posts
-            db (Session): database session
-
-        Returns:
-            List[PostModel]: list off all posts that current user has access to that belong to user
-        """
-        result = db.query(PostModel).join(
-            UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id
-        ).where(
-            UserAccessPostModel.user_id == current_user_id,
-            PostModel.user_id == user_id
-        ).order_by(PostModel.time_created.desc()).all()
-        return result
-
-    @staticmethod
-    def get_complete_post_with_access(current_user_id: int, post_id: int, db: Session):
+    def get_complete_post_with_access(post_id: int, db: Session):
         reviewer_alias = aliased(UserModel)
         result = db.query(PostModel) \
-            .join(UserAccessPostModel, PostModel.id == UserAccessPostModel.post_id, isouter=True) \
             .join(RevisionModel, RevisionModel.post_id == PostModel.id) \
             .join(FeedbackModel, FeedbackModel.revision_id == RevisionModel.id) \
             .join(AspectModel, FeedbackModel.aspect_id == AspectModel.id) \
             .join(RatingModel, FeedbackModel.rating_id == RatingModel.id) \
             .join(UserModel, PostModel.user_id == UserModel.id) \
             .join(reviewer_alias, FeedbackModel.reviewer_id == reviewer_alias.id) \
-            .filter(
-            or_(
-                and_(
-                    UserAccessPostModel.user_id == current_user_id,
-                    UserAccessPostModel.post_id == post_id
-                ),
-                and_(
-                    PostModel.user_id == current_user_id,
-                    PostModel.id == post_id
-                )
-            )
-        ).first()
+            .filter(PostModel.id == post_id) \
+            .first()
         return result
